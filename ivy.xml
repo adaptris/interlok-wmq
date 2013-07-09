@@ -28,6 +28,7 @@
   	<dependency org="org.apache.velocity" name="velocity" rev="1.7" transitive="false"/> <!-- Without transitive, all velocities deps will be included, which will break us cos ant 1.6 will also be included. -->
   	<dependency org="junit" name="junit" rev="4.11" conf="test->default"/>
   	<dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="test->default"/>
+    <dependency org="org.apache.geronimo.specs" name="geronimo-j2ee-connector_1.6_spec" rev="1.0" conf="test->default"/>
     <exclude org="commons-logging"/>
   </dependencies>
 </ivy-module>
