@@ -88,19 +88,14 @@
 
 
   <target name="jar" depends="compile, jar.resources" description="Build a jar file">
-    <jar basedir="${classes.build.dir}"
-         jarfile="${project.dist.dir}/${project.jar.name}"
-         manifest="${build.dir}/Manifest.mf" />
-
+    <adapter:create-jar basedir="${classes.build.dir}" jarfile="${project.dist.dir}/${project.jar.name}" manifest="${build.dir}/Manifest.mf" />
   </target>
 
   <target name="javadoc" depends="prepare-ivy" description="Create javadocs">
     <adapter:ydoc-javadoc-creator sourcepath="${src.dir}" destdir="${api.doc.dir}">
       <groups>
-        <grouping>
           <group title="Interlok WebsphereMQ JMS Integration" packages="com.adaptris.core.jms.wmq:com.adaptris.core.jms.wmq.*"/>
           <group title="Interlok WebsphereMQ Native Integration" packages="com.adaptris.core.wmq:com.adaptris.core.wmq.*"/>
-        </grouping>
       </groups>
     </adapter:ydoc-javadoc-creator>
   </target>
