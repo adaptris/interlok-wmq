@@ -6,7 +6,6 @@
  */
 package com.adaptris.core.wmq;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.CoreException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.ibm.mq.MQException;
@@ -48,7 +47,6 @@ import com.ibm.mq.MQQueueManager;
  *
  */
 @XStreamAlias("wmq-attached-connection")
-@MarshallingImperative(mapTo = "wmq-attached-connection", transientFields = {})
 public class AttachedConnection extends NativeConnection {
 
   private MQQueueManager mqQueueManager;

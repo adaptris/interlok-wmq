@@ -1,7 +1,6 @@
 package com.adaptris.core.wmq.mapping;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.adaptris.annotation.MarshallingImperative;
 
 import static com.adaptris.core.util.XmlHelper.createXmlUtils;
 
@@ -26,7 +25,6 @@ import com.ibm.mq.MQMessage;
  *
  */
 @XStreamAlias("xpath-field")
-@MarshallingImperative(mapTo="xpath-field", transientFields={})
 public class XpathField extends FieldMapper {
 
   private String xpath;

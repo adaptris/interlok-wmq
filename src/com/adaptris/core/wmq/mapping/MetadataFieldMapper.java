@@ -1,7 +1,6 @@
 package com.adaptris.core.wmq.mapping;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.adaptris.annotation.MarshallingImperative;
 
 import java.io.IOException;
 
@@ -22,7 +21,6 @@ import com.ibm.mq.MQMessage;
  *
  */
 @XStreamAlias("wmq-metadata-field-mapper")
-@MarshallingImperative(mapTo="wmq-metadata-field-mapper", transientFields={})
 public class MetadataFieldMapper extends FieldMapper {
 
   private String metadataKey;

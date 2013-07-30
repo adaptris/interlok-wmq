@@ -3,7 +3,6 @@ package com.adaptris.core.jms.wmq;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -109,7 +108,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * </p>
  */
 @XStreamAlias("basic-mq-series-implementation")
-@MarshallingImperative(mapTo="basic-mq-series-implementation", transientFields={})
 public class BasicMqSeriesImplementation extends VendorImplementationImp {
 
   private int ccsid;

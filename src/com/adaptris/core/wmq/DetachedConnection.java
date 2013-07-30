@@ -7,7 +7,6 @@
 package com.adaptris.core.wmq;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.adaptris.annotation.MarshallingImperative;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQQueueManager;
 
@@ -48,7 +47,6 @@ import com.ibm.mq.MQQueueManager;
  *
  */
 @XStreamAlias("wmq-detached-connection")
-@MarshallingImperative(mapTo = "wmq-detached-connection", transientFields = {})
 public class DetachedConnection extends NativeConnection {
 
   public DetachedConnection() {

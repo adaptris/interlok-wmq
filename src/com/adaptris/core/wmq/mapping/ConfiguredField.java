@@ -1,7 +1,6 @@
 package com.adaptris.core.wmq.mapping;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.adaptris.annotation.MarshallingImperative;
 
 import java.io.IOException;
 
@@ -22,7 +21,6 @@ import com.ibm.mq.MQMessage;
  * 
  */
 @XStreamAlias("wmq-configured-field")
-@MarshallingImperative(mapTo="wmq-configured-field", transientFields={})
 public class ConfiguredField extends FieldMapper {
 
   private String configuredValue;

@@ -7,7 +7,6 @@ import java.util.Iterator;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -156,7 +155,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.ibm.mq.jms.MQConnectionFactory
  */
 @XStreamAlias("advanced-mq-series-implementation")
-@MarshallingImperative(mapTo="advanced-mq-series-implementation", transientFields={})
 public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
   /**
    * Properties matched against various MQSession methods.

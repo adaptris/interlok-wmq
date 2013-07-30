@@ -1,6 +1,5 @@
 package com.adaptris.core.wmq;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.DefaultMessageFactory;
 import com.adaptris.core.ProduceDestination;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -37,7 +36,6 @@ import com.ibm.mq.MQMessage;
  * @since 2.8.1
  */
 @XStreamAlias("wmq-forwarding-native-consumer-error-handler")
-@MarshallingImperative(mapTo = "wmq-forwarding-native-consumer-error-handler", transientFields = {})
 public class ForwardingNativeConsumerErrorHandler extends AbstractNativeErrorHandler {
 
 	private transient MQMessageProducer producer;

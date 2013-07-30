@@ -2,7 +2,6 @@ package com.adaptris.core.wmq.mapping;
 
 import java.io.IOException;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.util.text.ByteTranslator;
@@ -31,7 +30,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  *
  */
 @XStreamAlias("wmq-message-id-mapper")
-@MarshallingImperative(mapTo="wmq-message-id-mapper", transientFields={})
 public class MessageIdMapper extends FieldMapper {
 
   public MessageIdMapper() {

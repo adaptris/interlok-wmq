@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.perf4j.aop.Profiled;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ProduceDestination;
@@ -49,7 +48,6 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @author lchan
  */
 @XStreamAlias("wmq-native-producer")
-@MarshallingImperative(mapTo = "wmq-native-producer", transientFields = {})
 public class NativeProducer extends ProduceOnlyProducerImp {
 
   @XStreamImplicit

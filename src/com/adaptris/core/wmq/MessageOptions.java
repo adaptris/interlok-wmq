@@ -9,7 +9,6 @@ package com.adaptris.core.wmq;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.CoreException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
@@ -34,7 +33,6 @@ import com.ibm.mq.MQQueueManager;
  *
  */
 @XStreamAlias("wmq-message-options")
-@MarshallingImperative(mapTo = "wmq-message-options", transientFields = {})
 public class MessageOptions {
 
 	private String queueOpenOptions;

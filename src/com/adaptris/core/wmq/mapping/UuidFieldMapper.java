@@ -1,7 +1,6 @@
 package com.adaptris.core.wmq.mapping;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.adaptris.annotation.MarshallingImperative;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -22,7 +21,6 @@ import com.ibm.mq.MQMessage;
  * @author stuellidge
  */
 @XStreamAlias("uuid-field-mapper")
-@MarshallingImperative(mapTo="uuid-field-mapper", transientFields={})
 public class UuidFieldMapper extends FieldMapper {
 
   @Override

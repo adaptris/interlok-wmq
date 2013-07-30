@@ -9,7 +9,6 @@ package com.adaptris.core.wmq;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.adaptris.annotation.MarshallingImperative;
 import com.adaptris.core.AdaptrisPollingConsumer;
 import com.adaptris.core.CoreException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -36,7 +35,6 @@ import com.adaptris.util.license.License;
  *
  */
 @XStreamAlias("wmq-native-consumer")
-@MarshallingImperative(mapTo = "wmq-native-consumer", transientFields = {})
 public class NativeConsumer extends AdaptrisPollingConsumer {
 
   private List<FieldMapper> preGetFieldMappers;
