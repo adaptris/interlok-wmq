@@ -11,9 +11,9 @@ import java.util.List;
 
 import com.adaptris.core.AdaptrisPollingConsumer;
 import com.adaptris.core.CoreException;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.adaptris.core.wmq.mapping.FieldMapper;
 import com.adaptris.util.license.License;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * MessageConsumer implementation that uses the WebsphereMQ native client.
@@ -30,7 +30,7 @@ import com.adaptris.util.license.License;
  * In the adapter configuration file this class is aliased as <b>wmq-native-consumer</b> which is the preferred alternative to the
  * fully qualified classname when building your configuration.
  * </p>
- 
+
  * @author lchan
  *
  */
@@ -40,7 +40,7 @@ public class NativeConsumer extends AdaptrisPollingConsumer {
   private List<FieldMapper> preGetFieldMappers;
   private List<FieldMapper> fieldMappers;
   private MessageOptions options;
-  private ConsumerDelegate proxy;
+  private transient ConsumerDelegate proxy;
   private boolean logAllExceptions;
   private NativeErrorHandler errorHandler;
 
