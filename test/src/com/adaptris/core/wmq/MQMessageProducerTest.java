@@ -1,14 +1,12 @@
 package com.adaptris.core.wmq;
 
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.doThrow;
+import junit.framework.TestCase;
 
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.jmock.Expectations;
+import org.jmock.integration.junit4.JUnitRuleMockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Rule;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.ProduceDestination;
@@ -20,84 +18,92 @@ import com.ibm.mq.MQPutMessageOptions;
 import com.ibm.mq.MQQueue;
 import com.ibm.mq.MQQueueManager;
 
-import junit.framework.TestCase;
+public class MQMessageProducerTest extends TestCase {
 
-public class MQMessageProducerTest extends TestCase{
+  /**
+   * This tests the MQMessageProducer It also tests
+   * ForwardingNativeConsumerErrorHandler
+   */
+  private static final String ERROR_DESTINATION = "Error Destination";
 
-	/**
-	 * This tests the MQMessageProducer
-	 * It also tests ForwardingNativeConsumerErrorHandler
-	 */
-	private static final String ERROR_DESTINATION = "Error Destination";
-	
-	private MQException exceptionNoQueue;
-	@Mock private MQMessage mqMsg;
-	@Mock private MQQueueManager mqQueueManager;
-	@Mock private MQQueue mqQueue;
-	@Mock private ProduceDestination errorDestination;
-	@Mock private NativeConsumer nativeConsumer;
-	private ForwardingNativeConsumerErrorHandler errorHandler;
-	private MessageOptions msgOptions;
-	private AttachedConnection attConn;
-	
-	@Override
-	protected void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		
-		exceptionNoQueue = new MQException(MQException.MQCC_FAILED, MQException.MQRC_Q_DELETED, "Mock Test");
-		
-		errorHandler = new ForwardingNativeConsumerErrorHandler();
-		errorHandler.registerParentConsumer(nativeConsumer);
-		errorHandler.setDestination(errorDestination);
-		when(errorDestination.getDestination((AdaptrisMessage)Matchers.anyObject())).thenReturn(ERROR_DESTINATION);
+  @Rule
+  public final JUnitRuleMockery context = new JUnitRuleMockery() {
+    {
+      setImposteriser(ClassImposteriser.INSTANCE);
+      setThreadingPolicy(new Synchroniser());
+    }
+  };
 
-		msgOptions = new MessageOptions();
-		when(nativeConsumer.getOptions()).thenReturn(msgOptions);
-		
-		createAttachedConnection();
-		
-		when(nativeConsumer.retrieveConnection(NativeConnection.class)).thenReturn(attConn);
-		when(attConn.connect()).thenReturn(mqQueueManager);
-		when(mqQueueManager.accessQueue(Matchers.anyString(), Matchers.anyInt())).thenReturn(mqQueue);
-	}
-	public void testOnError() throws Exception{
-		errorHandler.onError(mqMsg);
-		verify(mqQueue).put((MQMessage)Matchers.anyObject(), (MQPutMessageOptions)Matchers.anyObject());
-		verify(mqQueue).close();
-		
-		//Repeat with message options
-		errorHandler.setOptions(new MessageOptions());
-		errorHandler.getOptions().addMessageOption("MQPMO_SET_ALL_CONTEXT");
-		errorHandler.getOptions().addMessageOption("MQPMO_SET_IDENTITY_CONTEXT");
-		errorHandler.getOptions().addQueueOpenOption("MQOO_SET_ALL_CONTEXT");
-		errorHandler.getOptions().addQueueOpenOption("MQOO_SET_IDENTITY_CONTEXT");
-		errorHandler.onError(mqMsg);
-		verify(mqQueue, times(2)).put((MQMessage)Matchers.anyObject(), (MQPutMessageOptions)Matchers.anyObject());
-		verify(mqQueue, times(2)).close();
-		
-		//Throw error on close
-		doThrow(exceptionNoQueue).when(mqQueue).close();
-		try{
-			errorHandler.onError(mqMsg);
-			fail("An error should have been thrown");
-		}
-		catch(Exception e){
-			assertEquals(exceptionNoQueue, e.getCause());
-		}
-		verify(mqQueue, times(3)).put((MQMessage)Matchers.anyObject(), (MQPutMessageOptions)Matchers.anyObject());
-		
-	}
-	public void testMQProducerBasic() throws Exception{
-		MQMessageProducer producer = new MQMessageProducer();
-		producer.setConnection(attConn);
-		NativeConnection conn = producer.getConnection();
-		assertEquals(attConn, conn);
-	}
-	private void createAttachedConnection() {
-		attConn = spy(new AttachedConnection());
-		attConn.setQueueManager("your_Q_Manager");
-		attConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.CCSID_PROPERTY, "MyCCSID"));
-		attConn.setWorkersFirstOnShutdown(true);
-		attConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.SSL_CIPHER_SUITE_PROPERTY, "SSL_RSA_WITH_NULL_MD5"));
-	}
+  private MQException exceptionNoQueue = context.mock(MQException.class);
+  private MQMessage mqMsg = context.mock(MQMessage.class);
+  private MQQueueManager mqQueueManager = context.mock(MQQueueManager.class);
+  private MQQueue mqQueue = context.mock(MQQueue.class);
+  private ProduceDestination errorDestination = context
+      .mock(ProduceDestination.class);
+  private NativeConsumer nativeConsumer = context.mock(NativeConsumer.class);
+  private ForwardingNativeConsumerErrorHandler errorHandler;
+  private MessageOptions msgOptions;
+  private AttachedConnection attConn = context.mock(AttachedConnection.class);
+
+  @Override
+  protected void setUp() throws Exception {
+    exceptionNoQueue = new MQException(MQException.MQCC_FAILED,
+        MQException.MQRC_Q_DELETED, "Mock Test");
+
+    errorHandler = new ForwardingNativeConsumerErrorHandler();
+    errorHandler.registerParentConsumer(nativeConsumer);
+    errorHandler.setDestination(errorDestination);
+
+    msgOptions = new MessageOptions();
+  }
+
+  public void testOnError() throws Exception {
+    context.checking(new Expectations() {
+      {
+        allowing(errorDestination).getDestination(with(any(AdaptrisMessage.class)));
+              will(returnValue(ERROR_DESTINATION));
+        allowing(nativeConsumer).getOptions();
+              will(returnValue(msgOptions));
+        allowing(nativeConsumer).retrieveConnection(with(any(Class.class)));
+              will(returnValue(attConn));
+        allowing(attConn).connect();
+              will(returnValue(mqQueueManager));
+        allowing(mqQueueManager).accessQueue(with(any(String.class)), with(any(int.class)));
+            will(returnValue(mqQueue));
+        allowing(attConn);
+
+        atLeast(2).of(mqQueue).put(with(any(MQMessage.class)), with(any(MQPutMessageOptions.class)));
+        allowing(mqQueue).close();
+            throwException(exceptionNoQueue);
+      }
+    });
+
+    createAttachedConnection();
+
+    errorHandler.onError(mqMsg);
+
+    // Repeat with message options
+    errorHandler.setOptions(new MessageOptions());
+    errorHandler.getOptions().addMessageOption("MQPMO_SET_ALL_CONTEXT");
+    errorHandler.getOptions().addMessageOption("MQPMO_SET_IDENTITY_CONTEXT");
+    errorHandler.getOptions().addQueueOpenOption("MQOO_SET_ALL_CONTEXT");
+    errorHandler.getOptions().addQueueOpenOption("MQOO_SET_IDENTITY_CONTEXT");
+    errorHandler.onError(mqMsg);
+
+    context.assertIsSatisfied();
+  }
+
+  public void testMQProducerBasic() throws Exception {
+    MQMessageProducer producer = new MQMessageProducer();
+    producer.setConnection(attConn);
+    NativeConnection conn = producer.getConnection();
+    assertEquals(attConn, conn);
+  }
+
+  private void createAttachedConnection() {
+    attConn.setQueueManager("your_Q_Manager");
+    attConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.CCSID_PROPERTY, "MyCCSID"));
+    attConn.setWorkersFirstOnShutdown(true);
+    attConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.SSL_CIPHER_SUITE_PROPERTY, "SSL_RSA_WITH_NULL_MD5"));
+  }
 }

@@ -6,9 +6,6 @@
  */
 package com.adaptris.core.wmq.mapping;
 
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
 import java.io.IOException;
 import java.util.Date;
 
@@ -28,7 +25,6 @@ public class FieldMapperTest extends BaseCase {
   private static final String LINE_SEP = System.getProperty("line.separator");
   private static final String XML_DOC = "<root>" + LINE_SEP + "<document>value</document>" + LINE_SEP + "</root>" + LINE_SEP;
   private static final String DEST_XPATH = "/root/document";
-  private static final String DEST_XPATH_WITH_FUNCTION = "local-name(/*)";
   private static final String STRING_CONTENT = "1234567890ABCDEF";
   private static final String NUMERIC_CONTENT = "102";
   private static final String VERSION = "2";
@@ -329,24 +325,6 @@ public class FieldMapperTest extends BaseCase {
     msg.addMetadata("metadataKey", "metadataValue");
     cf.copy(msg, mq);
     assertEquals("metadataValue", mq.applicationIdData);
-  }
-
-  public void testMetadataFieldMapperToMqMessageNulls() throws Exception {
-    FieldMapper cf = spy(new MetadataFieldMapper(FieldMapper.Field.applicationIdData.toString(), "metadataKey"));
-    cf.setConvertNull(true);
-    MQMessage mq = new MQMessage();
-    AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance().newMessage();
-    msg.addMetadata("duffKey", "metadataValue");
-    cf.copy(msg, mq);
-    System.out.println(mq.applicationIdData);
-    assertEquals("", mq.applicationIdData);
-
-    mq = new MQMessage();
-    msg = spy(AdaptrisMessageFactory.getDefaultInstance().newMessage());
-    msg.addMetadata("metadataKey", "metadataValue");
-    when(msg.getMetadataValue("metadataKey")).thenReturn(null);
-    cf.copy(msg, mq);
-    assertEquals("", mq.applicationIdData);
   }
 
   public void testMetadataFieldMapperFromMqMessage() throws Exception {

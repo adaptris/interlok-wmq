@@ -34,6 +34,8 @@ class ConsumerDelegate {
 
   private transient NativeConsumer adpConsumer;
   private transient Log logger;
+  private transient MQMessageAccessor messageAccessor;
+  private transient MQMessageOptionsAccessor messageOptionsAccessor;
 
   private NativeErrorHandler errorHandler;
 
@@ -42,6 +44,8 @@ class ConsumerDelegate {
   }
 
   ConsumerDelegate(NativeConsumer c, Log log) {
+    messageAccessor = new MQMessageAccessor();
+    messageOptionsAccessor = new MQMessageOptionsAccessor();
     adpConsumer = c;
     logger = log;
     try {
@@ -156,10 +160,11 @@ class ConsumerDelegate {
    * By stubbing this method a test can use it's own mock MQMessage/MQGetMessageOptions
    */
   public MQMessage accessMQMessage(MQMessage mqMsg){
-    return mqMsg;
+    return messageAccessor.accessMessage(mqMsg);
   }
+
   public MQGetMessageOptions accessMQGetMessageOptions(MQGetMessageOptions options){
-    return options;
+    return messageOptionsAccessor.accessMessageOptions(options);
   }
   
   private void runErrorHandler(MQMessage message, Exception ex) throws Exception {
@@ -211,5 +216,22 @@ class ConsumerDelegate {
 
   public void setErrorHandler(NativeErrorHandler errorHandler) {
     this.errorHandler = errorHandler;
+  }
+
+  public MQMessageAccessor getMessageAccessor() {
+    return messageAccessor;
+  }
+
+  public void setMessageAccessor(MQMessageAccessor messageAccessor) {
+    this.messageAccessor = messageAccessor;
+  }
+
+  public MQMessageOptionsAccessor getMessageOptionsAccessor() {
+    return messageOptionsAccessor;
+  }
+
+  public void setMessageOptionsAccessor(
+      MQMessageOptionsAccessor messageOptionsAccessor) {
+    this.messageOptionsAccessor = messageOptionsAccessor;
   }
 }
