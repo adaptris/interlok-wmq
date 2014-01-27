@@ -64,7 +64,6 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
   protected static JmsConnection configure(JmsConnection c) {
     c.setUserName("BrokerUsername");
     c.setPassword("BrokerPassword");
-    c.setBrokerUrl("localhost:1414");
     c.setVendorImplementation(createVendorImpl());
     c.setConnectionErrorHandler(new JmsConnectionErrorHandler());
     return c;
@@ -80,6 +79,8 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
     cp.add(new KeyValuePair(ConnectionFactoryProperty.QueueManager.name(), "MyQueueManager"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.Channel.name(), "MyChannel"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.TransportType.name(), "" + JMSC.MQJMS_TP_CLIENT_MQ_TCPIP));
+    cp.add(new KeyValuePair(ConnectionFactoryProperty.HostName.name(), "localhost"));
+    cp.add(new KeyValuePair(ConnectionFactoryProperty.Port.name(), "1414"));
     mq.getSessionProperties().addKeyValuePair(new KeyValuePair(SessionProperty.OptimisticPublication.name(), "true"));
     return mq;
   }

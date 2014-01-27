@@ -3,6 +3,8 @@ package com.adaptris.core.jms.wmq;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -115,6 +117,8 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
   private String queueManager;
   private String channel;
   private String temporaryModel; // nb PTP only
+  private String brokerHost;
+  private int brokerPort;
 
   /**
    * <p>
@@ -140,14 +144,11 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
    * @see VendorImplementation#createQueueConnectionFactory(JmsConnectionConfig)
    */
   @Override
-  public ConnectionFactory createConnectionFactory(JmsConnectionConfig c) throws JMSException {
+  public ConnectionFactory createConnectionFactory() throws JMSException {
 
     MQConnectionFactory result = new MQConnectionFactory();
-    String host = c.configuredBrokerHost();
-    int port = c.configuredPort();
-
-    result.setHostName(host);
-    result.setPort(port);
+    result.setHostName(getBrokerHost());
+    result.setPort(getBrokerPort());
 
     result.setTransportType(getTransportType());
 
@@ -278,5 +279,31 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
    */
   public void setTemporaryModel(String s) {
     temporaryModel = s;
+  }
+
+  public String getBrokerHost() {
+    return brokerHost;
+  }
+
+  public void setBrokerHost(String brokerHost) {
+    this.brokerHost = brokerHost;
+  }
+
+  public int getBrokerPort() {
+    return brokerPort;
+  }
+
+  public void setBrokerPort(int port) {
+    this.brokerPort = port;
+  }
+
+  @Override
+  public boolean connectionEquals(VendorImplementation arg0) {
+    if (arg0 instanceof BasicMqSeriesImplementation) {
+      BasicMqSeriesImplementation rhs = (BasicMqSeriesImplementation) arg0;
+      return new EqualsBuilder().append(getBrokerHost(), rhs.getBrokerHost()).append(getBrokerPort(), rhs.getBrokerPort())
+          .isEquals();
+    }
+    return false;
   }
 }

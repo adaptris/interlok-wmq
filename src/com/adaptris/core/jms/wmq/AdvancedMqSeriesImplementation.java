@@ -7,6 +7,8 @@ import java.util.Iterator;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -801,14 +803,9 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
    * @see VendorImplementation#createQueueConnectionFactory(JmsConnectionConfig)
    */
   @Override
-  public ConnectionFactory createConnectionFactory(JmsConnectionConfig c) throws JMSException {
+  public ConnectionFactory createConnectionFactory() throws JMSException {
 
     MQConnectionFactory result = new MQQueueConnectionFactory();
-    String host = c.configuredBrokerHost();
-    int port = c.configuredPort();
-
-    result.setHostName(host);
-    result.setPort(port);
     applyProperties(result);
     return result;
   }
@@ -883,4 +880,14 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
     sessionProperties = s;
   }
 
+  @Override
+  public boolean connectionEquals(VendorImplementation arg0) {
+    if (arg0 instanceof AdvancedMqSeriesImplementation) {
+      AdvancedMqSeriesImplementation rhs = (AdvancedMqSeriesImplementation) arg0;
+      return new EqualsBuilder().append(getConnectionFactoryProperties(), rhs.getConnectionFactoryProperties())
+          .append(getSessionProperties(), rhs.getSessionProperties())
+          .isEquals();
+    }
+    return false;
+  }
 }
