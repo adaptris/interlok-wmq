@@ -19,6 +19,7 @@ import com.adaptris.core.ProduceOnlyProducerImp;
 import com.adaptris.core.wmq.mapping.FieldMapper;
 import com.adaptris.util.license.License;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
  * MessageProducer implementation that uses the WebsphereMQ native client.
@@ -49,6 +50,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("wmq-native-producer")
 public class NativeProducer extends ProduceOnlyProducerImp {
 
+  @XStreamImplicit
   private List<FieldMapper> fieldMappers;
   private MessageOptions options;
   private Boolean checkOptions;
