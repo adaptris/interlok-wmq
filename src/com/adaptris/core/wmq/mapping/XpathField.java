@@ -1,17 +1,18 @@
 package com.adaptris.core.wmq.mapping;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import static com.adaptris.core.util.XmlHelper.createXmlUtils;
 
 import java.io.IOException;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
+import com.adaptris.util.KeyValuePairSet;
 import com.adaptris.util.XmlUtils;
 import com.adaptris.util.text.ByteTranslator;
+import com.adaptris.util.text.xml.SimpleNamespaceContext;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Resolve an XPath on the AdaptrisMessage payload and use that value as a
@@ -24,8 +25,9 @@ import com.ibm.mq.MQMessage;
  * @author lchan
  *
  */
-@XStreamAlias("xpath-field")
+@XStreamAlias("wmq-xpath-field")
 public class XpathField extends FieldMapper {
+  private KeyValuePairSet namespaceContext;
 
   private String xpath;
 
@@ -59,7 +61,7 @@ public class XpathField extends FieldMapper {
   public void copy(AdaptrisMessage msg, MQMessage mqMsg) throws IOException,
       MQException, CoreException {
     try {
-      XmlUtils xml = createXmlUtils(msg);
+      XmlUtils xml = createXmlUtils(msg, SimpleNamespaceContext.create(getNamespaceContext()));
       String xpathValue = xml.getSingleTextItem(getXpath());
       if (xpathValue == null && getConvertNull()) {
         logR.trace("Converting null value for " + getXpath() + " to \"\"");
@@ -108,5 +110,22 @@ public class XpathField extends FieldMapper {
    */
   public void setXpath(String s) {
     xpath = s;
+  }
+
+  public KeyValuePairSet getNamespaceContext() {
+    return namespaceContext;
+  }
+
+  /**
+   * Set the namespace context for resolving namespaces.
+   * <ul>
+   * <li>The key is the namespace prefix</li>
+   * <li>The value is the namespace uri</li>
+   * </ul>
+   * 
+   * @param namespaceContext
+   */
+  public void setNamespaceContext(KeyValuePairSet namespaceContext) {
+    this.namespaceContext = namespaceContext;
   }
 }

@@ -1,7 +1,5 @@
 package com.adaptris.core.wmq.mapping;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -9,6 +7,7 @@ import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * This field mapper sets the specified field to a freshly generated UUID.
@@ -20,7 +19,7 @@ import com.ibm.mq.MQMessage;
  
  * @author stuellidge
  */
-@XStreamAlias("uuid-field-mapper")
+@XStreamAlias("wmq-uuid-field-mapper")
 public class UuidFieldMapper extends FieldMapper {
 
   @Override
