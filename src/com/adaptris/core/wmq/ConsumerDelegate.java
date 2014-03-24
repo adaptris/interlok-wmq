@@ -84,10 +84,8 @@ class ConsumerDelegate {
         if (carryOn) {
           count++;
         }
-        if (adpConsumer.getReacquireLockBetweenMessages()) {
-          if (!adpConsumer.reacquireLock()) {
-            break;
-          }
+        if (!adpConsumer.continueProcessingMessages()) {
+          break;
         }
       }
       while (carryOn);
