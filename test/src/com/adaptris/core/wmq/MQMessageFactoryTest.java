@@ -20,7 +20,6 @@ import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQMessage;
 
-@SuppressWarnings("deprecation")
 public class MQMessageFactoryTest extends BaseCase {
 
   private static final String LINE_SEP = System.getProperty("line.separator");
@@ -91,7 +90,7 @@ public class MQMessageFactoryTest extends BaseCase {
     verify(mqMsg).writeString(XML_DOC);
     
     instance.write(mqMsg, adpMsg);
-    verify(adpMsg).setStringPayload(XML_DOC);
+    verify(adpMsg).setStringPayload(XML_DOC, adpMsg.getCharEncoding());
   }
 
   public void testBytesMessage() throws Exception {
