@@ -70,7 +70,7 @@ public final class MQMessageFactory {
       public void write(MQMessage mqMsg, AdaptrisMessage msg)
           throws IOException, MQException {
         int strLen = mqMsg.getDataLength();
-        msg.setStringPayload(mqMsg.readStringOfByteLength(strLen));
+        msg.setStringPayload(mqMsg.readStringOfByteLength(strLen), msg.getCharEncoding());
       }
     },
     /** A Bytes Message.

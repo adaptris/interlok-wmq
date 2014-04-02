@@ -6,11 +6,12 @@
  */
 package com.adaptris.core.wmq;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.doNothing;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
@@ -19,6 +20,7 @@ import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQMessage;
 
+@SuppressWarnings("deprecation")
 public class MQMessageFactoryTest extends BaseCase {
 
   private static final String LINE_SEP = System.getProperty("line.separator");
