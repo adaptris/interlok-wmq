@@ -6,9 +6,11 @@ import java.util.Iterator;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
+import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -763,7 +765,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
     TransportType {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setTransportType(Integer.valueOf(s));
+        cf.setTransportType(TransportTypeHelper.getTransportType(s));
       }
     },
     /**
@@ -780,7 +782,11 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
     abstract void applyProperty(MQConnectionFactory cf, String s) throws JMSException;
   };
 
+  @NotNull
+  @AutoPopulated
   private KeyValuePairSet connectionFactoryProperties;
+  @NotNull
+  @AutoPopulated
   private KeyValuePairSet sessionProperties;
 
   /**

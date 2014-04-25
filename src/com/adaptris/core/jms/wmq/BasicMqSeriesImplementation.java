@@ -2,13 +2,15 @@ package com.adaptris.core.jms.wmq;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
+import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 
+import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
-import com.ibm.mq.jms.JMSC;
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -113,10 +115,14 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class BasicMqSeriesImplementation extends VendorImplementationImp {
 
   private int ccsid;
-  private int transportType;
+  @NotBlank
+  @AutoPopulated
+  @Pattern(regexp = "MQJMS_TP_BINDINGS_MQ|MQJMS_TP_CLIENT_MQ_TCPIP|MQJMS_TP_DIRECT_TCPIP|MQJMS_TP_MQJD|MQJMS_TP_DIRECT_HTTP|[0-9]+")
+  private String transportType;
   private String queueManager;
   private String channel;
   private String temporaryModel; // nb PTP only
+  @NotBlank
   private String brokerHost;
   private int brokerPort;
 
@@ -126,14 +132,14 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
    * <ul>
    * Defaults are:
    * <li>ccsid = -1</li>
-   * <li>transport type =JMSC.MQJMS_TP_CLIENT_MQ_TCPIP</li>
+   * <li>transport type = MQJMS_TP_CLIENT_MQ_TCPIP (which is equivalent to {@value com.ibm.mq.jms.JMSC#MQJMS_TP_CLIENT_MQ_TCPIP})</li>
    * <li>queue manager, channel and temporary model are all null.</li>
    * </ul>
    * </p>
    */
   public BasicMqSeriesImplementation() {
     setCcsid(-1);
-    setTransportType(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP);
+    setTransportType(TransportTypeHelper.Transport.MQJMS_TP_CLIENT_MQ_TCPIP.name());
     setQueueManager(null);
     setChannel(null);
     setTemporaryModel(null);
@@ -150,7 +156,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
     result.setHostName(getBrokerHost());
     result.setPort(getBrokerPort());
 
-    result.setTransportType(getTransportType());
+    result.setTransportType(TransportTypeHelper.getTransportType(getTransportType()));
 
     if (getQueueManager() != null) {
       result.setQueueManager(getQueueManager());
@@ -200,7 +206,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
    *
    * @return transportType
    */
-  public int getTransportType() {
+  public String getTransportType() {
     return transportType;
   }
 
@@ -211,7 +217,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
    *
    * @param i the transportType to set
    */
-  public void setTransportType(int i) {
+  public void setTransportType(String i) {
     transportType = i;
   }
 
