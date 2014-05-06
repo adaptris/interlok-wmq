@@ -11,6 +11,7 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 
 import com.adaptris.core.AdaptrisMessage;
+import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
 import com.adaptris.core.wmq.mapping.FieldMapper;
@@ -117,7 +118,7 @@ class ConsumerDelegate {
   // Lewin - Personally I consider this a VERY LAME FEATURE.
   private boolean consumeMessage(MQQueue mqQueue, MQMessageInstance handler) throws Exception {
     boolean messageConsumed = false;
-    AdaptrisMessage msg = adpConsumer.getMessageFactory().newMessage();
+    AdaptrisMessage msg = AdaptrisMessageFactory.defaultIfNull(adpConsumer.getMessageFactory()).newMessage();
     MQMessage mqMsg = accessMQMessage(handler.create());
     for (FieldMapper f : adpConsumer.getPreGetFieldMappers()) {
       f.copy(msg, mqMsg);
