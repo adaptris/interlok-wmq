@@ -13,26 +13,26 @@ import com.adaptris.core.AdaptrisPollingConsumer;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.wmq.mapping.FieldMapper;
 import com.adaptris.util.license.License;
+import com.adaptris.util.license.License.LicenseType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * MessageConsumer implementation that uses the WebsphereMQ native client.
  * <p>
- * Depending on your WebsphereMQ configuration you will need to have installed
- * and configured the WebsphereMQ Client software for your platform. The jars
- * from the WebsphereMQ Client software should be copied into the adapter's lib
- * directory.
+ * Depending on your WebsphereMQ configuration you will need to have installed and configured the WebsphereMQ Client software for
+ * your platform. The jars from the WebsphereMQ Client software should be copied into the adapter's lib directory.
  * </p>
  * <p>
- * <strong>Requires a JMS or an ENTERPRISE license</strong>
+ * Requires an Enterprise license
  * </p>
- ** <p>
+ * 
+ * <p>
  * In the adapter configuration file this class is aliased as <b>wmq-native-consumer</b> which is the preferred alternative to the
  * fully qualified classname when building your configuration.
  * </p>
-
+ * 
  * @author lchan
- *
+ * 
  */
 @XStreamAlias("wmq-native-consumer")
 public class NativeConsumer extends AdaptrisPollingConsumer {
@@ -152,13 +152,9 @@ public class NativeConsumer extends AdaptrisPollingConsumer {
     logAllExceptions = b;
   }
 
-  /**
-   *
-   * @see com.adaptris.core.AdaptrisComponent#isEnabled(License)
-   */
   @Override
-  public boolean isEnabled(License l) {
-    return l.isEnabled(License.JMS) || l.isEnabled(License.ENTERPRISE);
+  public boolean isEnabled(License license) throws CoreException {
+    return license.isEnabled(LicenseType.Enterprise);
   }
 
   /**

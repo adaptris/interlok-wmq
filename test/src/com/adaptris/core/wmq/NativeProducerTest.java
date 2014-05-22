@@ -19,6 +19,7 @@ import com.adaptris.core.wmq.mapping.MessageIdMapper;
 import com.adaptris.core.wmq.mapping.MetadataFieldMapper;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.license.License;
+import com.adaptris.util.license.License.LicenseType;
 import com.adaptris.util.text.CharsetByteTranslator;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQException;
@@ -212,24 +213,18 @@ public class NativeProducerTest extends ProducerCase {
 
   public void testLicense() throws Exception {
     context.checking(new Expectations() {{
-      oneOf(lic).isEnabled(License.ENTERPRISE);    will(returnValue(true));
+        oneOf(lic).isEnabled(LicenseType.Enterprise);
+        will(returnValue(true));
     }});
     
     assertTrue(p.isEnabled(lic));
     
     context.checking(new Expectations() {{
-      oneOf(lic).isEnabled(License.ENTERPRISE);    will(returnValue(false));
-      oneOf(lic).isEnabled(License.JMS);           will(returnValue(false));
+        oneOf(lic).isEnabled(LicenseType.Enterprise);
+        will(returnValue(false));
     }});
     
     assertFalse(p.isEnabled(lic));
-    
-    context.checking(new Expectations() {{
-      oneOf(lic).isEnabled(License.ENTERPRISE);    will(returnValue(false));
-      oneOf(lic).isEnabled(License.JMS);    will(returnValue(true));
-    }});
-    
-    assertTrue(p.isEnabled(lic));
   }
 
   @Override

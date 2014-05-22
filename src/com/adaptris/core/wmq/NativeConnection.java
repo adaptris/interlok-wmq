@@ -17,6 +17,7 @@ import com.adaptris.core.NullConnection;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 import com.adaptris.util.license.License;
+import com.adaptris.util.license.License.LicenseType;
 import com.adaptris.util.stream.Slf4jLoggingOutputStream;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQEnvironment;
@@ -25,10 +26,14 @@ import com.ibm.mq.MQQueueManager;
 
 /**
  * Abstract Connection implementation that uses the native WebsphereMQ client.
- *
- *
+ * 
+ * 
+ * <p>
+ * Requires an Enterprise license
+ * </p>
+ * 
  * @author lchan
- *
+ * 
  */
 public abstract class NativeConnection extends NullConnection {
 
@@ -85,10 +90,9 @@ public abstract class NativeConnection extends NullConnection {
   }
 
   @Override
-  public boolean isEnabled(License l) throws CoreException {
-    return l.isEnabled(License.ENTERPRISE);
+  public boolean isEnabled(License license) throws CoreException {
+    return license.isEnabled(LicenseType.Enterprise);
   }
-
   /**
    * @return the queueManager
    */

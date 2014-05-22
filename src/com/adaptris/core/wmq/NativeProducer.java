@@ -18,33 +18,31 @@ import com.adaptris.core.ProduceException;
 import com.adaptris.core.ProduceOnlyProducerImp;
 import com.adaptris.core.wmq.mapping.FieldMapper;
 import com.adaptris.util.license.License;
+import com.adaptris.util.license.License.LicenseType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
  * MessageProducer implementation that uses the WebsphereMQ native client.
  * <p>
- * Depending on your WebsphereMQ configuration you will need to have installed
- * and configured the WebsphereMQ Client software for your platform. The jars
- * from the WebsphereMQ Client software should be copied into the adapter's lib
- * directory.
+ * Depending on your WebsphereMQ configuration you will need to have installed and configured the WebsphereMQ Client software for
+ * your platform. The jars from the WebsphereMQ Client software should be copied into the adapter's lib directory.
  * </p>
  * <p>
- * If you configure FieldMappers, then by default the current date and time is
- * inserted as the putDateTime field (using MQC.MQOO_SET_ALL_CONTEXT means that
- * all fields are undefined). This value may be overridden by explicitly
- * declaring a FieldMapper for the putDateTime field. In all cases,
- * {@link com.adaptris.util.text.DateFormatUtil#parse(String)} will be used to
- * parse any values to be used for putDateTime.
+ * If you configure FieldMappers, then by default the current date and time is inserted as the putDateTime field (using
+ * MQC.MQOO_SET_ALL_CONTEXT means that all fields are undefined). This value may be overridden by explicitly declaring a FieldMapper
+ * for the putDateTime field. In all cases, {@link com.adaptris.util.text.DateFormatUtil#parse(String)} will be used to parse any
+ * values to be used for putDateTime.
  * </p>
  * <p>
- * <strong>Requires a JMS or ENTERPRISE license</strong>
+ * Requires an Enterprise license
  * </p>
- ** <p>
+ * 
+ * <p>
  * In the adapter configuration file this class is aliased as <b>wmq-native-producer</b> which is the preferred alternative to the
  * fully qualified classname when building your configuration.
  * </p>
-
+ * 
  * @author lchan
  */
 @XStreamAlias("wmq-native-producer")
@@ -74,13 +72,10 @@ public class NativeProducer extends ProduceOnlyProducerImp {
   public void registerProxy(ProducerDelegate delegate){
 	  proxy = delegate;
   }
-  /**
-   *
-   * @see com.adaptris.core.LicensedComponent#isEnabled(License)
-   */
+
   @Override
-  public boolean isEnabled(License l) {
-    return l.isEnabled(License.ENTERPRISE) || l.isEnabled(License.JMS);
+  public boolean isEnabled(License license) throws CoreException {
+    return license.isEnabled(LicenseType.Enterprise);
   }
 
   /**
