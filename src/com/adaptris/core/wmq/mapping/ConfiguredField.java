@@ -1,7 +1,5 @@
 package com.adaptris.core.wmq.mapping;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import java.io.IOException;
 
 import com.adaptris.core.AdaptrisMessage;
@@ -9,14 +7,12 @@ import com.adaptris.core.CoreException;
 import com.adaptris.util.text.ByteTranslator;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Add a statically configured value as a MQMessage field.
- * * <p>
- * In the adapter configuration file this class is aliased as <b>wmq-configured-field</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
- 
+ * 
+ * @config wmq-configured-field
  * @author lchan
  * 
  */

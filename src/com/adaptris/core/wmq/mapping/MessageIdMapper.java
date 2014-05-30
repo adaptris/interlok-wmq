@@ -11,7 +11,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Copies the AdaptrisMessage uniqueId to and from MQMessage fields.
- *
+ * 
  * <p>
  * Note that if you wish to use the {@link AdaptrisMessage#getUniqueId()} as the <strong>messageId</strong> field (or vice-versa) on
  * the MQMessage then be aware that messageId field is not a string, so you will require a
@@ -20,14 +20,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * {@linkplain com.adaptris.util.text.HexStringByteTranslator} or {@linkplain com.adaptris.util.text.Base64ByteTranslator} will be
  * suitable.
  * </p>
- * <p>
- * In the adapter configuration file this class is aliased as <b>wmq-message-id-mapper</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
- *
- *
+ * 
+ * @config wmq-message-id-mapper
+ * 
+ * 
  * @author lchan
- *
+ * 
  */
 @XStreamAlias("wmq-message-id-mapper")
 public class MessageIdMapper extends FieldMapper {

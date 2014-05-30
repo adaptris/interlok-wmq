@@ -34,14 +34,10 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * for the putDateTime field. In all cases, {@link com.adaptris.util.text.DateFormatUtil#parse(String)} will be used to parse any
  * values to be used for putDateTime.
  * </p>
- * <p>
- * Requires an Enterprise license
- * </p>
  * 
- * <p>
- * In the adapter configuration file this class is aliased as <b>wmq-native-producer</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
+ * @config wmq-native-producer
+ * @license ENTERPRISE
+ * 
  * 
  * @author lchan
  */

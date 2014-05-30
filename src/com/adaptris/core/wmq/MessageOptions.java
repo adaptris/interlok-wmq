@@ -10,27 +10,23 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import com.adaptris.core.CoreException;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQQueueManager;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Options handling queue access and MQMessage options when getting or putting
- * messages on a MQQueue
- *
+ * Options handling queue access and MQMessage options when getting or putting messages on a MQQueue
+ * 
  * <p>
- * The options can be set as an integer, or you can comma separate the option names.
- * The options are directly copied from the WebsphereMQ client API
- * documentation.
+ * The options can be set as an integer, or you can comma separate the option names. The options are directly copied from the
+ * WebsphereMQ client API documentation.
  * </p>
- ** <p>
- * In the adapter configuration file this class is aliased as <b>wmq-message-options</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
- 
+ * 
+ * @config wmq-message-options
+ * 
  * @author lchan
- *
+ * 
  */
 @XStreamAlias("wmq-message-options")
 public class MessageOptions {

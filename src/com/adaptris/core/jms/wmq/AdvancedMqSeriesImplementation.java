@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.adaptris.annotation.AutoPopulated;
-import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
 import com.adaptris.util.KeyValuePair;
@@ -145,17 +144,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * </tr>
  * </table>
  * <p>
- * <b>This was built against WebsphereMQ 6.0</b>
+ * <b>This was built against WebsphereMQ 6.x, but tested against both Websphere 6.x and 7.x</b>
  * </p>
- * <p>
- * <strong>Requires a JMS license</strong>
- * </p>
- *
- * <p>
- * In the adapter configuration file this class is aliased as <b>advanced-mq-series-implementation</b> which is the preferred
- * alternative to the fully qualified classname when building your configuration.
- * </p>
- *
+ * 
+ * @config advanced-mq-series-implementation
+ * @license BASIC
+ * 
  * @see com.ibm.mq.jms.MQConnectionFactory
  */
 @XStreamAlias("advanced-mq-series-implementation")
@@ -804,10 +798,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
     setSessionProperties(new KeyValuePairSet());
   }
 
-  /**
-   *
-   * @see VendorImplementation#createQueueConnectionFactory(JmsConnectionConfig)
-   */
   @Override
   public ConnectionFactory createConnectionFactory() throws JMSException {
 

@@ -22,14 +22,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * Depending on your WebsphereMQ configuration you will need to have installed and configured the WebsphereMQ Client software for
  * your platform. The jars from the WebsphereMQ Client software should be copied into the adapter's lib directory.
  * </p>
- * <p>
- * Requires an Enterprise license
- * </p>
  * 
- * <p>
- * In the adapter configuration file this class is aliased as <b>wmq-native-consumer</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
+ * @config wmq-native-consumer
+ * @license ENTERPRISE
  * 
  * @author lchan
  * 

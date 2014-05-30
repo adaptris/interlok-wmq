@@ -2,8 +2,8 @@ package com.adaptris.core.wmq;
 
 import com.adaptris.core.DefaultMessageFactory;
 import com.adaptris.core.ProduceDestination;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.ibm.mq.MQMessage;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * A <code>NativeErrorHandler</code> implementation for errors on consuming.
@@ -27,11 +27,9 @@ import com.ibm.mq.MQMessage;
  * consumer, although you may override them in the configuration for this error handler. Note that options that specify the message
  * type will be ignored as the message is already available.
  * </p>
- ** <p>
- * In the adapter configuration file this class is aliased as <b>wmq-forwarding-native-consumer-error-handler</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
- 
+ * 
+ * @config wmq-forwarding-native-consumer-error-handler
+ * 
  * @author amcgrath
  * @since 2.8.1
  */

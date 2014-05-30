@@ -15,15 +15,12 @@ import com.ibm.mq.MQMessage;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * Resolve an XPath on the AdaptrisMessage payload and use that value as a
- * MQMessage field.
- ** <p>
- * In the adapter configuration file this class is aliased as <b>xpath-field</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
- 
+ * Resolve an XPath on the AdaptrisMessage payload and use that value as a MQMessage field.
+ * 
+ * @config wmq-xpath-field
+ * 
  * @author lchan
- *
+ * 
  */
 @XStreamAlias("wmq-xpath-field")
 public class XpathField extends FieldMapper {
@@ -61,7 +58,7 @@ public class XpathField extends FieldMapper {
   public void copy(AdaptrisMessage msg, MQMessage mqMsg) throws IOException,
       MQException, CoreException {
     try {
-      XmlUtils xml = createXmlUtils(msg, SimpleNamespaceContext.create(getNamespaceContext()));
+      XmlUtils xml = createXmlUtils(msg, SimpleNamespaceContext.create(getNamespaceContext(), msg));
       String xpathValue = xml.getSingleTextItem(getXpath());
       if (xpathValue == null && getConvertNull()) {
         logR.trace("Converting null value for " + getXpath() + " to \"\"");

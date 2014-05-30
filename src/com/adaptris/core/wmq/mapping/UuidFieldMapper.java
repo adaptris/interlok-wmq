@@ -11,12 +11,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * This field mapper sets the specified field to a freshly generated UUID.
- * Handy for when consuming request messages in which the recipient has 
- * to specify the correlation id to be used.* <p>
- * In the adapter configuration file this class is aliased as <b>uuid-field-mapper</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
+ * <p>
+ * Handy for when consuming request messages in which the recipient has to specify the correlation id to be used.
  * </p>
- 
+ * 
+ * @config wmq-uuid-field-mapper
+ * 
  * @author stuellidge
  */
 @XStreamAlias("wmq-uuid-field-mapper")

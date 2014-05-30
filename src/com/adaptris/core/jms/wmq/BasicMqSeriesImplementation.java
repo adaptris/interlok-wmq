@@ -8,7 +8,6 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.adaptris.annotation.AutoPopulated;
-import com.adaptris.core.jms.JmsConnectionConfig;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
 import com.ibm.mq.jms.MQConnectionFactory;
@@ -36,7 +35,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * format internally within WebpshereMQ is MQRFH2 and not MQSTR format</strong>. Accordingly the receiving application needs to be
  * able to parse MQRFH2 headers which may not be possible.
  * </p>
- *
+ * 
  * <p>
  * If the MQRFH2 Header/format is not required or you need to change the message type to MQSTR, then you need to tell MQSeries to
  * omit the MQRFH2 Header; this will mean that you'll lose all the JMS properties that are <a
@@ -103,13 +102,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <td>0=JMS, 1=MQ</td>
  * </tr>
  * </table>
- * <p>
- * <strong>Requires a JMS license</strong>
- * </p>
- * <p>
- * In the adapter configuration file this class is aliased as <b>basic-mq-series-implementation</b> which is the preferred
- * alternative to the fully qualified classname when building your configuration.
- * </p>
+ * 
+ * @config basic-mq-series-implementation
+ * @license BASIC
  */
 @XStreamAlias("basic-mq-series-implementation")
 public class BasicMqSeriesImplementation extends VendorImplementationImp {
@@ -145,10 +140,6 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
     setTemporaryModel(null);
   }
 
-  /**
-   *
-   * @see VendorImplementation#createQueueConnectionFactory(JmsConnectionConfig)
-   */
   @Override
   public ConnectionFactory createConnectionFactory() throws JMSException {
 

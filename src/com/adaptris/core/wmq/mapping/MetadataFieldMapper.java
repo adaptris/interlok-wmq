@@ -1,7 +1,5 @@
 package com.adaptris.core.wmq.mapping;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import java.io.IOException;
 
 import com.adaptris.core.AdaptrisMessage;
@@ -9,16 +7,15 @@ import com.adaptris.core.CoreException;
 import com.adaptris.util.text.ByteTranslator;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Copy AdaptrisMessage metadata values to and from MQMessage fields.
- ** <p>
- * In the adapter configuration file this class is aliased as <b>wmq-metadata-field-mapper</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
- 
+ * 
+ * @config wmq-metadata-field-mapper
+ * 
  * @author lchan
- *
+ * 
  */
 @XStreamAlias("wmq-metadata-field-mapper")
 public class MetadataFieldMapper extends FieldMapper {
