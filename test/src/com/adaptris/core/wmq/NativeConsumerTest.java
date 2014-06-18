@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.LogFactory;
 import org.jmock.Expectations;
 import org.jmock.States;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Rule;
+import org.slf4j.LoggerFactory;
 
 import com.adaptris.core.AdaptrisConnection;
 import com.adaptris.core.AdaptrisMessage;
@@ -120,7 +120,7 @@ public class NativeConsumerTest extends ConsumerCase {
     });
     
  // Set the ConsumerDelegate as a spy
-    consumer.registerProxy(new ConsumerDelegate(consumer, LogFactory.getLog(super.getClass().getName())));
+    consumer.registerProxy(new ConsumerDelegate(consumer, LoggerFactory.getLogger(super.getClass().getName())));
 
     consumer.retrieveProxy().setErrorHandler(errorHandler);
     consumer.retrieveProxy().setMessageAccessor(messageAccessor);

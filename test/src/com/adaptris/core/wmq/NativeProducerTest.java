@@ -1,11 +1,11 @@
 package com.adaptris.core.wmq;
 
-import org.apache.commons.logging.LogFactory;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Rule;
+import org.slf4j.LoggerFactory;
 
 import com.adaptris.core.AdaptrisConnection;
 import com.adaptris.core.AdaptrisMessage;
@@ -89,7 +89,7 @@ public class NativeProducerTest extends ProducerCase {
     LifecycleHelper.init(p);
 
     // Set the ConsumerDelegate as a spy
-    ProducerDelegate delegate = new ProducerDelegate(p, LogFactory.getLog(super.getClass().getName()));
+    ProducerDelegate delegate = new ProducerDelegate(p, LoggerFactory.getLogger(super.getClass().getName()));
     p.registerProxy(delegate);
 
     // Create our own MQGetMessageOptions so we can return it in a stub later

@@ -8,7 +8,7 @@ package com.adaptris.core.wmq;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
@@ -24,26 +24,25 @@ import com.ibm.mq.MQQueue;
 import com.ibm.mq.MQQueueManager;
 
 /**
- * Proxy class to handle the actual produce of the AdaptrisMessage to
- * WebsphereMQ
+ * Proxy class to handle the actual produce of the AdaptrisMessage to WebsphereMQ
  * <p>
- * This is primarily to avoid any NoClassDef errors when starting up the Adapter
- * without the appropriate WebsphereMQ jars. This is a castor-workaround.
+ * This is primarily to avoid any NoClassDef errors when starting up the Adapter without the appropriate WebsphereMQ jars. This is a
+ * castor-workaround.
  * </p>
- *
+ * 
  * @author lchan
- *
+ * 
  */
 class ProducerDelegate {
 
   private NativeProducer adpProducer;
-  private transient Log logR;
+  private transient Logger logR;
 
   private ProducerDelegate() {
 
   }
 
-  ProducerDelegate(NativeProducer p, Log log) {
+  ProducerDelegate(NativeProducer p, Logger log) {
     this();
     logR = log;
     adpProducer = p;

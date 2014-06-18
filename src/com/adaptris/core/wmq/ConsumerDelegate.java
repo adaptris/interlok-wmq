@@ -8,7 +8,7 @@ package com.adaptris.core.wmq;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
@@ -34,7 +34,7 @@ import com.ibm.mq.MQQueueManager;
 class ConsumerDelegate {
 
   private transient NativeConsumer adpConsumer;
-  private transient Log logger;
+  private transient Logger logger;
   private transient MQMessageAccessor messageAccessor;
   private transient MQMessageOptionsAccessor messageOptionsAccessor;
 
@@ -44,7 +44,7 @@ class ConsumerDelegate {
 
   }
 
-  ConsumerDelegate(NativeConsumer c, Log log) {
+  ConsumerDelegate(NativeConsumer c, Logger log) {
     messageAccessor = new MQMessageAccessor();
     messageOptionsAccessor = new MQMessageOptionsAccessor();
     adpConsumer = c;
@@ -53,7 +53,7 @@ class ConsumerDelegate {
       c.getOptions().addMessageOption("MQGMO_NO_WAIT");
     }
     catch (CoreException e) {
-      logger.error(e);
+      logger.error(e.getMessage(), e);
     }
   }
 
