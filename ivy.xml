@@ -34,6 +34,7 @@
   	<dependency org="com.ibm" name="mqjms" rev="6.0.0.0" conf="compile->default" />
   	<dependency org="org.apache.geronimo.specs" name="geronimo-jms_1.1_spec" rev="1.1.1" conf="test->default" />
     <dependency org="org.apache.geronimo.specs" name="geronimo-j2ee-connector_1.6_spec" rev="1.0" conf="test->default"/>
+    <dependency org="org.perf4j" name="perf4j" rev="0.9.16" transitive="false" conf="compile->default"/>
 
   	<dependency org="org.apache.velocity" name="velocity" rev="1.7" transitive="false" conf="compile->default"/>
     <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="compile->default" />
