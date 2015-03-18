@@ -171,4 +171,8 @@ public final class MQMessageFactory {
     return result;
   }
 
+  static MQMessageInstance create(MQMessageInstance s) {
+    return s == null ? MQMessageInstance.Text : s;
+  }
+
 }

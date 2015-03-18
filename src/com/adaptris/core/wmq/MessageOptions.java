@@ -9,6 +9,11 @@ package com.adaptris.core.wmq;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
 import com.ibm.mq.MQC;
@@ -31,16 +36,24 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("wmq-message-options")
 public class MessageOptions {
 
+  @NotBlank
+  @AutoPopulated
 	private String queueOpenOptions;
+  @NotBlank
+  @AutoPopulated
 	private String queueCloseOptions;
+  @NotBlank
+  @AutoPopulated
 	private String messageOptions;
 
-	private String messageFormat;
+  @NotNull
+  @AutoPopulated
+  private MQMessageInstance messageFormat;
 
 	public MessageOptions() {
 		setQueueOpenOptions("MQOO_INPUT_AS_Q_DEF,MQOO_OUTPUT,MQOO_BROWSE");
 		setQueueCloseOptions("MQCO_NONE");
-		setMessageFormat(MQMessageInstance.Text.toString());
+    setMessageFormat(MQMessageInstance.Text);
 		setMessageOptions("MQPMO_NO_SYNCPOINT");
 	}
 
@@ -113,7 +126,7 @@ public class MessageOptions {
 	/**
 	 * @return the messageFormat for the producer.
 	 */
-	public String getMessageFormat() {
+  public MQMessageInstance getMessageFormat() {
 		return messageFormat;
 	}
 
@@ -132,7 +145,7 @@ public class MessageOptions {
 	 * @see MQMessageInstance
 	 * @param s the messageType to set
 	 */
-	public void setMessageFormat(String s) {
+  public void setMessageFormat(MQMessageInstance s) {
 		messageFormat = s;
 	}
 
