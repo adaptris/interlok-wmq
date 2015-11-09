@@ -11,9 +11,11 @@ import java.util.List;
 
 import com.adaptris.core.AdaptrisPollingConsumer;
 import com.adaptris.core.CoreException;
+import com.adaptris.core.licensing.License;
+import com.adaptris.core.licensing.License.LicenseType;
+import com.adaptris.core.licensing.LicenseChecker;
+import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.core.wmq.mapping.FieldMapper;
-import com.adaptris.util.license.License;
-import com.adaptris.util.license.License.LicenseType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -30,7 +32,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * 
  */
 @XStreamAlias("wmq-native-consumer")
-public class NativeConsumer extends AdaptrisPollingConsumer {
+public class NativeConsumer extends AdaptrisPollingConsumer implements LicensedComponent {
 
   private List<FieldMapper> preGetFieldMappers;
   private List<FieldMapper> fieldMappers;
@@ -148,9 +150,15 @@ public class NativeConsumer extends AdaptrisPollingConsumer {
   }
 
   @Override
-  public boolean isEnabled(License license) throws CoreException {
+  public boolean isEnabled(License license) {
     return license.isEnabled(LicenseType.Enterprise);
   }
+
+  @Override
+  protected void prepareConsumer() throws CoreException {
+    LicenseChecker.newChecker().checkLicense(this);
+  }
+
 
   /**
    * Specifies pre-get field mappers

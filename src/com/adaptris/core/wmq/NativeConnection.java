@@ -14,13 +14,14 @@ import org.slf4j.Logger;
 
 import com.adaptris.core.CoreException;
 import com.adaptris.core.NullConnection;
+import com.adaptris.core.licensing.License;
+import com.adaptris.core.licensing.License.LicenseType;
+import com.adaptris.core.licensing.LicenseChecker;
+import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
-import com.adaptris.util.license.License;
-import com.adaptris.util.license.License.LicenseType;
 import com.adaptris.util.stream.Slf4jLoggingOutputStream;
 import com.ibm.mq.MQC;
-import com.ibm.mq.MQEnvironment;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQQueueManager;
 
@@ -35,7 +36,7 @@ import com.ibm.mq.MQQueueManager;
  * @author lchan
  * 
  */
-public abstract class NativeConnection extends NullConnection {
+public abstract class NativeConnection extends NullConnection implements LicensedComponent {
 
   enum WebsphereProperty {
 
@@ -90,9 +91,16 @@ public abstract class NativeConnection extends NullConnection {
   }
 
   @Override
-  public boolean isEnabled(License license) throws CoreException {
+  protected void prepareConnection() throws CoreException {
+    LicenseChecker.newChecker().checkLicense(this);
+  }
+
+
+  @Override
+  public boolean isEnabled(License license) {
     return license.isEnabled(LicenseType.Enterprise);
   }
+
   /**
    * @return the queueManager
    */
