@@ -11,8 +11,13 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.adaptris.annotation.AutoPopulated;
+import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
+import com.adaptris.core.licensing.License;
+import com.adaptris.core.licensing.License.LicenseType;
+import com.adaptris.core.licensing.LicenseChecker;
+import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 import com.ibm.mq.jms.JMSC;
@@ -153,7 +158,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.ibm.mq.jms.MQConnectionFactory
  */
 @XStreamAlias("advanced-mq-series-implementation")
-public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
+public class AdvancedMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
   /**
    * Properties matched against various MQSession methods.
    */
@@ -885,5 +890,17 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
           .isEquals();
     }
     return false;
+  }
+
+
+  @Override
+  public void prepare() throws CoreException {
+    LicenseChecker.newChecker().checkLicense(this);
+    super.prepare();
+  }
+
+  @Override
+  public boolean isEnabled(License license) {
+    return license.isEnabled(LicenseType.Basic);
   }
 }

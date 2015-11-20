@@ -8,8 +8,13 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.adaptris.annotation.AutoPopulated;
+import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
+import com.adaptris.core.licensing.License;
+import com.adaptris.core.licensing.License.LicenseType;
+import com.adaptris.core.licensing.LicenseChecker;
+import com.adaptris.core.licensing.LicensedComponent;
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -107,7 +112,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @license BASIC
  */
 @XStreamAlias("basic-mq-series-implementation")
-public class BasicMqSeriesImplementation extends VendorImplementationImp {
+public class BasicMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
 
   private int ccsid;
   @NotBlank
@@ -303,4 +308,17 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
     }
     return false;
   }
+
+
+  @Override
+  public void prepare() throws CoreException {
+    LicenseChecker.newChecker().checkLicense(this);
+    super.prepare();
+  }
+
+  @Override
+  public boolean isEnabled(License license) {
+    return license.isEnabled(LicenseType.Basic);
+  }
+
 }

@@ -16,9 +16,11 @@ import com.adaptris.core.CoreException;
 import com.adaptris.core.ProduceDestination;
 import com.adaptris.core.ProduceException;
 import com.adaptris.core.ProduceOnlyProducerImp;
+import com.adaptris.core.licensing.License;
+import com.adaptris.core.licensing.License.LicenseType;
+import com.adaptris.core.licensing.LicenseChecker;
+import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.core.wmq.mapping.FieldMapper;
-import com.adaptris.util.license.License;
-import com.adaptris.util.license.License.LicenseType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -42,7 +44,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @author lchan
  */
 @XStreamAlias("wmq-native-producer")
-public class NativeProducer extends ProduceOnlyProducerImp {
+public class NativeProducer extends ProduceOnlyProducerImp implements LicensedComponent {
 
   @XStreamImplicit
   private List<FieldMapper> fieldMappers;
@@ -70,7 +72,12 @@ public class NativeProducer extends ProduceOnlyProducerImp {
   }
 
   @Override
-  public boolean isEnabled(License license) throws CoreException {
+  public final void prepare() throws CoreException {
+    LicenseChecker.newChecker().checkLicense(this);
+  }
+
+  @Override
+  public boolean isEnabled(License license) {
     return license.isEnabled(LicenseType.Enterprise);
   }
 
