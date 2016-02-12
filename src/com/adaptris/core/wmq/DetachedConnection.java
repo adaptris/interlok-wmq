@@ -6,6 +6,8 @@
  */
 package com.adaptris.core.wmq;
 
+import com.adaptris.annotation.AdapterComponent;
+import com.adaptris.annotation.ComponentProfile;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQQueueManager;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -37,6 +39,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * 
  */
 @XStreamAlias("wmq-detached-connection")
+@AdapterComponent
+@ComponentProfile(summary = "Connection for supporting a native WebsphereMQ Client", tag = "connections,websphere",
+    recommended = {NativeConsumer.class, NativeProducer.class})
 public class DetachedConnection extends NativeConnection {
 
   public DetachedConnection() {
