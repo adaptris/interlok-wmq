@@ -9,6 +9,8 @@ package com.adaptris.core.wmq;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.adaptris.annotation.AdapterComponent;
+import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.core.AdaptrisPollingConsumer;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.licensing.License;
@@ -32,6 +34,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * 
  */
 @XStreamAlias("wmq-native-consumer")
+@AdapterComponent
+@ComponentProfile(summary = "Receive messages from WebsphereMQ using the native client", tag = "consumer,websphere",
+    recommended = {AttachedConnection.class, DetachedConnection.class})
 public class NativeConsumer extends AdaptrisPollingConsumer implements LicensedComponent {
 
   private List<FieldMapper> preGetFieldMappers;

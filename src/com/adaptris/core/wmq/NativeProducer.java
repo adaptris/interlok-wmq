@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.perf4j.aop.Profiled;
 
+import com.adaptris.annotation.AdapterComponent;
+import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ProduceDestination;
@@ -44,6 +46,9 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @author lchan
  */
 @XStreamAlias("wmq-native-producer")
+@AdapterComponent
+@ComponentProfile(summary = "Send messages to WebsphereMQ using the native client", tag = "producer,websphere",
+    recommended = {AttachedConnection.class, DetachedConnection.class})
 public class NativeProducer extends ProduceOnlyProducerImp implements LicensedComponent {
 
   @XStreamImplicit
