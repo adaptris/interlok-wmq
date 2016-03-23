@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 
 import com.adaptris.core.CoreException;
-import com.adaptris.core.NullConnection;
+import com.adaptris.core.NoOpConnection;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
 import com.adaptris.core.licensing.LicenseChecker;
@@ -22,6 +22,7 @@ import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 import com.adaptris.util.stream.Slf4jLoggingOutputStream;
 import com.ibm.mq.MQC;
+import com.ibm.mq.MQEnvironment;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQQueueManager;
 
@@ -36,7 +37,7 @@ import com.ibm.mq.MQQueueManager;
  * @author lchan
  * 
  */
-public abstract class NativeConnection extends NullConnection implements LicensedComponent {
+public abstract class NativeConnection extends NoOpConnection implements LicensedComponent {
 
   enum WebsphereProperty {
 
