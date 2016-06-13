@@ -9,8 +9,6 @@ package com.adaptris.core.wmq;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.perf4j.aop.Profiled;
-
 import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.core.AdaptrisMessage;
@@ -92,7 +90,6 @@ public class NativeProducer extends ProduceOnlyProducerImp implements LicensedCo
    *      com.adaptris.core.ProduceDestination)
    */
   @Override
-  @Profiled(tag = "{$this.getClass().getSimpleName()}.produce()", logger = "com.adaptris.perf4j.wmq.TimingLogger")
   public void produce(AdaptrisMessage msg, ProduceDestination destination) throws ProduceException {
     proxy.produce(msg, destination);
   }
