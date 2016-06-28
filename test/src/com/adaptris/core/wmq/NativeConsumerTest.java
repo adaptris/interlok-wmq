@@ -20,6 +20,7 @@ import com.adaptris.core.ConsumerCase;
 import com.adaptris.core.StandaloneConsumer;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
+import com.adaptris.core.util.LifecycleHelper;
 import com.adaptris.core.wmq.mapping.FieldMapper;
 import com.adaptris.core.wmq.mapping.MessageIdMapper;
 import com.adaptris.core.wmq.mapping.MetadataFieldMapper;
@@ -83,7 +84,7 @@ public class NativeConsumerTest extends ConsumerCase {
     consumer.registerConnection(adaptrisConnection);
     consumer.registerAdaptrisMessageListener(adaptrisListener);
     consumer.setDestination(new ConfiguredConsumeDestination(SYSTEM_DEFAULT_LOCAL_QUEUE));
-
+    consumer.setPoller(new NoOpPoller());
     consumer.setErrorHandler(errorHandler);
 
     ArrayList<FieldMapper> preGetFieldMappers = new ArrayList<FieldMapper>();
@@ -91,7 +92,7 @@ public class NativeConsumerTest extends ConsumerCase {
     consumer.setPreGetFieldMappers(preGetFieldMappers);
     consumer.addFieldMapper(metadataFieldMapper);
 
-    consumer.init();
+    LifecycleHelper.init(consumer);
 
     context.checking(new Expectations() {{
       allowing(metadataFieldMapper); when(test.is("allowing-all-metadata"));
@@ -135,7 +136,8 @@ public class NativeConsumerTest extends ConsumerCase {
     context.checking(new Expectations() {{
       exactly(2).of(adaptrisListener).onAdaptrisMessage(with(any(AdaptrisMessage.class)));
     }});
-    
+    LifecycleHelper.start(consumer);
+
     // Main Test
     consumer.processMessages();
     
@@ -169,7 +171,7 @@ public class NativeConsumerTest extends ConsumerCase {
     // When done, result should be 1 only
     // when(consumer.reacquireLock()).thenReturn(false);
     consumer.setReacquireLockBetweenMessages(true);
-
+    LifecycleHelper.start(consumer);
     // Main Test
     int count = consumer.processMessages();
 
