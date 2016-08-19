@@ -4,13 +4,11 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.Pattern;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.CoreException;
-import com.adaptris.core.jms.VendorImplementation;
-import com.adaptris.core.jms.VendorImplementationImp;
+import com.adaptris.core.jms.UrlVendorImplementation;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
 import com.adaptris.core.licensing.LicenseChecker;
@@ -112,7 +110,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @license BASIC
  */
 @XStreamAlias("basic-mq-series-implementation")
-public class BasicMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
+public class BasicMqSeriesImplementation extends UrlVendorImplementation implements LicensedComponent {
 
   private int ccsid;
   @NotBlank
@@ -297,16 +295,6 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
 
   public void setBrokerPort(int port) {
     this.brokerPort = port;
-  }
-
-  @Override
-  public boolean connectionEquals(VendorImplementation arg0) {
-    if (arg0 instanceof BasicMqSeriesImplementation) {
-      BasicMqSeriesImplementation rhs = (BasicMqSeriesImplementation) arg0;
-      return new EqualsBuilder().append(getBrokerHost(), rhs.getBrokerHost()).append(getBrokerPort(), rhs.getBrokerPort())
-          .isEquals();
-    }
-    return false;
   }
 
 

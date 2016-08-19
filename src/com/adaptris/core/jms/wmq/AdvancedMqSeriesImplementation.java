@@ -8,11 +8,9 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.CoreException;
-import com.adaptris.core.jms.VendorImplementation;
+import com.adaptris.core.jms.UrlVendorImplementation;
 import com.adaptris.core.jms.VendorImplementationImp;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
@@ -158,7 +156,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see com.ibm.mq.jms.MQConnectionFactory
  */
 @XStreamAlias("advanced-mq-series-implementation")
-public class AdvancedMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
+public class AdvancedMqSeriesImplementation extends UrlVendorImplementation implements LicensedComponent {
   /**
    * Properties matched against various MQSession methods.
    */
@@ -880,19 +878,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   public void setSessionProperties(KeyValuePairSet s) {
     sessionProperties = s;
   }
-
-  @Override
-  public boolean connectionEquals(VendorImplementation arg0) {
-    if (arg0 instanceof AdvancedMqSeriesImplementation) {
-      AdvancedMqSeriesImplementation rhs = (AdvancedMqSeriesImplementation) arg0;
-      return new EqualsBuilder().append(getConnectionFactoryProperties(), rhs.getConnectionFactoryProperties())
-          .append(getSessionProperties(), rhs.getSessionProperties())
-          .isEquals();
-    }
-    return false;
-  }
-
-
+  
   @Override
   public void prepare() throws CoreException {
     LicenseChecker.newChecker().checkLicense(this);

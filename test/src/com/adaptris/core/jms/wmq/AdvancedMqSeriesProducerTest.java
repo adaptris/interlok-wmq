@@ -82,6 +82,7 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
     cp.add(new KeyValuePair(ConnectionFactoryProperty.HostName.name(), "localhost"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.Port.name(), "1414"));
     mq.getSessionProperties().addKeyValuePair(new KeyValuePair(SessionProperty.OptimisticPublication.name(), "true"));
+    mq.setBrokerUrl("localhost");
     return mq;
   }
 
