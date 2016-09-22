@@ -125,7 +125,8 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
   @NotBlank
   private String brokerHost;
   private int brokerPort;
-
+  @Deprecated
+  private String brokerUrl;
   /**
    * <p>
    * Creates a new instance.
@@ -323,4 +324,22 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
     return false;
   }
 
+
+  /**
+   * 
+   * @deprecated has never had any effect; simple included to avoid config break.
+   */
+  @Deprecated
+  public String getBrokerUrl() {
+    return brokerUrl;
+  }
+
+  /**
+   * 
+   * @deprecated has never had any effect; simple included to avoid config break.
+   */
+  @Deprecated
+  public void setBrokerUrl(String s) {
+    brokerUrl = s;
+  }
 }

@@ -787,7 +787,8 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   @NotNull
   @AutoPopulated
   private KeyValuePairSet sessionProperties;
-
+  @Deprecated
+  private String brokerUrl;
   /**
    * <p>
    * Creates a new instance.
@@ -899,5 +900,23 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       return new EqualsBuilder().append(getConnectionFactoryProperties(), other.getConnectionFactoryProperties()).isEquals();
     }
     return false;
+  }
+
+  /**
+   * 
+   * @deprecated has never had any effect; simple included to avoid config break.
+   */
+  @Deprecated
+  public String getBrokerUrl() {
+    return brokerUrl;
+  }
+
+  /**
+   * 
+   * @deprecated has never had any effect; simple included to avoid config break.
+   */
+  @Deprecated
+  public void setBrokerUrl(String s) {
+    brokerUrl = s;
   }
 }
