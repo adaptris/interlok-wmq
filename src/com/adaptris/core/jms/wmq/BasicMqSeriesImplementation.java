@@ -4,11 +4,13 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.Pattern;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.CoreException;
-import com.adaptris.core.jms.UrlVendorImplementation;
+import com.adaptris.core.jms.VendorImplementationBase;
+import com.adaptris.core.jms.VendorImplementationImp;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
 import com.adaptris.core.licensing.LicenseChecker;
@@ -110,7 +112,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @license BASIC
  */
 @XStreamAlias("basic-mq-series-implementation")
-public class BasicMqSeriesImplementation extends UrlVendorImplementation implements LicensedComponent {
+public class BasicMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
 
   private int ccsid;
   @NotBlank
@@ -123,7 +125,8 @@ public class BasicMqSeriesImplementation extends UrlVendorImplementation impleme
   @NotBlank
   private String brokerHost;
   private int brokerPort;
-
+  @Deprecated
+  private String brokerUrl;
   /**
    * <p>
    * Creates a new instance.
@@ -309,4 +312,34 @@ public class BasicMqSeriesImplementation extends UrlVendorImplementation impleme
     return license.isEnabled(LicenseType.Basic);
   }
 
+  @Override
+  public boolean connectionEquals(VendorImplementationBase comparable) {
+    if (comparable instanceof BasicMqSeriesImplementation) {
+      BasicMqSeriesImplementation other = (BasicMqSeriesImplementation) comparable;
+      return new EqualsBuilder().append(getBrokerHost(), other.getBrokerHost()).append(getBrokerPort(), other.getBrokerPort())
+          .append(getChannel(), other.getChannel())
+          .append(getQueueManager(), other.getQueueManager())
+          .isEquals();
+    }
+    return false;
+  }
+
+
+  /**
+   * 
+   * @deprecated has never had any effect; simple included to avoid config break.
+   */
+  @Deprecated
+  public String getBrokerUrl() {
+    return brokerUrl;
+  }
+
+  /**
+   * 
+   * @deprecated has never had any effect; simple included to avoid config break.
+   */
+  @Deprecated
+  public void setBrokerUrl(String s) {
+    brokerUrl = s;
+  }
 }

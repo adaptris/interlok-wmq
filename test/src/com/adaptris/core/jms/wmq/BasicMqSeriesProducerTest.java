@@ -44,7 +44,6 @@ public class BasicMqSeriesProducerTest extends JmsProducerExample {
     mq.setCcsid(819);
     mq.setQueueManager("MyQueueManager");
     mq.setChannel("MyChannel");
-    mq.setBrokerUrl("localhost");
     mq.setBrokerHost("localhost");
     mq.setBrokerPort(1414);
     c.setVendorImplementation(mq);
