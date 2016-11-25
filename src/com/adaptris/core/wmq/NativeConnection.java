@@ -12,8 +12,10 @@ import java.util.Iterator;
 
 import org.slf4j.Logger;
 
+import com.adaptris.core.AllowsRetriesConnection;
 import com.adaptris.core.CoreException;
-import com.adaptris.core.NoOpConnection;
+import com.adaptris.core.jms.wmq.NoOpJmsConnectionErrorHandler;
+//import com.adaptris.core.jms.wmq.NoOpJmsConnectionErrorHandler;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
 import com.adaptris.core.licensing.LicenseChecker;
@@ -37,7 +39,7 @@ import com.ibm.mq.MQQueueManager;
  * @author lchan
  * 
  */
-public abstract class NativeConnection extends NoOpConnection implements LicensedComponent {
+public abstract class NativeConnection extends AllowsRetriesConnection implements LicensedComponent {
 
   enum WebsphereProperty {
 
@@ -77,6 +79,7 @@ public abstract class NativeConnection extends NoOpConnection implements License
 
   public NativeConnection() {
     setEnvironmentProperties(new KeyValuePairSet());
+    setConnectionErrorHandler(new NoOpJmsConnectionErrorHandler());
   }
 
   /**
@@ -85,7 +88,6 @@ public abstract class NativeConnection extends NoOpConnection implements License
    */
   @Override
   protected void initConnection() throws CoreException {
-    super.initConnection();
     if (getRedirectExceptionLogging()) {
       redirectExceptionLogging(log);
     }
@@ -226,5 +228,10 @@ public abstract class NativeConnection extends NoOpConnection implements License
       }
     }
     return result;
+  }
+  
+  @Override
+  protected void closeConnection() {
+    ;
   }
 }

@@ -6,6 +6,8 @@
  */
 package com.adaptris.core.wmq;
 
+import javax.jms.JMSException;
+
 import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.core.CoreException;
@@ -58,15 +60,47 @@ public class AttachedConnection extends NativeConnection {
    */
   @Override
   protected void startConnection() throws CoreException {
-    super.startConnection();
-    try {
-      mqQueueManager = new MQQueueManager(getQueueManager(),
-          asHashtable(getEnvironmentProperties()));
-    }
-    catch (MQException e) {
-      throw new CoreException(e);
-    }
+    
   }
+  
+  /**
+  *
+  * @see com.adaptris.core.AdaptrisConnectionImp#initConnection()
+  */
+ @Override
+ protected void initConnection() throws CoreException {
+   super.initConnection();
+   int attemptCount = 0;
+   while(true) {
+     attemptCount++;
+     try {
+       mqQueueManager = new MQQueueManager(getQueueManager(),
+           asHashtable(getEnvironmentProperties()));
+       break;
+     }
+     catch (MQException e) {
+       if (attemptCount == 1) {
+         log.warn("Cannot connect to queue manager [{}]", getQueueManager(), e);
+       }
+
+       if (connectionAttempts() != -1 && attemptCount >= connectionAttempts()) {
+         log.error("Failed to connect to queue manager [{}]", getQueueManager(), e);
+         throw new CoreException(e);
+       }
+       else {
+         log.warn("Attempt [{}] failed for broker [{}], retrying", attemptCount, getQueueManager());
+         log.info(createLoggingStatement(attemptCount));
+         try {
+          Thread.sleep(connectionRetryInterval());
+        } catch (InterruptedException e1) {
+          log.warn("Interrupted connection restart.");
+          break;
+        }
+         continue;
+       }
+     }
+   }
+ }
 
   /**
    *
@@ -74,7 +108,6 @@ public class AttachedConnection extends NativeConnection {
    */
   @Override
   protected void stopConnection() {
-    super.stopConnection();
     try {
       mqQueueManager.disconnect();
     }
