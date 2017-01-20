@@ -21,6 +21,7 @@ import com.adaptris.core.licensing.License.LicenseType;
 import com.adaptris.core.licensing.LicenseChecker;
 import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.core.wmq.mapping.FieldMapper;
+import com.ibm.mq.MQException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -91,7 +92,29 @@ public class NativeProducer extends ProduceOnlyProducerImp implements LicensedCo
    */
   @Override
   public void produce(AdaptrisMessage msg, ProduceDestination destination) throws ProduceException {
-    proxy.produce(msg, destination);
+    try {
+      proxy.produce(msg, destination);
+    } catch (ProduceException ex) {
+      if(ex.getCause() instanceof MQException) {
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            try {
+              Thread.sleep(2000); // sleep for a short time to allow any transaction to end, then restart everything.
+            } catch (InterruptedException e) {
+              // ignore
+            }
+//            MQException exception = (MQException) ex.getCause();
+//            
+//            if(exception.reasonCode == MQException.MQRC_CONNECTION_BROKEN) {
+              retrieveConnection(NativeConnection.class).getConnectionErrorHandler().handleConnectionException();
+//            }
+          }
+        }).start();
+        
+      } else
+        throw ex;
+    }
   }
 
   /**

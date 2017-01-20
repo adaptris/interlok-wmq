@@ -8,6 +8,7 @@ package com.adaptris.core.wmq;
 
 import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.ComponentProfile;
+import com.adaptris.core.CoreException;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQQueueManager;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -67,5 +68,13 @@ public class DetachedConnection extends NativeConnection {
     if (qMgr != null) {
       qMgr.disconnect();
     }
+  }
+
+  @Override
+  protected void startConnection() throws CoreException {
+  }
+
+  @Override
+  protected void stopConnection() {
   }
 }

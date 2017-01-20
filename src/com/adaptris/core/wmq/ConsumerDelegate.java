@@ -64,20 +64,15 @@ class ConsumerDelegate {
     MQQueueManager qm = null;
     try {
       qm = adpConsumer.retrieveConnection(NativeConnection.class).connect();
-      mqQueue = qm.accessQueue(queueName, adpConsumer.getOptions().queueOpenOptionsIntValue());
-      mqQueue.closeOptions = adpConsumer.getOptions().queueCloseOptionsIntValue();
-    }
-    catch (MQException e) {
-      logger.error("Failed to open WebsphereMQ Queue " + queueName + " will re-attempt on next schedule");
-      logException(e);
-      return count;
-    }
-    catch (CoreException ex) {
-      logger.error(ex.getMessage());
-      logException(ex);
-      return count;
-    }
-    try {
+      if (qm != null) {
+        mqQueue = qm.accessQueue(queueName, adpConsumer.getOptions().queueOpenOptionsIntValue());
+        mqQueue.closeOptions = adpConsumer.getOptions().queueCloseOptionsIntValue();
+      }
+      else {
+        // Queue Manager is null which can only happen with an AttachedConnection that hasn't quite
+        // finished initialising.
+        return 0;
+      }
       MQMessageInstance handler = MQMessageFactory.create(adpConsumer.getOptions().getMessageFormat());
       boolean carryOn = false;
       do {

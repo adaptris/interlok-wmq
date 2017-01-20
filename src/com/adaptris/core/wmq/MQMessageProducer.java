@@ -48,7 +48,7 @@ class MQMessageProducer {
 
       MQQueueManager qm = connection.connect();
       MQQueue mqQueue = qm.accessQueue(queueName, queueOpenOptions);
-      System.out.println("Test is here - 1");
+
       mqQueue.closeOptions = getOptions().queueCloseOptionsIntValue();
       MQPutMessageOptions putOpt = new MQPutMessageOptions();
       putOpt.options = messageOptions;

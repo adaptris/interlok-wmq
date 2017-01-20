@@ -28,22 +28,14 @@ public class ConnectionTest extends TestCase{
 		createAttachedConnection();
 	}
 	public void testConnections() throws Exception{
-		//Check .init with various settings
-    LifecycleHelper.init(attConn);
 		attConn.setRedirectExceptionLogging(true);
-    LifecycleHelper.init(attConn);
-
-		//KeyValuePairSet of WebsphereProperties
 
 		try{
-      LifecycleHelper.start(attConn);
+      LifecycleHelper.init(attConn);
 			fail("QueueManager values incorrect but exception not thrown");
 		}
 		catch(Exception e){
 		}
-
-		//Null Pointer thrown but exceptions should be caught and logged
-    LifecycleHelper.stop(attConn);
 
 		try{
 			detConn.connect();
@@ -79,12 +71,14 @@ public class ConnectionTest extends TestCase{
 		attConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.CCSID_PROPERTY, "MyCCSID"));
 		attConn.setWorkersFirstOnShutdown(true);
 		attConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.SSL_CIPHER_SUITE_PROPERTY, "SSL_RSA_WITH_NULL_MD5"));
+		attConn.setConnectionAttempts(1);
 
 		detConn = new DetachedConnection();
 		detConn.setQueueManager("your_Q_Manager");
 		detConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.CCSID_PROPERTY, "MyCCSID"));
 		detConn.setWorkersFirstOnShutdown(true);
 		detConn.getEnvironmentProperties().addKeyValuePair(new KeyValuePair(MQC.SSL_CIPHER_SUITE_PROPERTY, "SSL_RSA_WITH_NULL_MD5"));
+		detConn.setConnectionAttempts(1);
 	}
 
 }
