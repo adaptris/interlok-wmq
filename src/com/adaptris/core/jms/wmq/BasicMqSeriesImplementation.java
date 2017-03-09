@@ -323,7 +323,12 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
     }
     return false;
   }
-
+  
+  @Override
+  public String retrieveBrokerDetailsForLogging() {
+    return String.format("Host: %s; Port: %d: Channel: %s; Transport: %s", 
+        getBrokerHost(), getBrokerPort(), getChannel(), getTransportType());
+  }
 
   /**
    * 
