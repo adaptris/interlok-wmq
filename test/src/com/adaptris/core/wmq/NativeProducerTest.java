@@ -38,6 +38,7 @@ public class NativeProducerTest extends ProducerCase {
   }};
 
   private static final String MESSAGE_PAYLOAD = "Message Payload";
+  private static final String PRODUCE_DESTINATION = "SYSTEM.DEFAULT.LOCAL.QUEUE";
 
   private NativeProducer p;
   private DetachedConnection con;
@@ -76,13 +77,15 @@ public class NativeProducerTest extends ProducerCase {
       allowing(adaptrisListener).onAdaptrisMessage(with(any(AdaptrisMessage.class)));
       allowing(metadataFieldMapper).copy(with(any(MQMessage.class)), with(any(AdaptrisMessage.class)));
       allowing(metadataFieldMapper).copy(with(any(AdaptrisMessage.class)), with(any(MQMessage.class)));
+      allowing(adpMsg).resolve(PRODUCE_DESTINATION);
+            will(returnValue(PRODUCE_DESTINATION));
       allowing(adpMsg).getStringPayload();
             will(returnValue(MESSAGE_PAYLOAD));
     }});
 
     p = new NativeProducer();
     p.registerConnection(adaptrisConnection);
-    p.setDestination(new ConfiguredProduceDestination("SYSTEM.DEFAULT.LOCAL.QUEUE"));
+    p.setDestination(new ConfiguredProduceDestination(PRODUCE_DESTINATION));
 
     p.addFieldMapper(metadataFieldMapper);
 
