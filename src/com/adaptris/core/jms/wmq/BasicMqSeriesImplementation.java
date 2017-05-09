@@ -31,6 +31,32 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * Note that if you require SSL support then you should use {@link AdvancedMqSeriesImplementation} which allows greater flexibility
  * in configuration
  * </p>
+ * 
+ * <p>
+ * WebsphereMQ requires you to set the transport type for your connection.  Although the transport type is an integer, we have provided
+ * a string mapping to make configuration more readable.  So your transport type should be set to one of the following (for reference we include the internal integer mapping);
+ * <table>
+ * <thead>
+ * <th>Transport Type Value</th><th>Internal integer mapping</th>
+ * </thead>
+ * <tr>
+ * <td>MQJMS_TP_BINDINGS_MQ</td><td>0</td>
+ * </tr>
+ * <tr>
+ * <td>MQJMS_TP_CLIENT_MQ_TCPIP</td><td>1</td>
+ * </tr>
+ * <tr>
+ * <td>MQJMS_TP_DIRECT_TCPIP</td><td>2</td>
+ * </tr>
+ * <tr>
+ * <td>MQJMS_TP_MQJD</td><td>3</td>
+ * </tr>
+ * <tr>
+ * <td>MQJMS_TP_DIRECT_HTTP</td><td>4</td>
+ * </tr>
+ * </table>
+ * </p>
+ * 
  * <p>
  * By default, all JMS clients to MQ Series will create what is known as an MQRFH2 Header that will form part of the Websphere MQ
  * message. This is used to store (amongst other things) some of the JMS headers that you wanted to preserve using
