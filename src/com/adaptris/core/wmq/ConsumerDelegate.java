@@ -80,7 +80,7 @@ class ConsumerDelegate {
         if (carryOn) {
           count++;
         }
-        if (!adpConsumer.continueProcessingMessages()) {
+        if (!adpConsumer.continueProcessingMessages(count)) {
           break;
         }
       }
