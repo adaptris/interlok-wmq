@@ -6,8 +6,6 @@
  */
 package com.adaptris.core.wmq;
 
-import javax.jms.JMSException;
-
 import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.core.CoreException;
@@ -79,8 +77,8 @@ public class AttachedConnection extends NativeConnection {
        break;
      }
      catch (MQException e) {
-       if (attemptCount == 1) {
-         log.warn("Cannot connect to queue manager [{}]", getQueueManager(), e);
+        if (logWarning(attemptCount)) {
+          log.warn("Attempt [{}] failed for queue manager [{}]", attemptCount, getQueueManager(), e);
        }
 
        if (connectionAttempts() != -1 && attemptCount >= connectionAttempts()) {
