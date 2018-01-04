@@ -12,6 +12,8 @@ import java.util.Arrays;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.CoreException;
@@ -35,6 +37,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("wmq-message-options")
 public class MessageOptions {
+
+  private transient Logger log = LoggerFactory.getLogger(this.getClass());
 
   @NotBlank
   @AutoPopulated
@@ -214,7 +218,8 @@ public class MessageOptions {
    * @throws CoreException
    */
 	public int messageOptionsIntValue() throws CoreException {
-		return calculateMqcFieldValues(getMessageOptions());
+    log.trace("Converting [{}] into an int for message options", getMessageOptions());
+    return calculateMqcFieldValues(getMessageOptions());
 	}
 
   /**
@@ -224,6 +229,7 @@ public class MessageOptions {
    * @throws CoreException
    */
 	public int queueOpenOptionsIntValue() throws CoreException {
+    log.trace("Converting [{}] into an int for queue open options", getQueueOpenOptions());
 		return calculateMqcFieldValues(getQueueOpenOptions());
 	}
 
@@ -234,6 +240,7 @@ public class MessageOptions {
    * @throws CoreException
    */
 	public int queueCloseOptionsIntValue() throws CoreException {
+    log.trace("Converting [{}] into an int for queue close options", getQueueCloseOptions());
 		return calculateMqcFieldValues(getQueueCloseOptions());
 	}
 
@@ -250,6 +257,7 @@ public class MessageOptions {
 			try {
 				String[] fields = tokinize(input);
 				for(String field : fields) {
+          log.trace("Trying to convert {} into something usable", field);
 					returnValue += getMqcFieldValue(field);
 				}
 			} catch (Exception exc) {
@@ -257,6 +265,7 @@ public class MessageOptions {
 			}
 
 		}
+    log.trace("Calculated {}", returnValue);
 		return returnValue;
 	}
 
