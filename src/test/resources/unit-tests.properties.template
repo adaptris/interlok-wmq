@@ -1,9 +1,9 @@
-junit.ConsumerCase.baseDir=${example-xml.build.dir}/consumers
-junit.ServiceCase.baseDir=${example-xml.build.dir}/services
-junit.ProducerCase.baseDir=${example-xml.build.dir}/producers
-junit.SampleConfigCase.baseDir=${example-xml.build.dir}
-junit.JmsConsumerExamples.baseDir=${junit.ConsumerCase.baseDir}
-junit.JmsProducerExamples.baseDir=${junit.ProducerCase.baseDir}
+ConsumerCase.baseDir=@BUILD_DIR@/examples/consumers
+ServiceCase.baseDir=@BUILD_DIR@/examples/services
+ProducerCase.baseDir=@BUILD_DIR@/examples/producers
+SampleConfigCase.baseDir=@BUILD_DIR@/examples
+JmsConsumerExamples.baseDir=@BUILD_DIR@/examples/consumers
+JmsProducerExamples.baseDir=@BUILD_DIR@/examples/producers
 
-junit.WmqNativeConsumerExamples.baseDir=${junit.ConsumerCase.baseDir}
-junit.WmqNativeProducerExamples.baseDir=${junit.ProducerCase.baseDir}
+WmqNativeConsumerExamples.baseDir=@BUILD_DIR@/examples/consumers
+WmqNativeProducerExamples.baseDir=@BUILD_DIR@/examples/producers
