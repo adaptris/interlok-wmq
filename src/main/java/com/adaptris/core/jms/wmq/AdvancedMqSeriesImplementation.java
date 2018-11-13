@@ -812,7 +812,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     return result;
   }
 
-  private void applyProperties(MQConnectionFactory cf) throws JMSException {
+  protected void applyProperties(MQConnectionFactory cf) throws JMSException {
     for (Iterator i = getConnectionFactoryProperties().getKeyValuePairs().iterator(); i.hasNext();) {
       KeyValuePair kvp = (KeyValuePair) i.next();
       // Yeah we could use valueOf here, but really, our lusers are sure to not

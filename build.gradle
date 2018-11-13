@@ -108,6 +108,9 @@ dependencies {
   compile ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
   compile ("com.adaptris:interlok-common:$interlokCoreVersion") { changing= true}
   compile ("com.adaptris:interlok-licensing:$interlokCoreVersion") { changing= true}
+  
+  compile ("com.adaptris:interlok-xa:$interlokCoreVersion") { changing= true}
+  
   compile ("org.slf4j:slf4j-api:$slf4jVersion")
   compile ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
   compile "com.ibm:mq:6.0.0.0", optional
