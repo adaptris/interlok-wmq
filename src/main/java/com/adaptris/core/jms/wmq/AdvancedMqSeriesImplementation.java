@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.adaptris.annotation.AutoPopulated;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -170,7 +171,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     BrokerTimeout {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
-        s.setBrokerTimeout(Integer.valueOf(o));
+      s.setBrokerTimeout(Integer.parseInt(o));
       }
     },
     /**
@@ -180,7 +181,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     OptimisticPublication {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
-        s.setOptimisticPublication(Boolean.valueOf(o));
+      s.setOptimisticPublication(Boolean.parseBoolean(o));
       }
     },
     /**
@@ -190,7 +191,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     OutcomeNotification {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
-        s.setOutcomeNotification(Boolean.valueOf(o));
+      s.setOutcomeNotification(Boolean.parseBoolean(o));
       }
     },
     /**
@@ -200,7 +201,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     ProcessDuration {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
-        s.setProcessDuration(Integer.valueOf(o));
+      s.setProcessDuration(Integer.parseInt(o));
       }
     },
     /**
@@ -210,11 +211,11 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     ReceiveIsolation {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
-        s.setReceiveIsolation(Integer.valueOf(o));
+      s.setReceiveIsolation(Integer.parseInt(o));
       }
     };
     abstract void applyProperty(MQSession s, String o) throws JMSException;
-  }
+  };
 
   /**
    * Properties matched against various MQConnectionFactory methods.
@@ -277,7 +278,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     BrokerVersion {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setBrokerVersion(Integer.valueOf(s));
+        cf.setBrokerVersion(Integer.parseInt(s));
       }
     },
     /**
@@ -304,7 +305,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     CCSID {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setCCSID(Integer.valueOf(s));
+        cf.setCCSID(Integer.parseInt(s));
       }
     },
     /**
@@ -324,7 +325,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     CleanupInterval {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setCleanupInterval(Long.valueOf(s));
+        cf.setCleanupInterval(Long.parseLong(s));
       }
     },
     /**
@@ -334,7 +335,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     CleanupLevel {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setCleanupLevel(Integer.valueOf(s));
+        cf.setCleanupLevel(Integer.parseInt(s));
       }
     },
     /**
@@ -353,7 +354,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     CloneSupport {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setCloneSupport(Integer.valueOf(s));
+        cf.setCloneSupport(Integer.parseInt(s));
       }
     },
     /**
@@ -373,7 +374,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     DirectAuth {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setDirectAuth(Integer.valueOf(s));
+        cf.setDirectAuth(Integer.parseInt(s));
       }
     },
     /**
@@ -383,7 +384,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     FailIfQuiesce {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setFailIfQuiesce(Integer.valueOf(s));
+        cf.setFailIfQuiesce(Integer.parseInt(s));
       }
     },
     /**
@@ -413,7 +414,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     MapNameStyle {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setMapNameStyle(Boolean.valueOf(s));
+        cf.setMapNameStyle(Boolean.parseBoolean(s));
       }
     },
     /**
@@ -423,7 +424,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     MessageRetention {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setMessageRetention(Integer.valueOf(s));
+        cf.setMessageRetention(Integer.parseInt(s));
       }
     },
     /**
@@ -433,7 +434,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     MessageSelection {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setMessageSelection(Integer.valueOf(s));
+        cf.setMessageSelection(Integer.parseInt(s));
       }
     },
     /**
@@ -443,7 +444,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     MQConnectionOptions {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setMQConnectionOptions(Integer.valueOf(s));
+        cf.setMQConnectionOptions(Integer.parseInt(s));
       }
     },
     /**
@@ -453,7 +454,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     MsgBatchSize {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setMsgBatchSize(Integer.valueOf(s));
+        cf.setMsgBatchSize(Integer.parseInt(s));
       }
     },
     /**
@@ -463,7 +464,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     Multicast {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setMulticast(Integer.valueOf(s));
+        cf.setMulticast(Integer.parseInt(s));
       }
     },
     /**
@@ -473,7 +474,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     OptimisticPublication {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setOptimisticPublication(Boolean.valueOf(s));
+        cf.setOptimisticPublication(Boolean.parseBoolean(s));
       }
     },
     /**
@@ -483,7 +484,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     OutcomeNotification {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setOutcomeNotification(Boolean.valueOf(s));
+        cf.setOutcomeNotification(Boolean.parseBoolean(s));
       }
     },
     /**
@@ -493,7 +494,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     PollingInterval {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setPollingInterval(Integer.valueOf(s));
+        cf.setPollingInterval(Integer.parseInt(s));
       }
     },
     /**
@@ -503,7 +504,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     Port {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setPort(Integer.valueOf(s));
+        cf.setPort(Integer.parseInt(s));
       }
     },
     /**
@@ -513,7 +514,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     ProcessDuration {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setProcessDuration(Integer.valueOf(s));
+        cf.setProcessDuration(Integer.parseInt(s));
       }
     },
     /**
@@ -533,7 +534,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     ProxyPort {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setProxyPort(Integer.valueOf(s));
+        cf.setProxyPort(Integer.parseInt(s));
       }
     },
     /**
@@ -543,7 +544,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     PubAckInterval {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setPubAckInterval(Integer.valueOf(s));
+        cf.setPubAckInterval(Integer.parseInt(s));
       }
     },
     /**
@@ -583,7 +584,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     ReceiveIsolation {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setReceiveIsolation(Integer.valueOf(s));
+        cf.setReceiveIsolation(Integer.parseInt(s));
       }
     },
     /**
@@ -593,7 +594,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     RescanInterval {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setRescanInterval(Integer.valueOf(s));
+        cf.setRescanInterval(Integer.parseInt(s));
       }
     },
     /**
@@ -643,7 +644,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     SparseSubscriptions {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setSparseSubscriptions(Boolean.valueOf(s));
+        cf.setSparseSubscriptions(Boolean.parseBoolean(s));
       }
     },
     /**
@@ -673,7 +674,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     SSLFipsRequired {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setSSLFipsRequired(Boolean.valueOf(s));
+        cf.setSSLFipsRequired(Boolean.parseBoolean(s));
       }
     },
     /**
@@ -694,7 +695,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     SSLResetCount {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setSSLResetCount(Integer.valueOf(s));
+        cf.setSSLResetCount(Integer.parseInt(s));
       }
     },
     /**
@@ -704,7 +705,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     StatusRefreshInterval {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setStatusRefreshInterval(Integer.valueOf(s));
+        cf.setStatusRefreshInterval(Integer.parseInt(s));
       }
     },
     /**
@@ -714,7 +715,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     SubscriptionStore {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setSubscriptionStore(Integer.valueOf(s));
+        cf.setSubscriptionStore(Integer.parseInt(s));
       }
     },
     /**
@@ -724,7 +725,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     SyncpointAllGets {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setSyncpointAllGets(Boolean.valueOf(s));
+        cf.setSyncpointAllGets(Boolean.parseBoolean(s));
       }
     },
     /**
@@ -734,7 +735,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     TargetClientMatching {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setTargetClientMatching(Boolean.valueOf(s));
+        cf.setTargetClientMatching(Boolean.parseBoolean(s));
       }
     },
     /**
@@ -774,7 +775,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     UseConnectionPooling {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setUseConnectionPooling(Boolean.valueOf(s));
+        cf.setUseConnectionPooling(Boolean.parseBoolean(s));
       }
     };
 
@@ -788,6 +789,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   @AutoPopulated
   private KeyValuePairSet sessionProperties;
   @Deprecated
+  @Removal(version = "3.9.0")
   private String brokerUrl;
   /**
    * <p>
@@ -895,7 +897,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
 
   @Override
   public boolean connectionEquals(VendorImplementationBase comparable) {
-    if (comparable instanceof BasicMqSeriesImplementation) {
+    if (comparable instanceof AdvancedMqSeriesImplementation) {
       AdvancedMqSeriesImplementation other = (AdvancedMqSeriesImplementation) comparable;
       return new EqualsBuilder().append(getConnectionFactoryProperties(), other.getConnectionFactoryProperties()).isEquals();
     }
@@ -907,6 +909,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
    * @deprecated has never had any effect; simple included to avoid config break.
    */
   @Deprecated
+  @Removal(version = "3.9.0")
   public String getBrokerUrl() {
     return brokerUrl;
   }
@@ -916,6 +919,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
    * @deprecated has never had any effect; simple included to avoid config break.
    */
   @Deprecated
+  @Removal(version = "3.9.0")
   public void setBrokerUrl(String s) {
     brokerUrl = s;
   }

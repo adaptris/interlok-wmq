@@ -154,7 +154,7 @@ public abstract class FieldMapper {
       @Override
       public void setMqField(MQMessage msg, String value, ByteTranslator c)
           throws IOException {
-        msg.feedback = Integer.valueOf(value);
+        msg.feedback = Integer.parseInt(value);
       }
 
       @Override
