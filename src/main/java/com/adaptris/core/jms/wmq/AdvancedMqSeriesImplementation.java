@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.adaptris.annotation.AutoPopulated;
-import com.adaptris.annotation.Removal;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -788,9 +787,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   @NotNull
   @AutoPopulated
   private KeyValuePairSet sessionProperties;
-  @Deprecated
-  @Removal(version = "3.9.0")
-  private String brokerUrl;
+
   /**
    * <p>
    * Creates a new instance.
@@ -902,25 +899,5 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       return new EqualsBuilder().append(getConnectionFactoryProperties(), other.getConnectionFactoryProperties()).isEquals();
     }
     return false;
-  }
-
-  /**
-   * 
-   * @deprecated has never had any effect; simple included to avoid config break.
-   */
-  @Deprecated
-  @Removal(version = "3.9.0")
-  public String getBrokerUrl() {
-    return brokerUrl;
-  }
-
-  /**
-   * 
-   * @deprecated has never had any effect; simple included to avoid config break.
-   */
-  @Deprecated
-  @Removal(version = "3.9.0")
-  public void setBrokerUrl(String s) {
-    brokerUrl = s;
   }
 }
