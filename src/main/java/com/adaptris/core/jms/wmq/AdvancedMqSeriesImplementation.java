@@ -2,7 +2,9 @@ package com.adaptris.core.jms.wmq;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -33,7 +35,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <p>
  * Depending on your WebsphereMQ configuration you will need at least
  * 
- * <code><b>com.ibm.mq.jar, com.ibm.mqjms.jar, connector.jar, dhbcore.jar and jta.jar</b></code> from your WebsphereMQ installation.
+ * <code><b>com.ibm.mq.allclient.jar</b> or these <b>com.ibm.mq.jar, com.ibm.mqjms.jar, connector.jar, dhbcore.jar and jta.jar</b></code> from your WebsphereMQ installation.
  * If you intend on using bindings mode, then you may need to include additional jars such as <code>com.ibm.mqbind.jar</code>
  * </p>
  * <p>
@@ -55,17 +57,20 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * </p>
  * <p>
  * This vendor implementation also overrides {@link VendorImplementationImp#applyVendorSessionProperties(javax.jms.Session)} so that
- * specific MQ session properties can be applied. The way of doing this is exactly the same as setting properties on the
- * ConnectionFactory. <code>
+ * specific MQ session properties can be applied. The way of doing this is to supply a list of mq-session-properties, which includes the
+ * property name, value and data-type of the value.  You will need to consult your WebsphereMQ documentation or support team for a list of
+ * available properties.
+ * <code>
  * <pre>
  *   &lt;session-properties>
- *     &lt;key-value-pair>
- *        &lt;key>OptimisticPublication&lt;/key>
- *        &lt;value>true&lt;/value>
- *     &lt;/key-value-pair>
- *   &lt;/session-properties>
+       &lt;mq-session-property>
+         &lt;property-name>OptimisticPublication&lt;/property-name>
+         &lt;value>true&lt;/value>
+         &lt;data-type>Boolean&lt;/data-type>
+       &lt;/mq-session-property>
+     &lt;/session-properties>
  * </pre>
- * </code> would invoke {@link MQSession#setOptimisticPublication(boolean)} with true.
+ * </code>
  * </p>
  * <p>
  * If you require SSL support then you should review this <a
@@ -162,58 +167,48 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   /**
    * Properties matched against various MQSession methods.
    */
-  public enum SessionProperty {
+  public enum SessionPropertyDataType {
     /**
      * Invokes {@link MQSession#setBrokerTimeout(int)}
      *
      */
-    BrokerTimeout {
+    STRING {
       @Override
-      void applyProperty(MQSession s, String o) throws JMSException {
-      s.setBrokerTimeout(Integer.parseInt(o));
+      void applyProperty(MQSession session, String name, String value) throws JMSException {
+        session.setStringProperty(name, value);
       }
     },
     /**
      * Invokes {@link MQSession#setOptimisticPublication(boolean)}
      *
      */
-    OptimisticPublication {
+    INTEGER {
       @Override
-      void applyProperty(MQSession s, String o) throws JMSException {
-      s.setOptimisticPublication(Boolean.parseBoolean(o));
+      void applyProperty(MQSession session, String name, String value) throws JMSException {
+        session.setIntProperty(name, Integer.parseInt(value));
       }
     },
     /**
      * Invokes {@link MQSession#setOutcomeNotification(boolean)}
      *
      */
-    OutcomeNotification {
+    LONG {
       @Override
-      void applyProperty(MQSession s, String o) throws JMSException {
-      s.setOutcomeNotification(Boolean.parseBoolean(o));
+      void applyProperty(MQSession session, String name, String value) throws JMSException {
+        session.setLongProperty(name, Long.parseLong(value));
       }
     },
     /**
      * Invokes {@link MQSession#setProcessDuration(int)}
      *
      */
-    ProcessDuration {
+    BOOLEAN {
       @Override
-      void applyProperty(MQSession s, String o) throws JMSException {
-      s.setProcessDuration(Integer.parseInt(o));
-      }
-    },
-    /**
-     * Invokes {@link MQSession#setReceiveIsolation(int)}
-     *
-     */
-    ReceiveIsolation {
-      @Override
-      void applyProperty(MQSession s, String o) throws JMSException {
-      s.setReceiveIsolation(Integer.parseInt(o));
+      void applyProperty(MQSession session, String name, String value) throws JMSException {
+        session.setBooleanProperty(name, Boolean.valueOf(value));
       }
     };
-    abstract void applyProperty(MQSession s, String o) throws JMSException;
+    abstract void applyProperty(MQSession session, String name, String value) throws JMSException;
   };
 
   /**
@@ -786,7 +781,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   private KeyValuePairSet connectionFactoryProperties;
   @NotNull
   @AutoPopulated
-  private KeyValuePairSet sessionProperties;
+  private List<MqSessionProperty> sessionProperties;
 
   /**
    * <p>
@@ -800,7 +795,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     setConnectionFactoryProperties(new KeyValuePairSet());
     getConnectionFactoryProperties().addKeyValuePair(
         new KeyValuePair(ConnectionFactoryProperty.TransportType.name(), String.valueOf(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP)));
-    setSessionProperties(new KeyValuePairSet());
+    setSessionProperties(new ArrayList<>());
   }
 
   @Override
@@ -831,21 +826,8 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
    */
   @Override
   public void applyVendorSessionProperties(javax.jms.Session s) throws JMSException {
-    for (Iterator i = getSessionProperties().getKeyValuePairs().iterator(); i.hasNext();) {
-      boolean matched = false;
-
-      KeyValuePair kvp = (KeyValuePair) i.next();
-      // Yeah we could use valueOf here, but really, our lusers are sure to not
-      // be consistent and valueOf is case sensitive.
-      for (SessionProperty sp : SessionProperty.values()) {
-        if (kvp.getKey().equalsIgnoreCase(sp.toString())) {
-          sp.applyProperty((MQSession) s, kvp.getValue());
-          matched = true;
-        }
-      }
-      if (!matched) {
-        log.trace("Ignoring unsupported Session Property " + kvp.getKey());
-      }
+    for(MqSessionProperty sessionProp : this.getSessionProperties()) {
+      SessionPropertyDataType.valueOf(sessionProp.getDataType().toUpperCase()).applyProperty((MQSession) s, sessionProp.getPropertyName(), sessionProp.getPropertyName());
     }
   }
 
@@ -867,7 +849,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   /**
    * @return the sessionProperties
    */
-  public KeyValuePairSet getSessionProperties() {
+  public List<MqSessionProperty> getSessionProperties() {
     return sessionProperties;
   }
 
@@ -877,7 +859,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
    * @param s the sessionProperties to set
    * @see SessionProperty
    */
-  public void setSessionProperties(KeyValuePairSet s) {
+  public void setSessionProperties(List<MqSessionProperty> s) {
     sessionProperties = s;
   }
   
