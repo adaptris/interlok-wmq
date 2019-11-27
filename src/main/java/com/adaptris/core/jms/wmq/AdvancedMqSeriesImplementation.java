@@ -9,8 +9,11 @@ import javax.jms.JMSException;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adaptris.annotation.AutoPopulated;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -56,7 +59,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <p>
  * This vendor implementation also overrides {@link VendorImplementationImp#applyVendorSessionProperties(javax.jms.Session)} so that
  * specific MQ session properties can be applied. The way of doing this is exactly the same as setting properties on the
- * ConnectionFactory. <code>
+ * ConnectionFactory. 
+ * <b>Note that session properties are deprecated.  After MQ version 7+, brokerTimeout no longer exists and the remaining properties can be set on the connection fgactory.</b><code>
  * <pre>
  *   &lt;session-properties>
  *     &lt;key-value-pair>
@@ -162,6 +166,8 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   /**
    * Properties matched against various MQSession methods.
    */
+   @Deprecated
+   @Removal(version = "3.10.0", message = "BrokerTimeout does not exist after WMQ 7+, the other session properties can be set on the connection factory.")
   public enum SessionProperty {
     /**
      * Invokes {@link MQSession#setBrokerTimeout(int)}
@@ -170,6 +176,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     BrokerTimeout {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
+        log.warn("Session properties are deprecated, future versions will remove them.  Broker timeout setting does not exist post MQ version 7+");
       s.setBrokerTimeout(Integer.parseInt(o));
       }
     },
@@ -180,6 +187,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     OptimisticPublication {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
+        log.warn("Session properties are deprecated, future versions will remove them.  Set the 'Optimistic Publication' property on the connection factory, rather than the session.");
       s.setOptimisticPublication(Boolean.parseBoolean(o));
       }
     },
@@ -190,6 +198,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     OutcomeNotification {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
+        log.warn("Session properties are deprecated, future versions will remove them.  Set the 'Outcome Notification' property on the connection factory, rather than the session.");
       s.setOutcomeNotification(Boolean.parseBoolean(o));
       }
     },
@@ -200,6 +209,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     ProcessDuration {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
+        log.warn("Session properties are deprecated, future versions will remove them.  Set the 'Process Duration' property on the connection factory, rather than the session.");
       s.setProcessDuration(Integer.parseInt(o));
       }
     },
@@ -210,10 +220,13 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
     ReceiveIsolation {
       @Override
       void applyProperty(MQSession s, String o) throws JMSException {
+        log.warn("Session properties are deprecated, future versions will remove them.  Set the 'Receive Isolation' property on the connection factory, rather than the session.");
       s.setReceiveIsolation(Integer.parseInt(o));
       }
     };
     abstract void applyProperty(MQSession s, String o) throws JMSException;
+    
+    protected transient Logger log = LoggerFactory.getLogger(SessionProperty.class);
   };
 
   /**
