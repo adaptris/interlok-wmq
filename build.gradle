@@ -28,7 +28,7 @@ ext {
   componentName='Interlok/WebsphereMQ integration'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '1.7.26'
+  slf4jVersion = '1.7.30'
   log4j2Version = '2.11.2'
   jmockVersion = '2.8.4'
 }
