@@ -11,8 +11,11 @@ import javax.jms.JMSException;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adaptris.annotation.AutoPopulated;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -168,40 +171,24 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
    * Properties matched against various MQSession methods.
    */
   public enum SessionPropertyDataType {
-    /**
-     * Invokes {@link MQSession#setBrokerTimeout(int)}
-     *
-     */
     STRING {
       @Override
       void applyProperty(MQSession session, String name, String value) throws JMSException {
         session.setStringProperty(name, value);
       }
     },
-    /**
-     * Invokes {@link MQSession#setOptimisticPublication(boolean)}
-     *
-     */
     INTEGER {
       @Override
       void applyProperty(MQSession session, String name, String value) throws JMSException {
         session.setIntProperty(name, Integer.parseInt(value));
       }
     },
-    /**
-     * Invokes {@link MQSession#setOutcomeNotification(boolean)}
-     *
-     */
     LONG {
       @Override
       void applyProperty(MQSession session, String name, String value) throws JMSException {
         session.setLongProperty(name, Long.parseLong(value));
       }
     },
-    /**
-     * Invokes {@link MQSession#setProcessDuration(int)}
-     *
-     */
     BOOLEAN {
       @Override
       void applyProperty(MQSession session, String name, String value) throws JMSException {
