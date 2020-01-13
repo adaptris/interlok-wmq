@@ -36,13 +36,9 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
       + "\nbe the correct ones for your environment; you should look at "
       + "\nyour WebsphereMQ configuration to see what values you should" + "\nuse." + "\n-->\n";
 
-  public AdvancedMqSeriesProducerTest(String name) {
-    super(name);
-  }
-
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 
   @Override

@@ -1,12 +1,15 @@
 package com.adaptris.core.wmq;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.slf4j.LoggerFactory;
-
 import com.adaptris.core.AdaptrisConnection;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageListener;
@@ -57,15 +60,18 @@ public class NativeProducerTest extends ProducerCase {
 
   private static final String BASE_DIR_KEY = "WmqNativeProducerExamples.baseDir";
 
-  public NativeProducerTest(String name) {
-    super(name);
+  public NativeProducerTest() {
     if (PROPERTIES.getProperty(BASE_DIR_KEY) != null) {
       setBaseDir(PROPERTIES.getProperty(BASE_DIR_KEY));
     }
   }
-
   @Override
-  protected void setUp() throws Exception {
+  public boolean isAnnotatedForJunit4() {
+    return true;
+  }
+  
+  @Before
+  public void setUp() throws Exception {
     p = new NativeProducer();
     LifecycleHelper.init(p);
   }
@@ -120,6 +126,7 @@ public class NativeProducerTest extends ProducerCase {
     // mqMsg1, mqMsg2);
   }
 
+  @Test
   public void testNativeProducer() throws Exception {
     // These 3 do nothing
     LifecycleHelper.start(p);
@@ -127,6 +134,7 @@ public class NativeProducerTest extends ProducerCase {
     LifecycleHelper.close(p);
   }
 
+  @Test
   public void testProduce() throws Exception {
     setupProduce();
 
@@ -139,6 +147,7 @@ public class NativeProducerTest extends ProducerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testProduceNoOptions() throws Exception {
     setupProduce();
 
@@ -153,6 +162,7 @@ public class NativeProducerTest extends ProducerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testProduceWithOptions() throws Exception {
     setupProduce();
 
@@ -167,6 +177,7 @@ public class NativeProducerTest extends ProducerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testProduceWithConfiguredOptions() throws Exception {
     setupProduce();
 
@@ -183,6 +194,7 @@ public class NativeProducerTest extends ProducerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testProduceWithConfiguredNewMessageOptions() throws Exception {
     setupProduce();
 
@@ -200,6 +212,7 @@ public class NativeProducerTest extends ProducerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testProduceWithEmptyFieldMapper() throws Exception {
     setupProduce();
 
@@ -214,6 +227,7 @@ public class NativeProducerTest extends ProducerCase {
     context.assertIsSatisfied();
   }
 
+  @Test
   public void testLicense() throws Exception {
     context.checking(new Expectations() {{
         oneOf(lic).isEnabled(LicenseType.Enterprise);

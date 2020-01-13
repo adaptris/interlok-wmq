@@ -1,17 +1,20 @@
 package com.adaptris.core.wmq;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jmock.Expectations;
 import org.jmock.States;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.slf4j.LoggerFactory;
-
 import com.adaptris.core.AdaptrisConnection;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageListener;
@@ -68,15 +71,19 @@ public class NativeConsumerTest extends ConsumerCase {
   private MQMessageAccessor messageAccessor = context.mock(MQMessageAccessor.class);
   private MQMessageOptionsAccessor messageOptionsAccessor = context.mock(MQMessageOptionsAccessor.class);
 
-  public NativeConsumerTest(String name) {
-    super(name);
+  public NativeConsumerTest() {
     if (PROPERTIES.getProperty(BASE_DIR_KEY) != null) {
       setBaseDir(PROPERTIES.getProperty(BASE_DIR_KEY));
     }
   }
 
   @Override
-  protected void setUp() throws Exception {
+  public boolean isAnnotatedForJunit4() {
+    return true;
+  }
+  
+  @Before
+  public void setUp() throws Exception {
     exceptionNoMessages = new MQException(MQException.MQCC_WARNING, MQException.MQRC_NO_MSG_AVAILABLE, "Mock Test");
     exceptionNoQueue = new MQException(MQException.MQCC_FAILED, MQException.MQRC_Q_DELETED, "Mock Test");
 
@@ -131,6 +138,7 @@ public class NativeConsumerTest extends ConsumerCase {
     mqGetOptions.options = consumer.getOptions().messageOptionsIntValue();
   }
 
+  @Test
   public void testProcessMessages() throws Exception {
     test.become("allowing-all-metadata");
     context.checking(new Expectations() {{
@@ -144,6 +152,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
 
+  @Test
   public void testLicense() throws Exception {
     context.checking(new Expectations() {{
         oneOf(lic).isEnabled(LicenseType.Enterprise);
@@ -161,6 +170,7 @@ public class NativeConsumerTest extends ConsumerCase {
     
   }
 
+  @Test
   public void testProcessMessagesReacquireLock() throws Exception {
     test.become("allowing-all-metadata");
     
@@ -182,6 +192,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
 
+  @Test
   public void testMetedataFieldMapperException() throws Exception {
     test.become("exception-all-metadata");
  // Throw an MQ exception for message1
@@ -197,6 +208,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testMetedataFieldMapperIOException() throws Exception {
     test.become("exception-all-metadata");
  // Throw an MQ exception for message1
@@ -212,6 +224,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testExceptionOnDisconnect() throws Exception {
     test.become("exception-all-metadata");
     
@@ -230,6 +243,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testExceptionOnClose() throws Exception {
     test.become("exception-all-metadata");
     
@@ -248,6 +262,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testExceptionOnQueueAccess() throws Exception {
     test.become("allowing-all-metadata");
     
@@ -264,6 +279,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
 
+  @Test
   public void testIOExceptionWithoutHandler() throws Exception {
     test.become("exception-all-metadata");
     
@@ -283,6 +299,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
   
+  @Test
   public void testMetedataFieldMapperIOExceptionNoHandler() throws Exception {
     test.become("exception-all-metadata");
     
@@ -303,6 +320,7 @@ public class NativeConsumerTest extends ConsumerCase {
     context.assertIsSatisfied();
   }
 
+  @Test
   public void testInitWithoutErrorHandler() throws Exception {
     // Note that processing without the error handler is called in
     // testExceptions2

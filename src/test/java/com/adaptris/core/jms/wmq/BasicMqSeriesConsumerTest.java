@@ -9,7 +9,6 @@ package com.adaptris.core.jms.wmq;
 import static com.adaptris.core.jms.wmq.AdvancedMqSeriesProducerTest.ACTIVATE_EXCEPTION_LISTENER_COMMENT;
 import static com.adaptris.core.jms.wmq.BasicMqSeriesProducerTest.THIS_IS_JUST_AN_EXAMPLE_COMMENT;
 import static com.adaptris.core.jms.wmq.BasicMqSeriesProducerTest.configure;
-
 import com.adaptris.core.ConfiguredConsumeDestination;
 import com.adaptris.core.StandaloneConsumer;
 import com.adaptris.core.jms.JmsConnection;
@@ -18,13 +17,9 @@ import com.adaptris.core.jms.PtpConsumer;
 
 public class BasicMqSeriesConsumerTest extends JmsConsumerCase {
 
-  public BasicMqSeriesConsumerTest(String name) {
-    super(name);
-  }
-
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 
   @Override
