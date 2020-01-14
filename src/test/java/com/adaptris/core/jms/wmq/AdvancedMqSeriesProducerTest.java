@@ -13,7 +13,6 @@ import com.adaptris.core.jms.JmsConnectionErrorHandler;
 import com.adaptris.core.jms.JmsProducerExample;
 import com.adaptris.core.jms.PtpProducer;
 import com.adaptris.core.jms.wmq.AdvancedMqSeriesImplementation.ConnectionFactoryProperty;
-import com.adaptris.core.jms.wmq.AdvancedMqSeriesImplementation.SessionProperty;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 
@@ -37,13 +36,9 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
       + "\nbe the correct ones for your environment; you should look at "
       + "\nyour WebsphereMQ configuration to see what values you should" + "\nuse." + "\n-->\n";
 
-  public AdvancedMqSeriesProducerTest(String name) {
-    super(name);
-  }
-
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 
   @Override
@@ -81,7 +76,7 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
         .name()));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.HostName.name(), "localhost"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.Port.name(), "1414"));
-    mq.getSessionProperties().addKeyValuePair(new KeyValuePair(SessionProperty.OptimisticPublication.name(), "true"));
+    mq.getSessionProperties().add(new MqSessionProperty("OptimisticPublication", "true", "Boolean"));
     return mq;
   }
 

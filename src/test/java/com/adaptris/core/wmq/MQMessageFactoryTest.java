@@ -5,14 +5,14 @@
  * $Author: lchan $
  */
 package com.adaptris.core.wmq;
-
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.BaseCase;
@@ -29,12 +29,13 @@ public class MQMessageFactoryTest extends BaseCase {
   @Mock private MQMessage mqMsg;
   @Mock private AdaptrisMessage adpMsg;
   
-  public MQMessageFactoryTest(String name) {
-    super(name);
-  }
-
   @Override
-  protected void setUp() throws Exception {
+  public boolean isAnnotatedForJunit4() {
+    return true;
+  }
+  
+  @Before
+  public void setUp() throws Exception {
 	MockitoAnnotations.initMocks(this);
 	
 	when(mqMsg.readUTF()).thenReturn(XML_DOC);
@@ -51,6 +52,7 @@ public class MQMessageFactoryTest extends BaseCase {
   protected void tearDown() throws Exception {
   }
 
+  @Test
   public void testCreate() throws Exception {
     MQMessageInstance[] instances = MQMessageInstance.values();
     for (int i = 0; i < instances.length; i++) {
@@ -64,6 +66,7 @@ public class MQMessageFactoryTest extends BaseCase {
     new MQMessageFactory();
   }
 
+  @Test
   public void testTextMessage() throws Exception {
     MQMessageInstance instance = MQMessageInstance.Text;
     MQMessage msg = instance.create();
@@ -81,6 +84,7 @@ public class MQMessageFactoryTest extends BaseCase {
     verify(adpMsg).setStringPayload(XML_DOC, "UTF-8");
   }
 
+  @Test
   public void testStringMessage() throws Exception {
     MQMessageInstance instance = MQMessageInstance.String;
     MQMessage msg = instance.create();
@@ -93,6 +97,7 @@ public class MQMessageFactoryTest extends BaseCase {
     verify(adpMsg).setStringPayload(XML_DOC, adpMsg.getCharEncoding());
   }
 
+  @Test
   public void testBytesMessage() throws Exception {
     MQMessageInstance instance = MQMessageInstance.Bytes;
     MQMessage msg = instance.create();
@@ -108,6 +113,7 @@ public class MQMessageFactoryTest extends BaseCase {
     verify(adpMsg).setPayload(b);
   }
 
+  @Test
   public void testObjectMessage() throws Exception {
     MQMessageInstance instance = MQMessageInstance.Object;
     MQMessage msg = instance.create();

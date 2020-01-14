@@ -6,9 +6,11 @@
  */
 package com.adaptris.core.wmq.mapping;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.Date;
-
+import org.junit.Test;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.BaseCase;
@@ -29,19 +31,13 @@ public class FieldMapperTest extends BaseCase {
   private static final String NUMERIC_CONTENT = "102";
   private static final String VERSION = "2";
 
-  public FieldMapperTest(String name) {
-    super(name);
-  }
-
   @Override
-  protected void setUp() throws Exception {
-
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
-
-  @Override
-  protected void tearDown() throws Exception {
-  }
-
+  
+  
+  @Test
   public void testFieldAccountingToken() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.accountingToken);
@@ -49,6 +45,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldApplicationIdData() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.applicationIdData);
@@ -56,6 +53,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldApplicationOriginData() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.applicationOriginData);
@@ -63,6 +61,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldFormat() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.format);
@@ -70,6 +69,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldPutApplicationName() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.putApplicationName);
@@ -77,6 +77,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldReplyToQueueManagerName() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.replyToQueueManagerName);
@@ -84,6 +85,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldReplyToQueueName() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.replyToQueueName);
@@ -91,6 +93,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldUserId() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.userId);
@@ -98,6 +101,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldCorrelationId() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.correlationId);
@@ -105,6 +109,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldGroupId() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.groupId);
@@ -112,6 +117,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldMessageId() throws Exception {
     MQMessage mqMsg = new MQMessage();
     set(mqMsg, Field.messageId);
@@ -119,6 +125,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(STRING_CONTENT, field);
   }
 
+  @Test
   public void testFieldBackoutCount() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.backoutCount);
@@ -126,6 +133,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldEncoding() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.encoding);
@@ -133,6 +141,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldExpiry() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.expiry);
@@ -140,6 +149,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldFeedback() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.feedback);
@@ -147,6 +157,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldMessageFlags() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.messageFlags);
@@ -154,6 +165,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldMessageSequenceNumber() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.messageSequenceNumber);
@@ -161,6 +173,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldCharacterSet() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.characterSet);
@@ -168,6 +181,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldMessageType() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.messageType);
@@ -175,6 +189,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldOffset() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.offset);
@@ -182,6 +197,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldOriginalLength() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.originalLength);
@@ -189,6 +205,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldPersistence() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.persistence);
@@ -196,6 +213,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldPriority() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.priority);
@@ -203,6 +221,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldPutApplicationType() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.putApplicationType);
@@ -210,6 +229,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldReport() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setInt(mqMsg, Field.report);
@@ -217,6 +237,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(NUMERIC_CONTENT, field);
   }
 
+  @Test
   public void testFieldVersion() throws Exception {
     MQMessage mqMsg = new MQMessage();
     setVersion(mqMsg, Field.version);
@@ -225,6 +246,7 @@ public class FieldMapperTest extends BaseCase {
 
   }
 
+  @Test
   public void testFieldPutDateTime() throws Exception {
     MQMessage mqMsg = new MQMessage();
     String now = DateFormatUtil.format(new Date());
@@ -233,6 +255,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(now, field);
   }
 
+  @Test
   public void testConfiguredFieldValueNull() throws Exception {
     FieldMapper cf = new ConfiguredField(FieldMapper.Field.applicationIdData.toString(), null);
     cf.setConvertNull(true);
@@ -242,6 +265,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals("", mq.applicationIdData);
   }
 
+  @Test
   public void testInvalidConfiguredField() throws Exception {
     FieldMapper cf = new ConfiguredField("Doobrey", "Dum");
     MQMessage mq = new MQMessage();
@@ -254,6 +278,7 @@ public class FieldMapperTest extends BaseCase {
     }
   }
 
+  @Test
   public void testConfiguredFieldToMqMessage() throws Exception {
     FieldMapper cf = new ConfiguredField(FieldMapper.Field.applicationIdData.toString(), ConfiguredField.class.getName());
     MQMessage mq = new MQMessage();
@@ -262,6 +287,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(ConfiguredField.class.getName(), mq.applicationIdData);
   }
 
+  @Test
   public void testConfiguredFieldFromMqMessage() throws Exception {
     try {
       FieldMapper cf = new ConfiguredField(FieldMapper.Field.applicationIdData.toString(), ConfiguredField.class.getName());
@@ -275,6 +301,7 @@ public class FieldMapperTest extends BaseCase {
     }
   }
 
+  @Test
   public void testXpathFieldToMqMessage() throws Exception {
     FieldMapper cf = new XpathField(FieldMapper.Field.applicationIdData.toString(), DEST_XPATH);
     MQMessage mq = new MQMessage();
@@ -283,6 +310,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals("value", mq.applicationIdData);
   }
 
+  @Test
   public void testXpathFieldToMqMessage_NoResult() throws Exception {
     try {
       FieldMapper cf = new XpathField(FieldMapper.Field.groupId.toString(), null, new SimpleByteTranslator());
@@ -296,6 +324,7 @@ public class FieldMapperTest extends BaseCase {
     }
   }
 
+  @Test
   public void testXpathFieldToMqMessage_NoResult_ConvertNull() throws Exception {
     FieldMapper cf = new XpathField(FieldMapper.Field.applicationIdData.toString(), null);
     cf.setConvertNull(true);
@@ -305,6 +334,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals("", mq.applicationIdData);
   }
 
+  @Test
   public void testXpathFieldFromMqMessage() throws Exception {
     try {
       FieldMapper cf = new XpathField(FieldMapper.Field.applicationIdData.toString(), DEST_XPATH);
@@ -318,6 +348,7 @@ public class FieldMapperTest extends BaseCase {
     }
   }
 
+  @Test
   public void testMetadataFieldMapperToMqMessage() throws Exception {
     FieldMapper cf = new MetadataFieldMapper(FieldMapper.Field.applicationIdData.toString(), "metadataKey");
     MQMessage mq = new MQMessage();
@@ -327,6 +358,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals("metadataValue", mq.applicationIdData);
   }
 
+  @Test
   public void testMetadataFieldMapperFromMqMessage() throws Exception {
     FieldMapper cf = new MetadataFieldMapper(FieldMapper.Field.applicationIdData.toString(), "metadataKey");
     MQMessage mq = new MQMessage();
@@ -336,6 +368,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals("someValue", msg.getMetadataValue("metadataKey"));
   }
 
+  @Test
   public void testMessageIdMapperToMqMessage() throws Exception {
     FieldMapper cf = new MessageIdMapper(FieldMapper.Field.applicationIdData.toString());
     MQMessage mq = new MQMessage();
@@ -346,6 +379,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(uniq, mq.applicationIdData);
   }
 
+  @Test
   public void testMessageIdMapperFromMqMessage() throws Exception {
     FieldMapper cf = new MessageIdMapper(FieldMapper.Field.applicationIdData.toString());
     MQMessage mq = new MQMessage();
@@ -356,6 +390,7 @@ public class FieldMapperTest extends BaseCase {
     assertEquals(uniq, msg.getUniqueId());
   }
 
+  @Test
   public void testUuidMapperToMqMessage() throws Exception {
     FieldMapper cf = new UuidFieldMapper();
     cf.setMqFieldName("applicationIdData");
@@ -365,6 +400,7 @@ public class FieldMapperTest extends BaseCase {
     // Can't see what's written but at least no errors are thrown
   }
 
+  @Test
   public void testUuidMapperFromMqMessage() throws Exception {
     FieldMapper cf = new UuidFieldMapper();
     cf.setMqFieldName("applicationIdData");

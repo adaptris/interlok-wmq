@@ -5,8 +5,9 @@ import com.adaptris.core.StandaloneConsumer;
 
 public class NativeConsumerWithErrorHandlerTest extends NativeConsumerTest {
 
-  public NativeConsumerWithErrorHandlerTest(String name) {
-    super(name);
+  @Override
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 
   @Override
