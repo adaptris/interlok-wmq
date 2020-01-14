@@ -28,9 +28,13 @@ public class TransportTypeHelper {
    * @return the int value.
    */
   public static int getTransportType(String s) {
-    Transport type = Transport.valueOf(s);
-    if (type != null) {
-      return type.getTransportType();
+    try {
+      Transport type = Transport.valueOf(s);
+      if (type != null) {
+        return type.getTransportType();
+      }
+    } catch (IllegalArgumentException e) {
+      
     }
     // type is null, so let's just treat it as an integer.
     return Integer.parseInt(s);
