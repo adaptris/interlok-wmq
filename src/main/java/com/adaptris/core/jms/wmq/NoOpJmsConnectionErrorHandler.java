@@ -1,6 +1,6 @@
 package com.adaptris.core.jms.wmq;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.adaptris.core.AdaptrisConnection;
 import com.adaptris.core.ConnectionErrorHandler;
