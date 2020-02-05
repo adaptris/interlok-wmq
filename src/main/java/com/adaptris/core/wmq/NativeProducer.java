@@ -1,9 +1,3 @@
-/*
- * $RCSfile: NativeProducer.java,v $
- * $Revision: 1.12 $
- * $Date: 2009/03/10 13:31:00 $
- * $Author: lchan $
- */
 package com.adaptris.core.wmq;
 
 import java.util.ArrayList;
