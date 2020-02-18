@@ -90,7 +90,7 @@ public class NativeProducer extends ProduceOnlyProducerImp implements LicensedCo
       proxy.produce(msg, destination);
     } catch (ProduceException ex) {
       if(ex.getCause() instanceof MQException) {
-        log.debug("MQ Produce Exception:", ex);
+        log.error("MQ Produce Exception:", ex);
         new Thread(new Runnable() {
           @Override
           public void run() {
