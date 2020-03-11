@@ -1,7 +1,6 @@
 package com.adaptris.core.jms.wmq;
 
 import static com.adaptris.core.jms.wmq.AdvancedMqSeriesProducerTest.ACTIVATE_EXCEPTION_LISTENER_COMMENT;
-
 import com.adaptris.core.ConfiguredProduceDestination;
 import com.adaptris.core.StandaloneProducer;
 import com.adaptris.core.jms.JmsConnection;
@@ -16,15 +15,10 @@ public class BasicMqSeriesProducerTest extends JmsProducerExample {
       + "\nbe the correct ones for your environment; you should look at "
       + "\nyour WebsphereMQ configuration to see what values you should" + "\nuse." + "\n-->\n";
 
-  public BasicMqSeriesProducerTest(String name) {
-    super(name);
-  }
-
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
-
   @Override
   protected String createBaseFileName(Object object) {
     return super.createBaseFileName(object) + "-BasicWebsphereMQ";

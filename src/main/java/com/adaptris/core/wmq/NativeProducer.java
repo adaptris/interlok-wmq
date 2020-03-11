@@ -1,9 +1,3 @@
-/*
- * $RCSfile: NativeProducer.java,v $
- * $Revision: 1.12 $
- * $Date: 2009/03/10 13:31:00 $
- * $Author: lchan $
- */
 package com.adaptris.core.wmq;
 
 import java.util.ArrayList;
@@ -96,6 +90,7 @@ public class NativeProducer extends ProduceOnlyProducerImp implements LicensedCo
       proxy.produce(msg, destination);
     } catch (ProduceException ex) {
       if(ex.getCause() instanceof MQException) {
+        log.error("MQ Produce Exception:", ex);
         new Thread(new Runnable() {
           @Override
           public void run() {

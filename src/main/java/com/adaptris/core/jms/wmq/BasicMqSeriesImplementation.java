@@ -4,7 +4,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.Pattern;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.adaptris.annotation.AutoPopulated;
