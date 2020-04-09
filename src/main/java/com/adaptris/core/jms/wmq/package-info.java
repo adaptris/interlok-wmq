@@ -1,6 +1,5 @@
-<body>
-	<p>WebsphereMQ specific JMS implementations of {@link
-		com.adaptris.core.jms.VendorImplementation}.</p>
+/** WebsphereMQ specific JMS implementations of {@link
+		com.adaptris.core.jms.VendorImplementation}.
 
   <p>In version 6.0 of WebSphere MQ and previous you may have to
     install APAR IY81774 which introduces a system property
@@ -13,7 +12,7 @@
     interface which means the adapter is not notified of a broken
     connection to WebsphereMQ and subsequently cannot recover from a
     broken connection to WebsphereMQ.</p>
-    		
+
 	<p>
 		By default, all JMS clients to MQ Series will create what is known as
 		an MQRFH2 Header that will form part of the Websphere MQ message. This
@@ -115,4 +114,5 @@
 			<td>0=JMS, 1=MQ</td>
 		</tr>
 	</table>
-</body>
+*/
+package com.adaptris.core.jms.wmq;
