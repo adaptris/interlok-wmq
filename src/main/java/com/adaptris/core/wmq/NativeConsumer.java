@@ -8,17 +8,25 @@ package com.adaptris.core.wmq;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.validation.Valid;
 import com.adaptris.annotation.AdapterComponent;
+import com.adaptris.annotation.AdvancedConfig;
 import com.adaptris.annotation.ComponentProfile;
+import com.adaptris.annotation.DisplayOrder;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisPollingConsumer;
+import com.adaptris.core.ConsumeDestination;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
 import com.adaptris.core.licensing.LicenseChecker;
 import com.adaptris.core.licensing.LicensedComponent;
+import com.adaptris.core.util.DestinationHelper;
+import com.adaptris.core.util.LoggingHelper;
 import com.adaptris.core.wmq.mapping.FieldMapper;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * MessageConsumer implementation that uses the WebsphereMQ native client.
@@ -26,25 +34,52 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * Depending on your WebsphereMQ configuration you will need to have installed and configured the WebsphereMQ Client software for
  * your platform. The jars from the WebsphereMQ Client software should be copied into the adapter's lib directory.
  * </p>
- * 
+ *
  * @config wmq-native-consumer
  * @license ENTERPRISE
- * 
+ *
  * @author lchan
- * 
+ *
  */
 @XStreamAlias("wmq-native-consumer")
 @AdapterComponent
 @ComponentProfile(summary = "Receive messages from WebsphereMQ using the native client", tag = "consumer,websphere",
     recommended = {AttachedConnection.class, DetachedConnection.class})
+@DisplayOrder(order = {"queue", "logAllExceptions"})
 public class NativeConsumer extends AdaptrisPollingConsumer implements LicensedComponent {
 
   private List<FieldMapper> preGetFieldMappers;
   private List<FieldMapper> fieldMappers;
   private MessageOptions options;
-  private transient ConsumerDelegate proxy;
+  @AdvancedConfig
   private boolean logAllExceptions;
+  @AdvancedConfig
+  @Getter
+  @Setter
   private NativeErrorHandler errorHandler;
+
+  /**
+   * The consume destination represents the base-directory where you are consuming files from.
+   *
+   */
+  @Getter
+  @Setter
+  @Deprecated
+  @Valid
+  @Removal(version = "4.0.0", message = "Use 'queue' instead")
+  private ConsumeDestination destination;
+
+  /**
+   * The base directory specified as a URL.
+   *
+   */
+  @Getter
+  @Setter
+  // Needs to be @NotBlank when destination is removed.
+  private String queue;
+
+  private transient ConsumerDelegate proxy;
+  private transient boolean destinationWarningLogged;
 
   public NativeConsumer() {
     setOptions(new MessageOptions());
@@ -161,6 +196,10 @@ public class NativeConsumer extends AdaptrisPollingConsumer implements LicensedC
 
   @Override
   protected void prepareConsumer() throws CoreException {
+    DestinationHelper.logConsumeDestinationWarning(destinationWarningLogged,
+        () -> destinationWarningLogged = true, getDestination(),
+        "{} uses destination, use queue instead", LoggingHelper.friendlyName(this));
+    DestinationHelper.mustHaveEither(getQueue(), getDestination());
     LicenseChecker.newChecker().checkLicense(this);
   }
 
@@ -186,11 +225,12 @@ public class NativeConsumer extends AdaptrisPollingConsumer implements LicensedC
     return preGetFieldMappers;
   }
 
-  public NativeErrorHandler getErrorHandler() {
-		return errorHandler;
-	}
+  protected String queue() {
+    return DestinationHelper.consumeDestination(getQueue(), getDestination());
+  }
 
-	public void setErrorHandler(NativeErrorHandler errorHandler) {
-		this.errorHandler = errorHandler;
-	}
+  @Override
+  protected String newThreadName() {
+    return DestinationHelper.threadName(retrieveAdaptrisMessageListener(), getDestination());
+  }
 }
