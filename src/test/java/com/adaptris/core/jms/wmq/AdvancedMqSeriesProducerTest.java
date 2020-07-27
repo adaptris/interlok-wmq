@@ -6,7 +6,6 @@
  */
 package com.adaptris.core.jms.wmq;
 
-import com.adaptris.core.ConfiguredProduceDestination;
 import com.adaptris.core.StandaloneProducer;
 import com.adaptris.core.jms.JmsConnection;
 import com.adaptris.core.jms.JmsConnectionErrorHandler;
@@ -49,7 +48,7 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
   @Override
   protected Object retrieveObjectForSampleConfig() {
 
-    PtpProducer producer = new PtpProducer(new ConfiguredProduceDestination("SOME_MQ_QUEUE_NAME"));
+    PtpProducer producer = new PtpProducer().withQueue("SOME_MQ_QUEUE_NAME");
     StandaloneProducer result = new StandaloneProducer(configure(new JmsConnection()), producer);
 
     return result;

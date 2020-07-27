@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.adaptris.core.AdaptrisConnection;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageListener;
-import com.adaptris.core.ConfiguredProduceDestination;
 import com.adaptris.core.ProducerCase;
 import com.adaptris.core.StandaloneProducer;
 import com.adaptris.core.licensing.License;
@@ -46,7 +45,7 @@ public class NativeProducerTest extends ProducerCase {
   private NativeProducer p;
   private DetachedConnection con;
   private MQException exceptionNoMessages;
-  
+
   private MQGetMessageOptions mqGetOptions = context.mock(MQGetMessageOptions.class);
   private MQQueueManager mqQueueManager = context.mock(MQQueueManager.class);
   private MQQueue mqQueue = context.mock(MQQueue.class);
@@ -69,7 +68,7 @@ public class NativeProducerTest extends ProducerCase {
   public boolean isAnnotatedForJunit4() {
     return true;
   }
-  
+
   @Before
   public void setUp() throws Exception {
     p = new NativeProducer();
@@ -91,7 +90,7 @@ public class NativeProducerTest extends ProducerCase {
 
     p = new NativeProducer();
     p.registerConnection(adaptrisConnection);
-    p.setDestination(new ConfiguredProduceDestination(PRODUCE_DESTINATION));
+    p.setQueue(PRODUCE_DESTINATION);
 
     p.addFieldMapper(metadataFieldMapper);
 
@@ -143,10 +142,10 @@ public class NativeProducerTest extends ProducerCase {
       oneOf(mqQueue).close();
     }});
     p.produce(adpMsg);
-    
+
     context.assertIsSatisfied();
   }
-  
+
   @Test
   public void testProduceNoOptions() throws Exception {
     setupProduce();
@@ -155,13 +154,13 @@ public class NativeProducerTest extends ProducerCase {
       oneOf(mqQueue).put(with(any(MQMessage.class)), with(any(MQPutMessageOptions.class)));
       oneOf(mqQueue).close();
     }});
-    
+
     p.setCheckOptions(false);
     p.produce(adpMsg);
-    
+
     context.assertIsSatisfied();
   }
-  
+
   @Test
   public void testProduceWithOptions() throws Exception {
     setupProduce();
@@ -170,13 +169,13 @@ public class NativeProducerTest extends ProducerCase {
       oneOf(mqQueue).put(with(any(MQMessage.class)), with(any(MQPutMessageOptions.class)));
       oneOf(mqQueue).close();
     }});
-    
+
     p.setCheckOptions(true);
     p.produce(adpMsg);
-    
+
     context.assertIsSatisfied();
   }
-  
+
   @Test
   public void testProduceWithConfiguredOptions() throws Exception {
     setupProduce();
@@ -185,15 +184,15 @@ public class NativeProducerTest extends ProducerCase {
       oneOf(mqQueue).put(with(any(MQMessage.class)), with(any(MQPutMessageOptions.class)));
       oneOf(mqQueue).close();
     }});
-    
+
     p.setCheckOptions(true);
     p.getOptions().addMessageOption("MQPMO_SET_ALL_CONTEXT");
     p.getOptions().addQueueOpenOption("MQOO_SET_ALL_CONTEXT");
     p.produce(adpMsg);
-    
+
     context.assertIsSatisfied();
   }
-  
+
   @Test
   public void testProduceWithConfiguredNewMessageOptions() throws Exception {
     setupProduce();
@@ -202,16 +201,16 @@ public class NativeProducerTest extends ProducerCase {
       oneOf(mqQueue).put(with(any(MQMessage.class)), with(any(MQPutMessageOptions.class)));
       oneOf(mqQueue).close();
     }});
-    
+
     p.setCheckOptions(true);
     p.setOptions(new MessageOptions());
     p.getOptions().addMessageOption("MQPMO_SET_ALL_CONTEXT");
     p.getOptions().addQueueOpenOption("MQOO_SET_ALL_CONTEXT");
     p.produce(adpMsg);
-    
+
     context.assertIsSatisfied();
   }
-  
+
   @Test
   public void testProduceWithEmptyFieldMapper() throws Exception {
     setupProduce();
@@ -220,10 +219,10 @@ public class NativeProducerTest extends ProducerCase {
       oneOf(mqQueue).put(with(any(MQMessage.class)), with(any(MQPutMessageOptions.class)));
       oneOf(mqQueue).close();
     }});
-    
+
     p.getFieldMappers().clear();
     p.produce(adpMsg);
-    
+
     context.assertIsSatisfied();
   }
 
@@ -233,14 +232,14 @@ public class NativeProducerTest extends ProducerCase {
         oneOf(lic).isEnabled(LicenseType.Enterprise);
         will(returnValue(true));
     }});
-    
+
     assertTrue(p.isEnabled(lic));
-    
+
     context.checking(new Expectations() {{
         oneOf(lic).isEnabled(LicenseType.Enterprise);
         will(returnValue(false));
     }});
-    
+
     assertFalse(p.isEnabled(lic));
   }
 
@@ -265,8 +264,7 @@ public class NativeProducerTest extends ProducerCase {
         .addKeyValuePair(
             new KeyValuePair(MQC.SSL_CIPHER_SUITE_PROPERTY,
                 "SSL_RSA_WITH_NULL_MD5"));
-    p.setDestination(new ConfiguredProduceDestination(
-        "SYSTEM.DEFAULT.LOCAL.QUEUE"));
+    p.setQueue("SYSTEM.DEFAULT.LOCAL.QUEUE");
     p.getOptions().setQueueOpenOptions(
         "MQOO_INPUT_AS_Q_DEF,MQOO_OUTPUT,MQOO_SET_ALL_CONTEXT");
     p.getOptions()
