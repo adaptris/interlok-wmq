@@ -1,18 +1,17 @@
 package com.adaptris.core.jms.wmq;
 
-import com.ibm.mq.jms.JMSC;
+import com.ibm.msg.client.wmq.WMQConstants;
 
 public class TransportTypeHelper {
 
   public enum Transport {
-    MQJMS_TP_BINDINGS_MQ(JMSC.MQJMS_TP_BINDINGS_MQ),
-    MQJMS_TP_CLIENT_MQ_TCPIP(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP),
-    MQJMS_TP_DIRECT_TCPIP(JMSC.MQJMS_TP_DIRECT_TCPIP),
-    MQJMS_TP_MQJD(JMSC.MQJMS_TP_MQJD),
-    MQJMS_TP_DIRECT_HTTP(JMSC.MQJMS_TP_DIRECT_HTTP);
+    MQJMS_TP_BINDINGS_MQ(WMQConstants.WMQ_CM_BINDINGS),
+    MQJMS_TP_CLIENT_MQ_TCPIP(WMQConstants.WMQ_CM_CLIENT),
+    MQJMS_TP_DIRECT_TCPIP(WMQConstants.WMQ_CM_DIRECT_TCPIP),
+    MQJMS_TP_DIRECT_HTTP(WMQConstants.WMQ_CM_DIRECT_HTTP);
     
     int type;
-    Transport(int i) {
+    Transport(int i) {      
       type = i;
     }
     

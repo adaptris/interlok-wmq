@@ -11,11 +11,8 @@ import javax.jms.JMSException;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.adaptris.annotation.AutoPopulated;
-import com.adaptris.annotation.Removal;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -25,10 +22,10 @@ import com.adaptris.core.licensing.LicenseChecker;
 import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
-import com.ibm.mq.jms.JMSC;
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.mq.jms.MQSession;
+import com.ibm.msg.client.wmq.WMQConstants;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -329,16 +326,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       }
     },
     /**
-     * Invokes {@link MQConnectionFactory#setCloneSupport(int)}
-     *
-     */
-    CloneSupport {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setCloneSupport(Integer.parseInt(s));
-      }
-    },
-    /**
      * Invokes {@link MQConnectionFactory#setDescription(String)}
      *
      */
@@ -346,16 +333,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
         cf.setDescription(s);
-      }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setDirectAuth(int)}
-     *
-     */
-    DirectAuth {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setDirectAuth(Integer.parseInt(s));
       }
     },
     /**
@@ -439,36 +416,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       }
     },
     /**
-     * Invokes {@link MQConnectionFactory#setMulticast(int)}
-     *
-     */
-    Multicast {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setMulticast(Integer.parseInt(s));
-      }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setOptimisticPublication(boolean)}
-     *
-     */
-    OptimisticPublication {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setOptimisticPublication(Boolean.parseBoolean(s));
-      }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setOutcomeNotification(boolean)}
-     *
-     */
-    OutcomeNotification {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setOutcomeNotification(Boolean.parseBoolean(s));
-      }
-    },
-    /**
      * Invokes {@link MQConnectionFactory#setPollingInterval(int)}
      *
      */
@@ -486,36 +433,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
         cf.setPort(Integer.parseInt(s));
-      }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setProcessDuration(int)}
-     *
-     */
-    ProcessDuration {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setProcessDuration(Integer.parseInt(s));
-      }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setProxyHostName(String)}
-     *
-     */
-    ProxyHostName {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setProxyHostName(s);
-      }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setProxyPort(int)}
-     *
-     */
-    ProxyPort {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setProxyPort(Integer.parseInt(s));
       }
     },
     /**
@@ -556,16 +473,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
         cf.setReceiveExitInit(s);
-      }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setReceiveIsolation(int)}
-     *
-     */
-    ReceiveIsolation {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setReceiveIsolation(Integer.parseInt(s));
       }
     },
     /**
@@ -748,16 +655,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
         cf.setTransportType(TransportTypeHelper.getTransportType(s));
       }
-    },
-    /**
-     * Invokes {@link MQConnectionFactory#setUseConnectionPooling(boolean)}
-     *
-     */
-    UseConnectionPooling {
-      @Override
-      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        cf.setUseConnectionPooling(Boolean.parseBoolean(s));
-      }
     };
 
     abstract void applyProperty(MQConnectionFactory cf, String s) throws JMSException;
@@ -781,7 +678,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   public AdvancedMqSeriesImplementation() {
     setConnectionFactoryProperties(new KeyValuePairSet());
     getConnectionFactoryProperties().addKeyValuePair(
-        new KeyValuePair(ConnectionFactoryProperty.TransportType.name(), String.valueOf(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP)));
+        new KeyValuePair(ConnectionFactoryProperty.TransportType.name(), String.valueOf(WMQConstants.WMQ_CM_CLIENT)));
     setSessionProperties(new ArrayList<>());
   }
 
@@ -794,7 +691,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
   }
 
   protected void applyProperties(MQConnectionFactory cf) throws JMSException {
-    for (Iterator i = getConnectionFactoryProperties().getKeyValuePairs().iterator(); i.hasNext();) {
+    for (Iterator<KeyValuePair> i = getConnectionFactoryProperties().getKeyValuePairs().iterator(); i.hasNext();) {
       KeyValuePair kvp = (KeyValuePair) i.next();
       // Yeah we could use valueOf here, but really, our lusers are sure to not
       // be consistent and valueOf is case sensitive.

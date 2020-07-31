@@ -2,10 +2,10 @@ package com.adaptris.core.jms.wmq;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.CoreException;
@@ -143,7 +143,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
   private int ccsid;
   @NotBlank
   @AutoPopulated
-  @Pattern(regexp = "MQJMS_TP_BINDINGS_MQ|MQJMS_TP_CLIENT_MQ_TCPIP|MQJMS_TP_DIRECT_TCPIP|MQJMS_TP_MQJD|MQJMS_TP_DIRECT_HTTP|[0-9]+")
+  @Pattern(regexp = "MQJMS_TP_BINDINGS_MQ|MQJMS_TP_CLIENT_MQ_TCPIP|MQJMS_TP_DIRECT_TCPIP|MQJMS_TP_DIRECT_HTTP|[0-9]+")
   private String transportType;
   private String queueManager;
   private String channel;
@@ -158,7 +158,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
    * <ul>
    * Defaults are:
    * <li>ccsid = -1</li>
-   * <li>transport type = MQJMS_TP_CLIENT_MQ_TCPIP (which is equivalent to {@value com.ibm.mq.jms.JMSC#MQJMS_TP_CLIENT_MQ_TCPIP})</li>
+   * <li>transport type = MQJMS_TP_CLIENT_MQ_TCPIP (which is equivalent to {@value WMQConstants.WMQ_CM_CLIENT})</li>
    * <li>queue manager, channel and temporary model are all null.</li>
    * </ul>
    * </p>
