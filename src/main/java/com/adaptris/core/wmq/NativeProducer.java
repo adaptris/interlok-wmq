@@ -2,9 +2,12 @@ package com.adaptris.core.wmq;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.validation.Valid;
 import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.ComponentProfile;
+import com.adaptris.annotation.DisplayOrder;
+import com.adaptris.annotation.InputFieldHint;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ProduceDestination;
@@ -14,10 +17,15 @@ import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
 import com.adaptris.core.licensing.LicenseChecker;
 import com.adaptris.core.licensing.LicensedComponent;
+import com.adaptris.core.util.DestinationHelper;
+import com.adaptris.core.util.LifecycleHelper;
+import com.adaptris.core.util.LoggingHelper;
 import com.adaptris.core.wmq.mapping.FieldMapper;
 import com.ibm.mq.MQException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * MessageProducer implementation that uses the WebsphereMQ native client.
@@ -31,23 +39,48 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * for the putDateTime field. In all cases, {@link com.adaptris.util.text.DateFormatUtil#parse(String)} will be used to parse any
  * values to be used for putDateTime.
  * </p>
- * 
+ *
  * @config wmq-native-producer
  * @license ENTERPRISE
- * 
- * 
+ *
+ *
  * @author lchan
  */
 @XStreamAlias("wmq-native-producer")
 @AdapterComponent
 @ComponentProfile(summary = "Send messages to WebsphereMQ using the native client", tag = "producer,websphere",
     recommended = {AttachedConnection.class, DetachedConnection.class})
+@DisplayOrder(order = {"queue", "options", "checkOptions", "fieldMappers"})
 public class NativeProducer extends ProduceOnlyProducerImp implements LicensedComponent {
 
   @XStreamImplicit
   private List<FieldMapper> fieldMappers;
   private MessageOptions options;
   private Boolean checkOptions;
+
+  /**
+   * The destination is the native Websphere queue
+   *
+   */
+  @Getter
+  @Setter
+  @Deprecated
+  @Valid
+  @Removal(version = "4.0.0", message = "Use 'queue' instead")
+  private ProduceDestination destination;
+
+  /**
+   * the native Websphere queue
+   *
+   */
+  @InputFieldHint(expression = true)
+  @Getter
+  @Setter
+  // Needs to be @NotBlank when destination is removed.
+  private String queue;
+
+  private transient boolean destWarning;
+
   private transient ProducerDelegate proxy;
 
   public NativeProducer() {
@@ -71,6 +104,9 @@ public class NativeProducer extends ProduceOnlyProducerImp implements LicensedCo
 
   @Override
   public final void prepare() throws CoreException {
+    DestinationHelper.logWarningIfNotNull(destWarning, () -> destWarning = true, getDestination(),
+        "{} uses destination, use 'queue' instead", LoggingHelper.friendlyName(this));
+    DestinationHelper.mustHaveEither(getQueue(), getDestination());
     LicenseChecker.newChecker().checkLicense(this);
   }
 
@@ -79,71 +115,37 @@ public class NativeProducer extends ProduceOnlyProducerImp implements LicensedCo
     return license.isEnabled(LicenseType.Enterprise);
   }
 
-  /**
-   *
-   * @see com.adaptris.core.AdaptrisMessageProducer#produce(com.adaptris.core.AdaptrisMessage,
-   *      com.adaptris.core.ProduceDestination)
-   */
   @Override
-  public void produce(AdaptrisMessage msg, ProduceDestination destination) throws ProduceException {
+  protected void doProduce(AdaptrisMessage msg, String endpoint) throws ProduceException {
     try {
-      proxy.produce(msg, destination);
+      proxy.produce(msg, endpoint);
     } catch (ProduceException ex) {
-      if(ex.getCause() instanceof MQException) {
+      if (ex.getCause() instanceof MQException) {
         log.error("MQ Produce Exception:", ex);
         new Thread(new Runnable() {
           @Override
           public void run() {
-            try {
-              Thread.sleep(2000); // sleep for a short time to allow any transaction to end, then restart everything.
-            } catch (InterruptedException e) {
-              // ignore
-            }
-//            MQException exception = (MQException) ex.getCause();
-//            
-//            if(exception.reasonCode == MQException.MQRC_CONNECTION_BROKEN) {
-              retrieveConnection(NativeConnection.class).getConnectionErrorHandler().handleConnectionException();
-//            }
+            LifecycleHelper.waitQuietly(2000);
+            // MQException exception = (MQException) ex.getCause();
+            //
+            // if(exception.reasonCode == MQException.MQRC_CONNECTION_BROKEN) {
+            retrieveConnection(NativeConnection.class).getConnectionErrorHandler()
+                .handleConnectionException();
+            // }
           }
         }).start();
-        
+
       } else
         throw ex;
     }
   }
 
-  /**
-   *
-   * @see com.adaptris.core.AdaptrisComponent#close()
-   */
-  @Override
-  public void close() {
-  }
-
-  /**
-   *
-   * @see com.adaptris.core.AdaptrisComponent#init()
-   */
   @Override
   public void init() throws CoreException {
     proxy = new ProducerDelegate(this, log);
+    super.start();
   }
 
-  /**
-   *
-   * @see com.adaptris.core.AdaptrisComponent#start()
-   */
-  @Override
-  public void start() throws CoreException {
-  }
-
-  /**
-   *
-   * @see com.adaptris.core.AdaptrisComponent#stop()
-   */
-  @Override
-  public void stop() {
-  }
 
   /**
    * @return the propertyMappers
@@ -220,5 +222,11 @@ public class NativeProducer extends ProduceOnlyProducerImp implements LicensedCo
 
   protected boolean checkOptions() {
     return checkOptions != null ? checkOptions.booleanValue() : true;
+  }
+
+
+  @Override
+  public String endpoint(AdaptrisMessage msg) throws ProduceException {
+    return DestinationHelper.resolveProduceDestination(getQueue(), getDestination(), msg);
   }
 }

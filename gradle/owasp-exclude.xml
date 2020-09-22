@@ -26,5 +26,7 @@ Since the jar is optional; this is supplied by the user. so we don't physically 
    <cve>CVE-2019-4656</cve>
    <cve>CVE-2019-4719</cve>
    <cve>CVE-2020-4267</cve>
+   <cve>CVE-2020-4310</cve>
+   <cve>CVE-2020-4320</cve>
 </suppress>
 </suppressions>

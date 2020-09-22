@@ -1,7 +1,6 @@
 package com.adaptris.core.jms.wmq;
 
 import static com.adaptris.core.jms.wmq.AdvancedMqSeriesProducerTest.ACTIVATE_EXCEPTION_LISTENER_COMMENT;
-import com.adaptris.core.ConfiguredProduceDestination;
 import com.adaptris.core.StandaloneProducer;
 import com.adaptris.core.jms.JmsConnection;
 import com.adaptris.core.jms.JmsConnectionErrorHandler;
@@ -26,7 +25,7 @@ public class BasicMqSeriesProducerTest extends JmsProducerExample {
 
   @Override
   protected Object retrieveObjectForSampleConfig() {
-    PtpProducer producer = new PtpProducer(new ConfiguredProduceDestination("MQ_QUEUE"));
+    PtpProducer producer = new PtpProducer().withQueue("MQ_QUEUE");
     StandaloneProducer result = new StandaloneProducer(configure(new JmsConnection()), producer);
     return result;
   }

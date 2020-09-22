@@ -7,9 +7,7 @@
 package com.adaptris.core.wmq;
 
 import java.io.IOException;
-
 import org.slf4j.Logger;
-
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.CoreException;
@@ -59,7 +57,7 @@ class ConsumerDelegate {
 
   int processMessages() {
     int count = 0;
-    String queueName = adpConsumer.getDestination().getDestination();
+    String queueName = adpConsumer.queue();
     MQQueue mqQueue = null;
     MQQueueManager qm = null;
     try {
@@ -118,9 +116,9 @@ class ConsumerDelegate {
     for (FieldMapper f : adpConsumer.getPreGetFieldMappers()) {
       f.copy(msg, mqMsg);
     }
-    
+
     MQGetMessageOptions getOpt = createMQGetMessageOptions();
-    
+
     try {
       mqQueue.get(mqMsg, getOpt);
       handler.write(mqMsg, msg);
@@ -148,7 +146,7 @@ class ConsumerDelegate {
     getOpt.options = adpConsumer.getOptions().messageOptionsIntValue();
     return accessMQGetMessageOptions(getOpt);
   }
-  
+
   /*
    * These "access" methods have been added to allow mocking
    * By stubbing this method a test can use it's own mock MQMessage/MQGetMessageOptions
@@ -160,7 +158,7 @@ class ConsumerDelegate {
   public MQGetMessageOptions accessMQGetMessageOptions(MQGetMessageOptions options){
     return messageOptionsAccessor.accessMessageOptions(options);
   }
-  
+
   private void runErrorHandler(MQMessage message, Exception ex) throws Exception {
     if (getErrorHandler() == null) {
       throw ex;

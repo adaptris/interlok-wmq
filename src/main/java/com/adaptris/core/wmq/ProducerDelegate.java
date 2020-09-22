@@ -7,12 +7,9 @@
 package com.adaptris.core.wmq;
 
 import java.util.Date;
-
 import org.slf4j.Logger;
-
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
-import com.adaptris.core.ProduceDestination;
 import com.adaptris.core.ProduceException;
 import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
 import com.adaptris.core.wmq.mapping.FieldMapper;
@@ -29,9 +26,9 @@ import com.ibm.mq.MQQueueManager;
  * This is primarily to avoid any NoClassDef errors when starting up the Adapter without the appropriate WebsphereMQ jars. This is a
  * castor-workaround.
  * </p>
- * 
+ *
  * @author lchan
- * 
+ *
  */
 class ProducerDelegate {
 
@@ -48,10 +45,8 @@ class ProducerDelegate {
     adpProducer = p;
   }
 
-  void produce(AdaptrisMessage msg, ProduceDestination dest) throws ProduceException {
-    String queueName;
+  void produce(AdaptrisMessage msg, String queueName) throws ProduceException {
     try {
-      queueName = dest.getDestination(msg);
       int queueOpenOptions = checkQueueOptions();
       int messageOptions = checkMessageOptions();
       MQQueueManager qm = adpProducer.retrieveConnection(NativeConnection.class).connect();
