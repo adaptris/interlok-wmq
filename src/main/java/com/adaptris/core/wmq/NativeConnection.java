@@ -9,9 +9,8 @@ package com.adaptris.core.wmq;
 import java.io.OutputStreamWriter;
 import java.util.Hashtable;
 import java.util.Iterator;
-
 import org.slf4j.Logger;
-
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AllowsRetriesConnection;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.wmq.NoOpJmsConnectionErrorHandler;
@@ -23,6 +22,7 @@ import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 import com.adaptris.util.stream.Slf4jLoggingOutputStream;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQEnvironment;
 import com.ibm.mq.MQException;
@@ -30,15 +30,15 @@ import com.ibm.mq.MQQueueManager;
 
 /**
  * Abstract Connection implementation that uses the native WebsphereMQ client.
- * 
- * 
- * <p>
- * Requires an Enterprise license
- * </p>
- * 
- * @author lchan
- * 
+ *
+ *
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
+ *
  */
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public abstract class NativeConnection extends AllowsRetriesConnection implements LicensedComponent {
 
   enum WebsphereProperty {
@@ -229,7 +229,7 @@ public abstract class NativeConnection extends AllowsRetriesConnection implement
     }
     return result;
   }
-  
+
   @Override
   protected void closeConnection() {
     ;

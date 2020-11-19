@@ -8,34 +8,37 @@ package com.adaptris.core.wmq;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.adaptris.annotation.AutoPopulated;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQQueueManager;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Options handling queue access and MQMessage options when getting or putting messages on a MQQueue
- * 
+ *
  * <p>
  * The options can be set as an integer, or you can comma separate the option names. The options are directly copied from the
  * WebsphereMQ client API documentation.
  * </p>
- * 
+ *
  * @config wmq-message-options
- * 
+ *
  * @author lchan
- * 
+ *
  */
 @XStreamAlias("wmq-message-options")
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public class MessageOptions {
 
   private transient Logger log = LoggerFactory.getLogger(this.getClass());

@@ -1,23 +1,28 @@
 package com.adaptris.core.wmq.mapping;
 
 import java.io.IOException;
-
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.util.text.ByteTranslator;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Copy AdaptrisMessage metadata values to and from MQMessage fields.
- * 
+ *
  * @config wmq-metadata-field-mapper
- * 
- * @author lchan
- * 
+ *
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
+ *
  */
 @XStreamAlias("wmq-metadata-field-mapper")
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public class MetadataFieldMapper extends FieldMapper {
 
   private String metadataKey;
@@ -27,16 +32,16 @@ public class MetadataFieldMapper extends FieldMapper {
   }
 
   /**
-   * 
+   *
    * @param mqField The MQ Field name
    * @param metadataKey the adaptris metadata key.
    */
   public MetadataFieldMapper(String mqField, String metadataKey) {
     this(mqField, metadataKey, null);
   }
-  
+
   /**
-   * 
+   *
    * @param mqField the MQ Field name
    * @param metadataKey the adaptris metadata key
    * @param bt the byte translator.
@@ -47,7 +52,7 @@ public class MetadataFieldMapper extends FieldMapper {
     setMetadataKey(metadataKey);
     setByteTranslator(bt);
   }
-  
+
   @Override
   public void copy(AdaptrisMessage msg, MQMessage mqMsg) throws IOException,
       MQException, CoreException {

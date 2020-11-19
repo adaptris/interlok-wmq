@@ -1,22 +1,27 @@
 package com.adaptris.core.wmq.mapping;
 
 import java.io.IOException;
-
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.util.text.ByteTranslator;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Add a statically configured value as a MQMessage field.
- * 
+ *
  * @config wmq-configured-field
- * @author lchan
- * 
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
+ *
  */
 @XStreamAlias("wmq-configured-field")
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public class ConfiguredField extends FieldMapper {
 
   private String configuredValue;
@@ -26,7 +31,7 @@ public class ConfiguredField extends FieldMapper {
   }
 
   /**
-   * 
+   *
    * @param mqField the field name
    * @param value the value to map.
    */
@@ -35,7 +40,7 @@ public class ConfiguredField extends FieldMapper {
   }
 
   /**
-   * 
+   *
    * @param mqField the field name
    * @param value the value to map.
    * @param bt the byte translator
@@ -60,7 +65,7 @@ public class ConfiguredField extends FieldMapper {
   }
 
   /**
-   * 
+   *
    * @see com.adaptris.core.wmq.mapping.FieldMapper#copy(com.ibm.mq.MQMessage,
    *      com.adaptris.core.AdaptrisMessage)
    */

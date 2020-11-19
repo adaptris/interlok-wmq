@@ -8,7 +8,9 @@ package com.adaptris.core.wmq;
 
 import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.ComponentProfile;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.CoreException;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQQueueManager;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -16,34 +18,40 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * Connection implementation that uses the native WebsphereMQ API.
  * <p>
- * This implementation creates a single MQQueueManager instance when the connection is started. This MQQueueManager instance is then
- * shared across all components associated with this connection.
+ * This implementation creates a single MQQueueManager instance when the connection is started. This
+ * MQQueueManager instance is then shared across all components associated with this connection.
  * </p>
  * <p>
- * It is not recommended to use this type of connection, as a persistent MQQueueManager may stop some versions of WebsphereMQ from
- * performing a controlled shutdown. In addition to this, it may also stop WebsphereMQ from recovering from an uncontrolled
- * shutdown.
+ * It is not recommended to use this type of connection, as a persistent MQQueueManager may stop
+ * some versions of WebsphereMQ from performing a controlled shutdown. In addition to this, it may
+ * also stop WebsphereMQ from recovering from an uncontrolled shutdown.
  * </p>
  * <p>
- * If you require SSL support then you should review this <a
- * href="http://www.ibm.com/developerworks/websphere/library/techarticles/0510_fehners/0510_fehners.html" >developerWorks
- * article</a> which contains a good primer about the settings that will be required for using SSL with the adapter.
+ * If you require SSL support then you should review this <a href=
+ * "http://www.ibm.com/developerworks/websphere/library/techarticles/0510_fehners/0510_fehners.html"
+ * >developerWorks article</a> which contains a good primer about the settings that will be required
+ * for using SSL with the adapter.
  * </p>
  * <p>
- * Depending on your WebsphereMQ configuration you will need to have installed and configured the WebsphereMQ Client software for
- * your platform. The jars from the WebsphereMQ Client software should be copied into the adapter's lib directory.
+ * Depending on your WebsphereMQ configuration you will need to have installed and configured the
+ * WebsphereMQ Client software for your platform. The jars from the WebsphereMQ Client software
+ * should be copied into the adapter's lib directory.
  * </p>
- * 
+ *
  * @config wmq-attached-connection
- * @license BASIC
- * 
- * @author lchan
- * 
+ * @license ENTERPRISE
+ *
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
+ *
  */
+@Deprecated
 @XStreamAlias("wmq-attached-connection")
 @AdapterComponent
 @ComponentProfile(summary = "Connection for supporting a native WebsphereMQ Client", tag = "connections,websphere",
     recommended = {NativeConsumer.class, NativeProducer.class})
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public class AttachedConnection extends NativeConnection {
 
   private MQQueueManager mqQueueManager;
@@ -58,9 +66,9 @@ public class AttachedConnection extends NativeConnection {
    */
   @Override
   protected void startConnection() throws CoreException {
-    
+
   }
-  
+
   /**
   *
   * @see com.adaptris.core.AdaptrisConnectionImp#initConnection()

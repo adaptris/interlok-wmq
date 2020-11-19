@@ -7,7 +7,7 @@ import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.annotation.DisplayOrder;
 import com.adaptris.annotation.InputFieldHint;
-import com.adaptris.validation.constraints.ConfigDeprecated;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ProduceDestination;
@@ -21,6 +21,7 @@ import com.adaptris.core.util.DestinationHelper;
 import com.adaptris.core.util.LifecycleHelper;
 import com.adaptris.core.util.LoggingHelper;
 import com.adaptris.core.wmq.mapping.FieldMapper;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -30,13 +31,15 @@ import lombok.Setter;
 /**
  * MessageProducer implementation that uses the WebsphereMQ native client.
  * <p>
- * Depending on your WebsphereMQ configuration you will need to have installed and configured the WebsphereMQ Client software for
- * your platform. The jars from the WebsphereMQ Client software should be copied into the adapter's lib directory.
+ * Depending on your WebsphereMQ configuration you will need to have installed and configured the
+ * WebsphereMQ Client software for your platform. The jars from the WebsphereMQ Client software
+ * should be copied into the adapter's lib directory.
  * </p>
  * <p>
- * If you configure FieldMappers, then by default the current date and time is inserted as the putDateTime field (using
- * MQC.MQOO_SET_ALL_CONTEXT means that all fields are undefined). This value may be overridden by explicitly declaring a FieldMapper
- * for the putDateTime field. In all cases, {@link com.adaptris.util.text.DateFormatUtil#parse(String)} will be used to parse any
+ * If you configure FieldMappers, then by default the current date and time is inserted as the
+ * putDateTime field (using MQC.MQOO_SET_ALL_CONTEXT means that all fields are undefined). This
+ * value may be overridden by explicitly declaring a FieldMapper for the putDateTime field. In all
+ * cases, {@link com.adaptris.util.text.DateFormatUtil#parse(String)} will be used to parse any
  * values to be used for putDateTime.
  * </p>
  *
@@ -44,13 +47,17 @@ import lombok.Setter;
  * @license ENTERPRISE
  *
  *
- * @author lchan
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
  */
 @XStreamAlias("wmq-native-producer")
 @AdapterComponent
 @ComponentProfile(summary = "Send messages to WebsphereMQ using the native client", tag = "producer,websphere",
     recommended = {AttachedConnection.class, DetachedConnection.class})
 @DisplayOrder(order = {"queue", "options", "checkOptions", "fieldMappers"})
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public class NativeProducer extends ProduceOnlyProducerImp implements LicensedComponent {
 
   @XStreamImplicit
