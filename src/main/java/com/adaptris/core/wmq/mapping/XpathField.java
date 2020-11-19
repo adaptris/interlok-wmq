@@ -1,28 +1,32 @@
 package com.adaptris.core.wmq.mapping;
 
 import static com.adaptris.core.util.XmlHelper.createXmlUtils;
-
 import java.io.IOException;
-
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.util.KeyValuePairSet;
 import com.adaptris.util.XmlUtils;
 import com.adaptris.util.text.ByteTranslator;
 import com.adaptris.util.text.xml.SimpleNamespaceContext;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Resolve an XPath on the AdaptrisMessage payload and use that value as a MQMessage field.
- * 
+ *
  * @config wmq-xpath-field
- * 
- * @author lchan
- * 
+ *
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
+ *
  */
 @XStreamAlias("wmq-xpath-field")
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public class XpathField extends FieldMapper {
   private KeyValuePairSet namespaceContext;
 
@@ -119,7 +123,7 @@ public class XpathField extends FieldMapper {
    * <li>The key is the namespace prefix</li>
    * <li>The value is the namespace uri</li>
    * </ul>
-   * 
+   *
    * @param namespaceContext
    */
   public void setNamespaceContext(KeyValuePairSet namespaceContext) {

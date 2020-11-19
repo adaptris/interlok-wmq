@@ -2,24 +2,27 @@ package com.adaptris.core.wmq.mapping;
 
 import java.io.IOException;
 import java.util.GregorianCalendar;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.util.text.ByteTranslator;
 import com.adaptris.util.text.DateFormatUtil;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQMessage;
 
 /**
- * Abstract base class for mapping MQMessage fields to AdaptrisMessage objects
- * and vice versa.
- * 
- * @author lchan
- * 
+ * Abstract base class for mapping MQMessage fields to AdaptrisMessage objects and vice versa.
+ *
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
+ *
  */
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public abstract class FieldMapper {
 
   /** Fields within a MQMessage.
@@ -74,7 +77,7 @@ public abstract class FieldMapper {
         return msg.applicationOriginData;
       }
 
-    },    
+    },
     backoutCount {
       @Override
       public void setMqField(MQMessage msg, String value, ByteTranslator c) {
@@ -350,7 +353,7 @@ public abstract class FieldMapper {
           throws IOException {
         return DateFormatUtil.format(msg.putDateTime.getTime());
       }
-    },    
+    },
     replyToQueueManagerName {
       @Override
       public void setMqField(MQMessage msg, String value, ByteTranslator c)
@@ -412,7 +415,7 @@ public abstract class FieldMapper {
           msg.setVersion(version);
         } catch (Exception e) {
           throw new IOException("Failed to set version to " + value, e);
-        } 
+        }
       }
 
       @Override
@@ -421,12 +424,12 @@ public abstract class FieldMapper {
         return "" + msg.getVersion();
       }
     };
-    
+
     public static final String NO_BYTE_TRANSLATOR_ERROR = " is a byte[] field, no ByteTranslator";
-    
+
     /**
      * Map the value onto the specific mq-field.
-     * 
+     *
      * @param msg the MQMessage whose fields need to be modified
      * @param value the value
      * @param c the byte translator, if appropriate
@@ -437,7 +440,7 @@ public abstract class FieldMapper {
 
     /**
      * Get the MQMessage field and return it as a String.
-     * 
+     *
      * @param msg the MQMessage
      * @param c the byte translator to be used if appropriate
      * @return the string representing the field.
@@ -467,7 +470,7 @@ public abstract class FieldMapper {
 
   /**
    * The field name that will be mapped.
-   * 
+   *
    * @param s the mqFieldName to set
    * @see com.ibm.mq.MQMD
    * @see Field
@@ -478,7 +481,7 @@ public abstract class FieldMapper {
 
   /**
    * Copy information from the AdaptrisMessage object into the MQMessage object.
-   * 
+   *
    * @param msg the AdaptrisMessage Object.
    * @param mqMsg the MQMessage object.
    * @throws IOException wrapping any IOException
@@ -490,7 +493,7 @@ public abstract class FieldMapper {
 
   /**
    * Copy information from the MQMessage object into the AdaptrisMessage object.
-   * 
+   *
    * @param msg the AdaptrisMessage Object.
    * @param mqMsg the MQMessage object.
    * @throws IOException wrapping any IOException
@@ -522,7 +525,7 @@ public abstract class FieldMapper {
   /**
    * Set the ByteTranslator implementation to use when attempting to convert to
    * and from MQMessage fields that are byte[].
-   * 
+   *
    * @param vt the ByteTranslator to set
    * @see ByteTranslator
    */
@@ -539,7 +542,7 @@ public abstract class FieldMapper {
 
   /**
    * Whether or not to convert nulls into an empty string.
-   * 
+   *
    * @param b the convertNull to set
    */
   public void setConvertNull(boolean b) {

@@ -13,7 +13,7 @@ import com.adaptris.annotation.AdapterComponent;
 import com.adaptris.annotation.AdvancedConfig;
 import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.annotation.DisplayOrder;
-import com.adaptris.validation.constraints.ConfigDeprecated;
+import com.adaptris.annotation.Removal;
 import com.adaptris.core.AdaptrisPollingConsumer;
 import com.adaptris.core.ConsumeDestination;
 import com.adaptris.core.CoreException;
@@ -24,6 +24,7 @@ import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.core.util.DestinationHelper;
 import com.adaptris.core.util.LoggingHelper;
 import com.adaptris.core.wmq.mapping.FieldMapper;
+import com.adaptris.validation.constraints.ConfigDeprecated;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,14 +32,15 @@ import lombok.Setter;
 /**
  * MessageConsumer implementation that uses the WebsphereMQ native client.
  * <p>
- * Depending on your WebsphereMQ configuration you will need to have installed and configured the WebsphereMQ Client software for
- * your platform. The jars from the WebsphereMQ Client software should be copied into the adapter's lib directory.
+ * Depending on your WebsphereMQ configuration you will need to have installed and configured the
+ * WebsphereMQ Client software for your platform. The jars from the WebsphereMQ Client software
+ * should be copied into the adapter's lib directory.
  * </p>
  *
  * @config wmq-native-consumer
  * @license ENTERPRISE
  *
- * @author lchan
+ * @deprecated since 3.11.1 without replacement since IBM recommend you use JMS instead
  *
  */
 @XStreamAlias("wmq-native-consumer")
@@ -46,6 +48,10 @@ import lombok.Setter;
 @ComponentProfile(summary = "Receive messages from WebsphereMQ using the native client", tag = "consumer,websphere",
     recommended = {AttachedConnection.class, DetachedConnection.class})
 @DisplayOrder(order = {"queue", "logAllExceptions"})
+@Deprecated
+@ConfigDeprecated(removalVersion = "4.0.0", message = "IBM recommends using JMS instead",
+    groups = Deprecated.class)
+@Removal(version = "4.0.0")
 public class NativeConsumer extends AdaptrisPollingConsumer implements LicensedComponent {
 
   private List<FieldMapper> preGetFieldMappers;
