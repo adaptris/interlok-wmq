@@ -9,14 +9,17 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
-import com.adaptris.core.BaseCase;
 import com.adaptris.core.wmq.MQMessageFactory.MQMessageInstance;
+import com.adaptris.interlok.junit.scaffolding.BaseCase;
 import com.ibm.mq.MQC;
 import com.ibm.mq.MQMessage;
 
@@ -28,28 +31,27 @@ public class MQMessageFactoryTest extends BaseCase {
 
   @Mock private MQMessage mqMsg;
   @Mock private AdaptrisMessage adpMsg;
-  
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
-  
+
+  private AutoCloseable closeable;
+
   @Before
   public void setUp() throws Exception {
-	MockitoAnnotations.initMocks(this);
-	
-	when(mqMsg.readUTF()).thenReturn(XML_DOC);
-	when(mqMsg.readStringOfByteLength(XML_DOC.length())).thenReturn(XML_DOC);
-	int length = XML_DOC.getBytes().length;
+    closeable = MockitoAnnotations.openMocks(this);
+
+    when(mqMsg.readUTF()).thenReturn(XML_DOC);
+    when(mqMsg.readStringOfByteLength(XML_DOC.length())).thenReturn(XML_DOC);
+    int length = XML_DOC.getBytes().length;
     byte[] b = new byte[length];
-	when(mqMsg.getDataLength()).thenReturn(length);
-	doNothing().when(mqMsg).readFully(b);
-	
-	when(adpMsg.getStringPayload()).thenReturn(XML_DOC);
-	when(adpMsg.getPayload()).thenReturn(XML_DOC.getBytes());
+    when(mqMsg.getDataLength()).thenReturn(length);
+    doNothing().when(mqMsg).readFully(b);
+
+    when(adpMsg.getStringPayload()).thenReturn(XML_DOC);
+    when(adpMsg.getPayload()).thenReturn(XML_DOC.getBytes());
   }
 
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
+    closeable.close();
   }
 
   @Test
@@ -58,10 +60,10 @@ public class MQMessageFactoryTest extends BaseCase {
     for (int i = 0; i < instances.length; i++) {
       MQMessageFactory.create(instances[i].name());
     }
-    
+
     MQMessageInstance instance = MQMessageFactory.create("Not an MQMessageInstance");
     assertEquals(MQMessageInstance.Text, instance);
-    
+
     //Why not get 100% code coverage during testing
     new MQMessageFactory();
   }
@@ -76,10 +78,10 @@ public class MQMessageFactoryTest extends BaseCase {
     //AdaptrisMessage writeTo = AdaptrisMessageFactory.create();
     //instance.write(msg, writeTo);
     //assertEquals(XML_DOC, writeTo.getStringPayload());
-    
+
     instance.write(adpMsg, mqMsg);
     verify(mqMsg).writeUTF(XML_DOC);
-    
+
     instance.write(mqMsg, adpMsg);
     verify(adpMsg).setStringPayload(XML_DOC, "UTF-8");
   }
@@ -89,10 +91,10 @@ public class MQMessageFactoryTest extends BaseCase {
     MQMessageInstance instance = MQMessageInstance.String;
     MQMessage msg = instance.create();
     assertEquals(MQC.MQFMT_STRING, msg.format);
-    
+
     instance.write(adpMsg, mqMsg);
     verify(mqMsg).writeString(XML_DOC);
-    
+
     instance.write(mqMsg, adpMsg);
     verify(adpMsg).setStringPayload(XML_DOC, adpMsg.getCharEncoding());
   }
@@ -102,13 +104,13 @@ public class MQMessageFactoryTest extends BaseCase {
     MQMessageInstance instance = MQMessageInstance.Bytes;
     MQMessage msg = instance.create();
     assertEquals(MQC.MQFMT_NONE, msg.format);
-    
+
     instance.write(adpMsg, mqMsg);
     verify(mqMsg).write(XML_DOC.getBytes());
-    
-	int length = XML_DOC.getBytes().length;
+
+    int length = XML_DOC.getBytes().length;
     byte[] b = new byte[length];
-    
+
     instance.write(mqMsg, adpMsg);
     verify(adpMsg).setPayload(b);
   }
@@ -118,13 +120,13 @@ public class MQMessageFactoryTest extends BaseCase {
     MQMessageInstance instance = MQMessageInstance.Object;
     MQMessage msg = instance.create();
     assertEquals("Object", msg.format);
-    
+
     instance.write(adpMsg, mqMsg);
     verify(mqMsg).write(XML_DOC.getBytes());
-    
-	int length = XML_DOC.getBytes().length;
+
+    int length = XML_DOC.getBytes().length;
     byte[] b = new byte[length];
-    
+
     instance.write(mqMsg, adpMsg);
     verify(adpMsg).setPayload(b);
   }

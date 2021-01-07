@@ -8,14 +8,17 @@ package com.adaptris.core.wmq.mapping;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.Date;
+
 import org.junit.Test;
+
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
-import com.adaptris.core.BaseCase;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.wmq.mapping.FieldMapper.Field;
+import com.adaptris.interlok.junit.scaffolding.BaseCase;
 import com.adaptris.util.GuidGenerator;
 import com.adaptris.util.text.Base64ByteTranslator;
 import com.adaptris.util.text.DateFormatUtil;
@@ -31,12 +34,6 @@ public class FieldMapperTest extends BaseCase {
   private static final String NUMERIC_CONTENT = "102";
   private static final String VERSION = "2";
 
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
-  
-  
   @Test
   public void testFieldAccountingToken() throws Exception {
     MQMessage mqMsg = new MQMessage();

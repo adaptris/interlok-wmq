@@ -3,17 +3,13 @@ package com.adaptris.core.jms.wmq;
 import static com.adaptris.core.jms.wmq.AdvancedMqSeriesProducerTest.ACTIVATE_EXCEPTION_LISTENER_COMMENT;
 import static com.adaptris.core.jms.wmq.AdvancedMqSeriesProducerTest.THIS_IS_JUST_AN_EXAMPLE_COMMENT;
 import static com.adaptris.core.jms.wmq.AdvancedMqSeriesProducerTest.configure;
+
 import com.adaptris.core.StandaloneConsumer;
 import com.adaptris.core.jms.JmsConnection;
-import com.adaptris.core.jms.JmsConsumerCase;
 import com.adaptris.core.jms.PtpConsumer;
+import com.adaptris.interlok.junit.scaffolding.jms.JmsConsumerCase;
 
 public class AdvancedMqSeriesConsumerTest extends JmsConsumerCase {
-
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
 
   @Override
   protected String createBaseFileName(Object object) {

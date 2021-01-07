@@ -1,12 +1,14 @@
 package com.adaptris.core.wmq;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.ProduceDestination;
@@ -18,7 +20,7 @@ import com.ibm.mq.MQPutMessageOptions;
 import com.ibm.mq.MQQueue;
 import com.ibm.mq.MQQueueManager;
 
-public class MQMessageProducerTest extends TestCase {
+public class MQMessageProducerTest {
 
   /**
    * This tests the MQMessageProducer It also tests
@@ -45,8 +47,8 @@ public class MQMessageProducerTest extends TestCase {
   private MessageOptions msgOptions;
   private AttachedConnection attConn = context.mock(AttachedConnection.class);
 
-  @Override
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     exceptionNoQueue = new MQException(MQException.MQCC_FAILED,
         MQException.MQRC_Q_DELETED, "Mock Test");
 
@@ -57,24 +59,25 @@ public class MQMessageProducerTest extends TestCase {
     msgOptions = new MessageOptions();
   }
 
+  @Test
   public void testOnError() throws Exception {
     context.checking(new Expectations() {
       {
         allowing(errorDestination).getDestination(with(any(AdaptrisMessage.class)));
-              will(returnValue(ERROR_DESTINATION));
+        will(returnValue(ERROR_DESTINATION));
         allowing(nativeConsumer).getOptions();
-              will(returnValue(msgOptions));
+        will(returnValue(msgOptions));
         allowing(nativeConsumer).retrieveConnection(with(any(Class.class)));
-              will(returnValue(attConn));
+        will(returnValue(attConn));
         allowing(attConn).connect();
-              will(returnValue(mqQueueManager));
+        will(returnValue(mqQueueManager));
         allowing(mqQueueManager).accessQueue(with(any(String.class)), with(any(int.class)));
-            will(returnValue(mqQueue));
+        will(returnValue(mqQueue));
         allowing(attConn);
 
         atLeast(2).of(mqQueue).put(with(any(MQMessage.class)), with(any(MQPutMessageOptions.class)));
         allowing(mqQueue).close();
-            throwException(exceptionNoQueue);
+        throwException(exceptionNoQueue);
       }
     });
 
@@ -93,6 +96,7 @@ public class MQMessageProducerTest extends TestCase {
     context.assertIsSatisfied();
   }
 
+  @Test
   public void testMQProducerBasic() throws Exception {
     MQMessageProducer producer = new MQMessageProducer();
     producer.setConnection(attConn);

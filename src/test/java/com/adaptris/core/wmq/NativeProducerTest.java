@@ -2,6 +2,7 @@ package com.adaptris.core.wmq;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.jmock.lib.concurrent.Synchroniser;
@@ -10,10 +11,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
+
 import com.adaptris.core.AdaptrisConnection;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageListener;
-import com.adaptris.core.ProducerCase;
 import com.adaptris.core.StandaloneProducer;
 import com.adaptris.core.licensing.License;
 import com.adaptris.core.licensing.License.LicenseType;
@@ -21,6 +22,7 @@ import com.adaptris.core.util.LifecycleHelper;
 import com.adaptris.core.wmq.mapping.ConfiguredField;
 import com.adaptris.core.wmq.mapping.MessageIdMapper;
 import com.adaptris.core.wmq.mapping.MetadataFieldMapper;
+import com.adaptris.interlok.junit.scaffolding.ExampleProducerCase;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.text.CharsetByteTranslator;
 import com.ibm.mq.MQC;
@@ -31,7 +33,7 @@ import com.ibm.mq.MQPutMessageOptions;
 import com.ibm.mq.MQQueue;
 import com.ibm.mq.MQQueueManager;
 
-public class NativeProducerTest extends ProducerCase {
+public class NativeProducerTest extends ExampleProducerCase {
 
   @Rule
   public final JUnitRuleMockery context = new JUnitRuleMockery() {{
@@ -64,10 +66,6 @@ public class NativeProducerTest extends ProducerCase {
       setBaseDir(PROPERTIES.getProperty(BASE_DIR_KEY));
     }
   }
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
 
   @Before
   public void setUp() throws Exception {
@@ -83,9 +81,9 @@ public class NativeProducerTest extends ProducerCase {
       allowing(metadataFieldMapper).copy(with(any(MQMessage.class)), with(any(AdaptrisMessage.class)));
       allowing(metadataFieldMapper).copy(with(any(AdaptrisMessage.class)), with(any(MQMessage.class)));
       allowing(adpMsg).resolve(PRODUCE_DESTINATION);
-            will(returnValue(PRODUCE_DESTINATION));
+      will(returnValue(PRODUCE_DESTINATION));
       allowing(adpMsg).getStringPayload();
-            will(returnValue(MESSAGE_PAYLOAD));
+      will(returnValue(MESSAGE_PAYLOAD));
     }});
 
     p = new NativeProducer();
@@ -107,16 +105,16 @@ public class NativeProducerTest extends ProducerCase {
     // when(mqMsg1.readUTF()).thenReturn(MESSAGE_PAYLOAD);
 
     context.checking(new Expectations() {{
-   // Throw a "No Message" exception for message2 to end the .consumeMessage()
+      // Throw a "No Message" exception for message2 to end the .consumeMessage()
       allowing(mqQueue).get(mqMsg2, mqGetOptions);
-            will(throwException(exceptionNoMessages));
+      will(throwException(exceptionNoMessages));
       allowing(adaptrisConnection).retrieveConnection(NativeConnection.class);
-            will(returnValue(nativeConnection));
+      will(returnValue(nativeConnection));
       allowing(nativeConnection).disconnect(with(any(MQQueueManager.class)));
       allowing(nativeConnection).connect();
-            will(returnValue(mqQueueManager));
+      will(returnValue(mqQueueManager));
       allowing(mqQueueManager).accessQueue(with(any(String.class)), with(any(int.class)));
-            will(returnValue(mqQueue));
+      will(returnValue(mqQueue));
     }});
     // when(p.retrieveProxy().accessMQGetMessageOptions((MQGetMessageOptions)Matchers.anyObject())).thenReturn(mqGetOptions);
 
@@ -229,15 +227,15 @@ public class NativeProducerTest extends ProducerCase {
   @Test
   public void testLicense() throws Exception {
     context.checking(new Expectations() {{
-        oneOf(lic).isEnabled(LicenseType.Enterprise);
-        will(returnValue(true));
+      oneOf(lic).isEnabled(LicenseType.Enterprise);
+      will(returnValue(true));
     }});
 
     assertTrue(p.isEnabled(lic));
 
     context.checking(new Expectations() {{
-        oneOf(lic).isEnabled(LicenseType.Enterprise);
-        will(returnValue(false));
+      oneOf(lic).isEnabled(LicenseType.Enterprise);
+      will(returnValue(false));
     }});
 
     assertFalse(p.isEnabled(lic));
@@ -261,14 +259,14 @@ public class NativeProducerTest extends ProducerCase {
         new KeyValuePair(MQC.CCSID_PROPERTY, "MyCCSID"));
     con.setWorkersFirstOnShutdown(true);
     con.getEnvironmentProperties()
-        .addKeyValuePair(
-            new KeyValuePair(MQC.SSL_CIPHER_SUITE_PROPERTY,
-                "SSL_RSA_WITH_NULL_MD5"));
+    .addKeyValuePair(
+        new KeyValuePair(MQC.SSL_CIPHER_SUITE_PROPERTY,
+            "SSL_RSA_WITH_NULL_MD5"));
     p.setQueue("SYSTEM.DEFAULT.LOCAL.QUEUE");
     p.getOptions().setQueueOpenOptions(
         "MQOO_INPUT_AS_Q_DEF,MQOO_OUTPUT,MQOO_SET_ALL_CONTEXT");
     p.getOptions()
-        .setMessageOptions("MQPMO_NO_SYNCPOINT,MQPMO_SET_ALL_CONTEXT");
+    .setMessageOptions("MQPMO_NO_SYNCPOINT,MQPMO_SET_ALL_CONTEXT");
     MessageIdMapper mm = new MessageIdMapper();
     mm.setByteTranslator(new CharsetByteTranslator("UTF-8"));
     p.addFieldMapper(mm);
