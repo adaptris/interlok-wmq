@@ -6,11 +6,6 @@ import com.adaptris.core.StandaloneConsumer;
 public class NativeConsumerWithErrorHandlerTest extends NativeConsumerTest {
 
   @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
-
-  @Override
   protected NativeErrorHandler createErrorHandler() {
     ForwardingNativeConsumerErrorHandler fnceh = new ForwardingNativeConsumerErrorHandler();
     fnceh.setDestination(new ConfiguredProduceDestination("The_Error_Queue"));
