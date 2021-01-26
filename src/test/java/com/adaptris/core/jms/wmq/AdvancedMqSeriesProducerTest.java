@@ -9,9 +9,9 @@ package com.adaptris.core.jms.wmq;
 import com.adaptris.core.StandaloneProducer;
 import com.adaptris.core.jms.JmsConnection;
 import com.adaptris.core.jms.JmsConnectionErrorHandler;
-import com.adaptris.core.jms.JmsProducerExample;
 import com.adaptris.core.jms.PtpProducer;
 import com.adaptris.core.jms.wmq.AdvancedMqSeriesImplementation.ConnectionFactoryProperty;
+import com.adaptris.interlok.junit.scaffolding.jms.JmsProducerExample;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 
@@ -34,11 +34,6 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
       + "\nproperties with random values. They almost certainly will not"
       + "\nbe the correct ones for your environment; you should look at "
       + "\nyour WebsphereMQ configuration to see what values you should" + "\nuse." + "\n-->\n";
-
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
 
   @Override
   protected String createBaseFileName(Object object) {

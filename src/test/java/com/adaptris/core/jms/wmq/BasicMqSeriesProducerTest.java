@@ -1,11 +1,12 @@
 package com.adaptris.core.jms.wmq;
 
 import static com.adaptris.core.jms.wmq.AdvancedMqSeriesProducerTest.ACTIVATE_EXCEPTION_LISTENER_COMMENT;
+
 import com.adaptris.core.StandaloneProducer;
 import com.adaptris.core.jms.JmsConnection;
 import com.adaptris.core.jms.JmsConnectionErrorHandler;
-import com.adaptris.core.jms.JmsProducerExample;
 import com.adaptris.core.jms.PtpProducer;
+import com.adaptris.interlok.junit.scaffolding.jms.JmsProducerExample;
 
 public class BasicMqSeriesProducerTest extends JmsProducerExample {
 
@@ -14,10 +15,6 @@ public class BasicMqSeriesProducerTest extends JmsProducerExample {
       + "\nbe the correct ones for your environment; you should look at "
       + "\nyour WebsphereMQ configuration to see what values you should" + "\nuse." + "\n-->\n";
 
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
-  }
   @Override
   protected String createBaseFileName(Object object) {
     return super.createBaseFileName(object) + "-BasicWebsphereMQ";
