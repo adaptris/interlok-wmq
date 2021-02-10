@@ -46,12 +46,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * The key from the <code>connection-factory-properties</code> element should match the name of the underlying MQConnectionFactory
  * property/method. <code>
  * <pre>
- *   &lt;connection-factory-properties>
- *     &lt;key-value-pair>
- *        &lt;key>SendExitInit&lt;/key>
- *        &lt;value>SomeData&lt;/value>
- *     &lt;/key-value-pair>
- *   &lt;/connection-factory-properties>
+ *   &lt;connection-factory-properties&gt;
+ *     &lt;key-value-pair&gt;
+ *        &lt;key&gt;SendExitInit&lt;/key&gt;
+ *        &lt;value&gt;SomeData&lt;/value&gt;
+ *     &lt;/key-value-pair&gt;
+ *   &lt;/connection-factory-properties&gt;
  * </pre>
  * </code> would call {@link MQConnectionFactory#setSendExitInit(String)}.
  * </p>
@@ -62,13 +62,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * available properties.
  * <code>
  * <pre>
- *   &lt;session-properties>
-       &lt;mq-session-property>
-         &lt;property-name>OptimisticPublication&lt;/property-name>
-         &lt;value>true&lt;/value>
-         &lt;data-type>Boolean&lt;/data-type>
-       &lt;/mq-session-property>
-     &lt;/session-properties>
+ *   &lt;session-properties&gt;
+       &lt;mq-session-property&gt;
+         &lt;property-name&gt;OptimisticPublication&lt;/property-name&gt;
+         &lt;value&gt;true&lt;/value&gt;
+         &lt;data-type&gt;Boolean&lt;/data-type&gt;
+       &lt;/mq-session-property&gt;
+     &lt;/session-properties&gt;
  * </pre>
  * </code>
  * </p>
@@ -103,9 +103,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * connected). It also allows you to set the other properties contained in a com.ibm.mq.jms.MQQueue object. The URI for a queue
  * begins with the sequence queue://, followed by the name of the queue manager on which the queue resides. This is followed by a
  * further /, the name of the queue, and optionally, a list of name-value pairs that set the remaining Queue properties. For
- * example: <strong>queue://Some_Other_Queue_Manager/SampleQ1?key1=value1&key2=value2</strong>. If you don't specify a queue manager
+ * example: <strong>queue://Some_Other_Queue_Manager/SampleQ1?key1=value1&amp;key2=value2</strong>. If you don't specify a queue manager
  * in the URI then it is interpreted to be the queue manager to which you are currently connected to e.g.
- * <strong>queue:///SampleQ1?key1=value1&key2=value2</strong>).
+ * <strong>queue:///SampleQ1?key1=value1&amp;key2=value2</strong>).
  * </p>
  * <p>
  * Various name value pairs can be used as part of the URI; these include, but is not limited to (some of these values may have a
