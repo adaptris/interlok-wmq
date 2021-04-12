@@ -8,6 +8,7 @@ import javax.validation.constraints.Pattern;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import com.adaptris.annotation.AutoPopulated;
+import com.adaptris.annotation.DisplayOrder;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
@@ -31,7 +32,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * Note that if you require SSL support then you should use {@link AdvancedMqSeriesImplementation} which allows greater flexibility
  * in configuration
  * </p>
- * 
+ *
  * <p>
  * WebsphereMQ requires you to set the transport type for your connection.  Although the transport type is an integer, we have provided
  * a string mapping to make configuration more readable.  So your transport type should be set to one of the following (for reference we include the internal integer mapping);
@@ -56,7 +57,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * </tr>
  * </table>
  * </p>
- * 
+ *
  * <p>
  * By default, all JMS clients to MQ Series will create what is known as an MQRFH2 Header that will form part of the Websphere MQ
  * message. This is used to store (amongst other things) some of the JMS headers that you wanted to preserve using
@@ -66,7 +67,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * format internally within WebpshereMQ is MQRFH2 and not MQSTR format</strong>. Accordingly the receiving application needs to be
  * able to parse MQRFH2 headers which may not be possible.
  * </p>
- * 
+ *
  * <p>
  * If the MQRFH2 Header/format is not required or you need to change the message type to MQSTR, then you need to tell MQSeries to
  * omit the MQRFH2 Header; this will mean that you'll lose all the JMS properties that are <a
@@ -83,9 +84,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * connected). It also allows you to set the other properties contained in a com.ibm.mq.jms.MQQueue object. The URI for a queue
  * begins with the sequence queue://, followed by the name of the queue manager on which the queue resides. This is followed by a
  * further /, the name of the queue, and optionally, a list of name-value pairs that set the remaining Queue properties. For
- * example: <strong>queue://Some_Other_Queue_Manager/SampleQ1?key1=value1&key2=value2</strong>. If you don't specify a queue manager
+ * example: <strong>queue://Some_Other_Queue_Manager/SampleQ1?key1=value1&amp;key2=value2</strong>. If you don't specify a queue manager
  * in the URI then it is interpreted to be the queue manager to which you are currently connected to e.g.
- * <strong>queue:///SampleQ1?key1=value1&key2=value2</strong>).
+ * <strong>queue:///SampleQ1?key1=value1&amp;key2=value2</strong>).
  * </p>
  * <p>
  * Various name value pairs can be used as part of the URI; these include, but is not limited to (some of these values may have a
@@ -133,11 +134,12 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <td>0=JMS, 1=MQ</td>
  * </tr>
  * </table>
- * 
+ *
  * @config basic-mq-series-implementation
  * @license BASIC
  */
 @XStreamAlias("basic-mq-series-implementation")
+@DisplayOrder(order = { "brokerHost", "brokerPort" })
 public class BasicMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
 
   private int ccsid;
@@ -322,7 +324,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
   }
 
   public void setBrokerPort(int port) {
-    this.brokerPort = port;
+    brokerPort = port;
   }
 
 
@@ -348,10 +350,10 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
     }
     return false;
   }
-  
+
   @Override
   public String retrieveBrokerDetailsForLogging() {
-    return String.format("Host: %s; Port: %d: Channel: %s; Transport: %s", 
+    return String.format("Host: %s; Port: %d: Channel: %s; Transport: %s",
         getBrokerHost(), getBrokerPort(), getChannel(), getTransportType());
   }
 }
