@@ -27,7 +27,6 @@ ext {
 
   interlokJavadocs= project.hasProperty('interlokJavadocs') ? project.getProperty('interlokJavadocs') : javadocsBaseUrl + "/interlok-core/" + interlokCoreVersion
   interlokCommonJavadocs= project.hasProperty('interlokCommonJavadocs') ? project.getProperty('interlokCommonJavadocs') : javadocsBaseUrl + "/interlok-common/" + interlokCoreVersion
-  interlokLicenseJavadocs= project.hasProperty('interlokLicenseJavadocs') ? project.getProperty('interlokLicenseJavadocs') : javadocsBaseUrl + "/interlok-licensing/" + interlokCoreVersion
   componentName='Interlok Messaging/WebsphereMQ'
   componentDesc = "Use IBM WebsphereMQ as your messaging platform"
   organizationName = "Adaptris Ltd"
@@ -120,13 +119,6 @@ repositories {
   }
   maven { url "$nexusBaseUrl/content/groups/public" }
   maven { url "$nexusBaseUrl/content/groups/interlok" }
-  maven {
-      credentials {
-        username repoUsername
-        password repoPassword
-      }
-      url "$nexusBaseUrl/content/groups/private"
-  }
 }
 
 
@@ -163,11 +155,10 @@ configurations.all {
 dependencies {
   api ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
   api ("com.adaptris:interlok-common:$interlokCoreVersion") { changing= true}
-  implementation ("com.adaptris:interlok-licensing:$interlokCoreVersion") { changing= true}
 
   implementation ("org.slf4j:slf4j-api:$slf4jVersion")
   implementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  implementation "com.ibm.mq:com.ibm.mq.allclient:9.1.5.0", optional
+  implementation "com.ibm.mq:com.ibm.mq.allclient:9.1.5.0"
   implementation "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1", optional
   implementation "org.apache.geronimo.specs:geronimo-j2ee-connector_1.6_spec:1.0", optional
 
@@ -180,7 +171,6 @@ dependencies {
   testImplementation ("org.mockito:mockito-core:$mockitoVersion")
   testImplementation ("org.mockito:mockito-inline:$mockitoVersion")
 
-  testImplementation ("com.adaptris:interlok-licensing-stub:$interlokCoreVersion") { changing= true}
   testImplementation ("org.hamcrest:hamcrest-core:1.3")
   testImplementation ("org.jmock:jmock:$jmockVersion")
   testImplementation ("org.jmock:jmock-junit4:$jmockVersion")
@@ -191,7 +181,6 @@ dependencies {
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-common:$interlokCoreVersion:javadoc@jar") { changing= true}
-  offlineJavadocPackages ("com.adaptris:interlok-licensing:$interlokCoreVersion:javadoc@jar") { changing= true}
 }
 
 
@@ -265,7 +254,6 @@ javadoc {
   configure(options) {
     options.linksOffline(interlokJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-core-$interlokCoreVersion-javadoc.jar")
     options.linksOffline(interlokCommonJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-common-$interlokCoreVersion-javadoc.jar")
-    options.linksOffline(interlokLicenseJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-licensing-$interlokCoreVersion-javadoc.jar")
     taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
     options.addStringOption "tagletpath", configurations.javadoc.asPath
     options.addBooleanOption "-no-module-directories", true
@@ -286,7 +274,6 @@ task umlJavadoc(type: Javadoc) {
   configure(options) {
     options.linksOffline(interlokJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-core-$interlokCoreVersion-javadoc.jar")
     options.linksOffline(interlokCommonJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-common-$interlokCoreVersion-javadoc.jar")
-    options.linksOffline(interlokLicenseJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-licensing-$interlokCoreVersion-javadoc.jar")
     taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
     options.addStringOption "tagletpath", configurations.javadoc.asPath
     options.addStringOption('Xdoclint:none', '-quiet')

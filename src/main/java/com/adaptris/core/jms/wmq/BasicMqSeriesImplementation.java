@@ -4,18 +4,11 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
-
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.annotation.DisplayOrder;
-import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
-import com.adaptris.core.licensing.License;
-import com.adaptris.core.licensing.License.LicenseType;
-import com.adaptris.core.licensing.LicenseChecker;
-import com.adaptris.core.licensing.LicensedComponent;
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -140,7 +133,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("basic-mq-series-implementation")
 @DisplayOrder(order = { "brokerHost", "brokerPort" })
-public class BasicMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
+public class BasicMqSeriesImplementation extends VendorImplementationImp {
 
   private int ccsid;
   @NotBlank
@@ -325,18 +318,6 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp impleme
 
   public void setBrokerPort(int port) {
     brokerPort = port;
-  }
-
-
-  @Override
-  public void prepare() throws CoreException {
-    LicenseChecker.newChecker().checkLicense(this);
-    super.prepare();
-  }
-
-  @Override
-  public boolean isEnabled(License license) {
-    return license.isEnabled(LicenseType.Basic);
   }
 
   @Override
