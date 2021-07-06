@@ -33,7 +33,7 @@ ext {
   organizationUrl = "http://interlok.adaptris.net"
   slf4jVersion = '1.7.31'
   mockitoVersion = '3.11.2'
-  jmockVersion = '2.8.4'
+  jmockVersion = '2.12.0'
 }
 
 ext.buildUtil = [
