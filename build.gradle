@@ -175,7 +175,7 @@ dependencies {
   testImplementation ("org.jmock:jmock:$jmockVersion")
   testImplementation ("org.jmock:jmock-junit4:$jmockVersion")
   testImplementation ("org.jmock:jmock-legacy:$jmockVersion")
-  testImplementation ("cglib:cglib-nodep:2.2.2")
+  testImplementation ("cglib:cglib-nodep:3.3.0")
   testImplementation ("org.objenesis:objenesis:3.2")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
