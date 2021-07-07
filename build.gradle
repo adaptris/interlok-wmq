@@ -336,7 +336,9 @@ publishing {
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.8.0+")
         properties.appendNode("tags", "websphere,webspheremq,jms")
-        properties.appendNode("license", "true")
+        properties.appendNode("license", "false")
+        properties.appendNode("externalUrl", "https://www.ibm.com/docs/en/ibm-mq")
+        properties.appendNode("repository", "https://github.com/adaptris/interlok-wmq")
       }
     }
   }
