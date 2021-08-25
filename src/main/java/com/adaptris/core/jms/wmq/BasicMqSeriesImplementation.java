@@ -4,12 +4,16 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.annotation.DisplayOrder;
+import com.adaptris.annotation.InputFieldDefault;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
 import com.ibm.mq.jms.MQConnectionFactory;
+import com.ibm.msg.client.wmq.WMQConstants;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -143,6 +147,8 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
   private String queueManager;
   private String channel;
   private String temporaryModel; // nb PTP only
+  @InputFieldDefault(value="false")
+  private Boolean disableClientReconnect;
   @NotBlank
   private String brokerHost;
   private int brokerPort;
@@ -189,6 +195,10 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
 
     if (getTemporaryModel() != null) {
       result.setTemporaryModel(getTemporaryModel());
+    }
+    
+    if(disableClientReconnect()) {
+      result.setClientReconnectOptions(WMQConstants.WMQ_CLIENT_RECONNECT_DISABLED);
     }
 
     return result;
@@ -318,6 +328,22 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
 
   public void setBrokerPort(int port) {
     brokerPort = port;
+  }
+
+  public Boolean getDisableClientReconnect() {
+    return disableClientReconnect;
+  }
+
+  /**
+   * Will disable WMQ client reconnect handling.
+   * @param disableClientReconnect
+   */
+  public void setDisableClientReconnect(Boolean disableClientReconnect) {
+    this.disableClientReconnect = disableClientReconnect;
+  }
+  
+  protected boolean disableClientReconnect() {
+    return BooleanUtils.toBooleanDefaultIfNull(getDisableClientReconnect(), false);
   }
 
   @Override

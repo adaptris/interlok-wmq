@@ -36,6 +36,7 @@ public class BasicMqSeriesProducerTest extends JmsProducerExample {
     mq.setChannel("MyChannel");
     mq.setBrokerHost("localhost");
     mq.setBrokerPort(1414);
+    mq.setDisableClientReconnect(true);
     c.setVendorImplementation(mq);
     c.setWorkersFirstOnShutdown(true);
     c.setConnectionErrorHandler(new JmsConnectionErrorHandler());
