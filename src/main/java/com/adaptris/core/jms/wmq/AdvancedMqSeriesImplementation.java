@@ -5,21 +5,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
-
 import com.adaptris.annotation.AutoPopulated;
-import com.adaptris.core.CoreException;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
-import com.adaptris.core.licensing.License;
-import com.adaptris.core.licensing.License.LicenseType;
-import com.adaptris.core.licensing.LicenseChecker;
-import com.adaptris.core.licensing.LicensedComponent;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 import com.ibm.mq.jms.MQConnectionFactory;
@@ -34,7 +26,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * </p>
  * <p>
  * Depending on your WebsphereMQ configuration you will need at least
- * 
+ *
  * <code><b>com.ibm.mq.allclient.jar</b> or these <b>com.ibm.mq.jar, com.ibm.mqjms.jar, connector.jar, dhbcore.jar and jta.jar</b></code> from your WebsphereMQ installation.
  * If you intend on using bindings mode, then you may need to include additional jars such as <code>com.ibm.mqbind.jar</code>
  * </p>
@@ -86,7 +78,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * format internally within WebpshereMQ is MQRFH2 and not MQSTR format</strong>. Accordingly the receiving application needs to be
  * able to parse MQRFH2 headers which may not be possible.
  * </p>
- * 
+ *
  * <p>
  * If the MQRFH2 Header/format is not required or you need to change the message type to MQSTR, then you need to tell MQSeries to
  * omit the MQRFH2 Header; this will mean that you'll lose all the JMS properties that are <a
@@ -156,14 +148,14 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <p>
  * <b>This was built against WebsphereMQ 6.x, but tested against both Websphere 6.x and 7.x</b>
  * </p>
- * 
+ *
  * @config advanced-mq-series-implementation
  * @license BASIC
- * 
+ *
  * @see com.ibm.mq.jms.MQConnectionFactory
  */
 @XStreamAlias("advanced-mq-series-implementation")
-public class AdvancedMqSeriesImplementation extends VendorImplementationImp implements LicensedComponent {
+public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
   /**
    * Properties matched against various MQSession methods.
    */
@@ -692,7 +684,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
 
   protected void applyProperties(MQConnectionFactory cf) throws JMSException {
     for (Iterator<KeyValuePair> i = getConnectionFactoryProperties().getKeyValuePairs().iterator(); i.hasNext();) {
-      KeyValuePair kvp = (KeyValuePair) i.next();
+      KeyValuePair kvp = i.next();
       // Yeah we could use valueOf here, but really, our lusers are sure to not
       // be consistent and valueOf is case sensitive.
       for (ConnectionFactoryProperty sp : ConnectionFactoryProperty.values()) {
@@ -710,7 +702,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
    */
   @Override
   public void applyVendorSessionProperties(javax.jms.Session s) throws JMSException {
-    for(MqSessionProperty sessionProp : this.getSessionProperties()) {
+    for(MqSessionProperty sessionProp : getSessionProperties()) {
       SessionPropertyDataType.valueOf(sessionProp.getDataType().toUpperCase()).applyProperty((MQSession) s, sessionProp.getPropertyName(), sessionProp.getPropertyName());
     }
   }
@@ -745,17 +737,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp impl
    */
   public void setSessionProperties(List<MqSessionProperty> s) {
     sessionProperties = s;
-  }
-  
-  @Override
-  public void prepare() throws CoreException {
-    LicenseChecker.newChecker().checkLicense(this);
-    super.prepare();
-  }
-
-  @Override
-  public boolean isEnabled(License license) {
-    return license.isEnabled(LicenseType.Basic);
   }
 
   @Override
