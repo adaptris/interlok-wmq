@@ -318,6 +318,16 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
       }
     },
     /**
+     * Invokes {@link MQConnectionFactory#setClientReconnectOptions(WMQConstants.WMQ_CLIENT_RECONNECT_DISABLED)}
+     */
+    DisableClientReconnectOptions {
+      @Override
+      void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
+        if(Boolean.getBoolean(s))
+          cf.setClientReconnectOptions(WMQConstants.WMQ_CLIENT_RECONNECT_DISABLED);
+      }
+    },
+    /**
      * Invokes {@link MQConnectionFactory#setDescription(String)}
      *
      */
