@@ -333,10 +333,10 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
 
   /**
    * Sets the port number of the brokers host.
-   * @param brokerHost
+   * @param brokerPort
    */
-  public void setBrokerPort(int port) {
-    brokerPort = port;
+  public void setBrokerPort(int brokerPort) {
+    this.brokerPort = brokerPort;
   }
 
   public Boolean getDisableClientReconnect() {
