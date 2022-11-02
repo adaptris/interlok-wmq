@@ -7,14 +7,14 @@ plugins {
   id 'jacoco'
   // Manage optional dependencies in maven pom.
   id 'nebula.optional-base' version '7.0.0'
-  id 'com.github.spotbugs' version '5.0.7'
-  id 'org.owasp.dependencycheck' version '7.1.0.1'
-  id "io.freefair.lombok" version "6.4.3"
+  id 'com.github.spotbugs' version '5.0.12'
+  id 'org.owasp.dependencycheck' version '7.2.1'
+  id "io.freefair.lombok" version "6.5.1"
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.5-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.5-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.6-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.6-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -31,8 +31,8 @@ ext {
   componentDesc = "Use IBM WebsphereMQ as your messaging platform"
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '1.7.36'
-  mockitoVersion = '4.5.1'
+  slf4jVersion = '2.0.3'
+  mockitoVersion = '4.8.0'
   jmockVersion = '2.12.0'
 }
 
@@ -168,7 +168,7 @@ dependencies {
 
   implementation ("org.slf4j:slf4j-api:$slf4jVersion")
   implementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  implementation "com.ibm.mq:com.ibm.mq.allclient:9.2.5.0"
+  implementation "com.ibm.mq:com.ibm.mq.allclient:9.3.0.1"
   implementation "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1", optional
   implementation "org.apache.geronimo.specs:geronimo-j2ee-connector_1.6_spec:1.0", optional
 
@@ -186,7 +186,7 @@ dependencies {
   testImplementation ("org.jmock:jmock-junit4:$jmockVersion")
   testImplementation ("org.jmock:jmock-legacy:$jmockVersion")
   testImplementation ("cglib:cglib-nodep:3.3.0")
-  testImplementation ("org.objenesis:objenesis:3.2")
+  testImplementation ("org.objenesis:objenesis:3.3")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
