@@ -31,7 +31,7 @@ ext {
   componentDesc = "Use IBM WebsphereMQ as your messaging platform"
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '2.0.3'
+  slf4jVersion = '2.0.5'
   mockitoVersion = '4.9.0'
   jmockVersion = '2.12.0'
 }
