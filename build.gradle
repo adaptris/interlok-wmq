@@ -7,14 +7,14 @@ plugins {
   id 'jacoco'
   // Manage optional dependencies in maven pom.
   id 'nebula.optional-base' version '7.0.0'
-  id 'com.github.spotbugs' version '5.0.13'
-  id 'org.owasp.dependencycheck' version '7.4.4'
+  id 'com.github.spotbugs' version '5.0.14'
+  id 'org.owasp.dependencycheck' version '8.2.1'
   id "io.freefair.lombok" version "6.5.1"
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.7-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.7-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.8-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.8-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -168,7 +168,7 @@ dependencies {
 
   implementation ("org.slf4j:slf4j-api:$slf4jVersion")
   implementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  implementation "com.ibm.mq:com.ibm.mq.allclient:9.3.0.1"
+  implementation "com.ibm.mq:com.ibm.mq.allclient:9.3.2.0"
   implementation "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1", optional
   implementation "org.apache.geronimo.specs:geronimo-j2ee-connector_1.6_spec:1.0", optional
 
@@ -404,6 +404,7 @@ dependencyCheck  {
   failBuildOnCVSS = 7.0
   analyzers {
     assemblyEnabled=false
+    knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
   }
 }
 
