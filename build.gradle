@@ -168,7 +168,7 @@ dependencies {
 
   implementation ("org.slf4j:slf4j-api:$slf4jVersion")
   implementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  implementation "com.ibm.mq:com.ibm.mq.allclient:9.3.2.0"
+  implementation "com.ibm.mq:com.ibm.mq.allclient:9.3.2.1"
   implementation "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1", optional
   implementation "org.apache.geronimo.specs:geronimo-j2ee-connector_1.6_spec:1.0", optional
 
