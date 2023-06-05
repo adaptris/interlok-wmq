@@ -3,15 +3,18 @@ package com.adaptris.core.jms.wmq;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import com.adaptris.annotation.AutoPopulated;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
+import com.adaptris.core.metadata.MetadataFilter;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
 import com.ibm.mq.jms.MQConnectionFactory;
@@ -74,7 +77,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * message. This is used to store (amongst other things) some of the JMS headers that you wanted to preserve using
  * {@link com.adaptris.core.jms.MessageTypeTranslatorImp#setMoveJmsHeaders(Boolean)}, and all the custom JMS properties that you may
  * have chosen to preserve from AdaptrisMessage metadata by configuring
- * {@link com.adaptris.core.jms.MessageTypeTranslatorImp#setMoveMetadata(Boolean)} to be true.<strong>This means that the message
+ * {@link com.adaptris.core.jms.MessageTypeTranslatorImp#setMetadataFilter(MetadataFilter)} to be true.<strong>This means that the message
  * format internally within WebpshereMQ is MQRFH2 and not MQSTR format</strong>. Accordingly the receiving application needs to be
  * able to parse MQRFH2 headers which may not be possible.
  * </p>
@@ -84,7 +87,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * omit the MQRFH2 Header; this will mean that you'll lose all the JMS properties that are <a
  * href="http://publib.boulder.ibm.com/infocenter/wmqv6/v6r0/topic/com.ibm.mq.csqzaw.doc/uj25460_.htm">mapped into MQRFH2 as
  * standard</a> by MQSeries and also any custom JMS Properties that you might be sending. To omit the MQRFH2 header, then you need
- * to add <code>?targetClient=1</code> after the queue name in your {@link com.adaptris.core.ProduceDestination} implementation. For
+ * to add <code>?targetClient=1</code> after the queue name in your destination. For
  * example, if the queue that you need to produce to is called SampleQ1 then the string you need to use is
  * <strong>queue:///SampleQ1?targetClient=1</strong>. More information about the mapping of JMS messages onto MQ Messages can be
  * found <a href="http://publib.boulder.ibm.com/infocenter/wmqv6/v6r0/topic/com.ibm.mq.csqzaw.doc/uj25430_.htm">at this link</a>
@@ -260,8 +263,7 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
         try {
           cf.setCCDTURL(new URL(s));
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
           JMSException e2 = new JMSException(e.getMessage());
           e2.initCause(e);
           throw e2;
@@ -323,8 +325,9 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
     DisableClientReconnectOptions {
       @Override
       void applyProperty(MQConnectionFactory cf, String s) throws JMSException {
-        if(Boolean.getBoolean(s))
+        if(Boolean.getBoolean(s)) {
           cf.setClientReconnectOptions(WMQConstants.WMQ_CLIENT_RECONNECT_DISABLED);
+        }
       }
     },
     /**
@@ -693,16 +696,14 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
   }
 
   protected void applyProperties(MQConnectionFactory cf) throws JMSException {
-    for (Iterator<KeyValuePair> i = getConnectionFactoryProperties().getKeyValuePairs().iterator(); i.hasNext();) {
-      KeyValuePair kvp = i.next();
-      // Yeah we could use valueOf here, but really, our lusers are sure to not
+    for (KeyValuePair kvp : getConnectionFactoryProperties().getKeyValuePairs()) {
+      // Yeah we could use valueOf here, but really, our users are sure to not
       // be consistent and valueOf is case sensitive.
       for (ConnectionFactoryProperty sp : ConnectionFactoryProperty.values()) {
         if (kvp.getKey().equalsIgnoreCase(sp.toString())) {
           sp.applyProperty(cf, kvp.getValue());
         }
       }
-
     }
   }
 
@@ -743,7 +744,6 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
    * Set any additional session properties to be applied.
    *
    * @param s the sessionProperties to set
-   * @see SessionProperty
    */
   public void setSessionProperties(List<MqSessionProperty> s) {
     sessionProperties = s;
@@ -757,4 +757,5 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
     }
     return false;
   }
+  
 }

@@ -35,6 +35,7 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
       + "\nbe the correct ones for your environment; you should look at "
       + "\nyour WebsphereMQ configuration to see what values you should" + "\nuse." + "\n-->\n";
 
+
   @Override
   protected String createBaseFileName(Object object) {
     return super.createBaseFileName(object) + "-AdvancedWebsphereMQ";
@@ -66,12 +67,11 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
     cp.add(new KeyValuePair(ConnectionFactoryProperty.CCSID.name(), "819"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.QueueManager.name(), "MyQueueManager"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.Channel.name(), "MyChannel"));
-    cp.add(new KeyValuePair(ConnectionFactoryProperty.TransportType.name(), TransportTypeHelper.Transport.MQJMS_TP_CLIENT_MQ_TCPIP
-        .name()));
+    cp.add(new KeyValuePair(ConnectionFactoryProperty.TransportType.name(), TransportTypeHelper.Transport.MQJMS_TP_CLIENT_MQ_TCPIP.name()));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.HostName.name(), "localhost"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.Port.name(), "1414"));
     cp.add(new KeyValuePair(ConnectionFactoryProperty.DisableClientReconnectOptions.name(), "true"));
-    
+
     mq.getSessionProperties().add(new MqSessionProperty("OptimisticPublication", "true", "Boolean"));
     return mq;
   }
@@ -80,4 +80,5 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
   protected String getExampleCommentHeader(Object obj) {
     return super.getExampleCommentHeader(obj) + ACTIVATE_EXCEPTION_LISTENER_COMMENT + THIS_IS_JUST_AN_EXAMPLE_COMMENT;
   }
+
 }

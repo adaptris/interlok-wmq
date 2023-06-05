@@ -29,7 +29,7 @@ public class NoOpJmsConnectionErrorHandler extends ConnectionErrorHandlerImp {
   @Override
   public void close() {
   }
-  
+
   @Override
   public boolean allowedInConjunctionWith(ConnectionErrorHandler ceh) {
     return !equals(ceh);
@@ -49,6 +49,5 @@ public class NoOpJmsConnectionErrorHandler extends ConnectionErrorHandlerImp {
     }
     return hashCode == 0 ? super.hashCode() : hashCode;
   }
-
 
 }
