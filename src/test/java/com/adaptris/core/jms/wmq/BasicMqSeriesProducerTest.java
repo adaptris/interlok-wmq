@@ -11,9 +11,11 @@ import com.adaptris.interlok.junit.scaffolding.jms.JmsProducerExample;
 public class BasicMqSeriesProducerTest extends JmsProducerExample {
 
   protected static final String THIS_IS_JUST_AN_EXAMPLE_COMMENT = "\n<!--"
-      + "\nNote that the values configured for BasicMqSeriesImplementation" + "\nare just example values. They may not"
-      + "\nbe the correct ones for your environment; you should look at "
-      + "\nyour WebsphereMQ configuration to see what values you should" + "\nuse." + "\n-->\n";
+      + "\nNote that the values configured for BasicMqSeriesImplementation" 
+      + "\nare just example values. They may not"
+      + "\nbe the correct ones for your environment; you should look at " 
+      + "\nyour WebsphereMQ configuration to see what values you should"
+      + "\nuse." + "\n-->\n";
 
   @Override
   protected String createBaseFileName(Object object) {
@@ -47,4 +49,5 @@ public class BasicMqSeriesProducerTest extends JmsProducerExample {
   protected String getExampleCommentHeader(Object obj) {
     return super.getExampleCommentHeader(obj) + ACTIVATE_EXCEPTION_LISTENER_COMMENT + THIS_IS_JUST_AN_EXAMPLE_COMMENT;
   }
+
 }

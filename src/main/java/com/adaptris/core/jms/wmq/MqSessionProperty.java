@@ -11,23 +11,22 @@ public class MqSessionProperty {
 
   @NotBlank
   private String propertyName;
-  
+
   @NotNull
   private String value;
-  
+
   @NotBlank
   @Pattern(regexp = "String|Integer|Long|Boolean")
   private String dataType;
-  
+
   public MqSessionProperty() {
-    
   }
-  
+
   public MqSessionProperty(String propertyName, String value, String dataType) {
     this();
-    this.setPropertyName(propertyName);
-    this.setValue(value);
-    this.setDataType(dataType);
+    setPropertyName(propertyName);
+    setValue(value);
+    setDataType(dataType);
   }
 
   public String getPropertyName() {
@@ -36,6 +35,7 @@ public class MqSessionProperty {
 
   /**
    * See your WebsphereMQ documentation for available properties.
+   *
    * @param propertyName
    */
   public void setPropertyName(String propertyName) {
@@ -48,6 +48,7 @@ public class MqSessionProperty {
 
   /**
    * See your WebsphereMQ documentation for appropriate values for your property.
+   *
    * @param value
    */
   public void setValue(String value) {
@@ -60,11 +61,11 @@ public class MqSessionProperty {
 
   /**
    * WebsphereMQ Session properties require the data type; one of the following String|Integer|Long|Boolean.
+   *
    * @param dataType
    */
   public void setDataType(String dataType) {
     this.dataType = dataType;
   }
-  
-  
+
 }

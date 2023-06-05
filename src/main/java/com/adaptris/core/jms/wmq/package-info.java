@@ -21,7 +21,7 @@
 		com.adaptris.core.jms.MessageTypeTranslatorImp#setMoveJmsHeaders(Boolean)},
 		and all the custom JMS properties that you may have chosen to preserve
 		from AdaptrisMessage metadata by configuring {@link
-		com.adaptris.core.jms.MessageTypeTranslatorImp#setMoveMetadata(Boolean)}
+		com.adaptris.core.jms.MessageTypeTranslatorImp#setMetadataFilter(com.adaptris.core.metadata.MetadataFilter)}
 		to be true.<strong>This means that the message format
 			internally within WebpshereMQ is MQRFH2 and not MQSTR format</strong>.
 		Accordingly the receiving application needs to be able to parse MQRFH2
@@ -38,8 +38,7 @@
 		Properties that you might be sending. To omit the MQRFH2 header, then
 		you need to add
 		<code>?targetClient=1</code>
-		after the queue name in your {@link
-		com.adaptris.core.ProduceDestination} implementation. For example, if
+		after the queue name in your destination. For example, if
 		the queue that you need to produce to is called SampleQ1 then the
 		string you need to use is <strong>queue:///SampleQ1?targetClient=1</strong>.
 		More information about the mapping of JMS messages onto MQ Messages

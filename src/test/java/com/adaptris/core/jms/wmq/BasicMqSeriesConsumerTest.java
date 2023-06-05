@@ -33,4 +33,5 @@ public class BasicMqSeriesConsumerTest extends JmsConsumerCase {
   protected String getExampleCommentHeader(Object obj) {
     return super.getExampleCommentHeader(obj) + ACTIVATE_EXCEPTION_LISTENER_COMMENT + THIS_IS_JUST_AN_EXAMPLE_COMMENT;
   }
+
 }
