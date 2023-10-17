@@ -31,9 +31,10 @@ ext {
   componentDesc = "Use IBM WebsphereMQ as your messaging platform"
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '2.0.9'
-  mockitoVersion = '5.2.0'
-  jmockVersion = '2.12.0'
+  slf4jVersion = "2.0.9"
+  mockitoVersion = "5.2.0"
+  jmockVersion = "2.12.0"
+  jsonOrgVersion = "20231013"
 }
 
 ext.buildUtil = [
@@ -171,7 +172,10 @@ dependencies {
 
   implementation ("org.slf4j:slf4j-api:$slf4jVersion")
   implementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  implementation "com.ibm.mq:com.ibm.mq.allclient:9.3.3.1"
+  implementation ("com.ibm.mq:com.ibm.mq.allclient:9.3.3.1") {
+    exclude group: "org.json", module: "json"
+  }
+  implementation ("org.json:json:$jsonOrgVersion")
   implementation "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1", optional
   implementation "org.apache.geronimo.specs:geronimo-j2ee-connector_1.6_spec:1.0", optional
 
