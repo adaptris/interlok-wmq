@@ -12,6 +12,7 @@ import com.adaptris.annotation.DisplayOrder;
 import com.adaptris.annotation.InputFieldDefault;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
+import com.adaptris.core.metadata.MetadataFilter;
 import com.ibm.mq.jms.MQConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -60,7 +61,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * message. This is used to store (amongst other things) some of the JMS headers that you wanted to preserve using
  * {@link com.adaptris.core.jms.MessageTypeTranslatorImp#setMoveJmsHeaders(Boolean)}, and all the custom JMS properties that you may
  * have chosen to preserve from AdaptrisMessage metadata by configuring
- * {@link com.adaptris.core.jms.MessageTypeTranslatorImp#setMoveMetadata(Boolean)} to be true.<strong>This means that the message
+ * {@link com.adaptris.core.jms.MessageTypeTranslatorImp#setMetadataFilter(MetadataFilter)} to be true.<strong>This means that the message
  * format internally within WebpshereMQ is MQRFH2 and not MQSTR format</strong>. Accordingly the receiving application needs to be
  * able to parse MQRFH2 headers which may not be possible.
  * </p>
@@ -70,7 +71,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * omit the MQRFH2 Header; this will mean that you'll lose all the JMS properties that are <a
  * href="http://publib.boulder.ibm.com/infocenter/wmqv6/v6r0/topic/com.ibm.mq.csqzaw.doc/uj25460_.htm">mapped into MQRFH2 as
  * standard</a> by MQSeries and also any custom JMS Properties that you might be sending. To omit the MQRFH2 header, then you need
- * to add <code>?targetClient=1</code> after the queue name in your {@link com.adaptris.core.ProduceDestination} implementation. For
+ * to add <code>?targetClient=1</code> after the queue name in your destination. For
  * example, if the queue that you need to produce to is called SampleQ1 then the string you need to use is
  * <strong>queue:///SampleQ1?targetClient=1</strong>. More information about the mapping of JMS messages onto MQ Messages can be
  * found <a href="http://publib.boulder.ibm.com/infocenter/wmqv6/v6r0/topic/com.ibm.mq.csqzaw.doc/uj25430_.htm">at this link</a>
@@ -143,12 +144,12 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
   @NotBlank
   @AutoPopulated
   @Pattern(regexp = "MQJMS_TP_BINDINGS_MQ|MQJMS_TP_CLIENT_MQ_TCPIP|MQJMS_TP_DIRECT_TCPIP|MQJMS_TP_DIRECT_HTTP|[0-9]+")
-  @InputFieldDefault(value="MQJMS_TP_CLIENT_MQ_TCPIP")
+  @InputFieldDefault(value = "MQJMS_TP_CLIENT_MQ_TCPIP")
   private String transportType;
   private String queueManager;
   private String channel;
   private String temporaryModel; // nb PTP only
-  @InputFieldDefault(value="false")
+  @InputFieldDefault(value = "false")
   private Boolean disableClientReconnect;
   @NotBlank
   private String brokerHost;
@@ -160,7 +161,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
    * <ul>
    * Defaults are:
    * <li>ccsid = -1</li>
-   * <li>transport type = MQJMS_TP_CLIENT_MQ_TCPIP (which is equivalent to {@value WMQConstants.WMQ_CM_CLIENT})</li>
+   * <li>transport type = MQJMS_TP_CLIENT_MQ_TCPIP (which is equivalent to {@value WMQConstants#WMQ_CM_CLIENT})</li>
    * <li>queue manager, channel and temporary model are all null.</li>
    * </ul>
    * </p>
@@ -198,7 +199,7 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
       result.setTemporaryModel(getTemporaryModel());
     }
     
-    if(disableClientReconnect()) {
+    if (disableClientReconnect()) {
       result.setClientReconnectOptions(WMQConstants.WMQ_CLIENT_RECONNECT_DISABLED);
     }
 
@@ -372,4 +373,5 @@ public class BasicMqSeriesImplementation extends VendorImplementationImp {
     return String.format("Host: %s; Port: %d: Channel: %s; Transport: %s",
         getBrokerHost(), getBrokerPort(), getChannel(), getTransportType());
   }
+  
 }
