@@ -35,7 +35,7 @@ ext {
   slf4jVersion = "2.0.11"
   mockitoVersion = "5.2.0"
   jmockVersion = "2.12.0"
-  jsonOrgVersion = "20231013"
+  jsonOrgVersion = "20240205"
   mqVersion = "9.3.4.1"
 }
 
