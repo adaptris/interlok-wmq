@@ -199,7 +199,7 @@ dependencies {
   testImplementation ("org.jmock:jmock-junit4:$jmockVersion")
   testImplementation ("org.jmock:jmock-legacy:$jmockVersion")
   testImplementation ("cglib:cglib-nodep:3.3.0")
-  testImplementation ("org.objenesis:objenesis:3.3")
+  testImplementation ("org.objenesis:objenesis:3.4")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
