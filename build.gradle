@@ -189,7 +189,7 @@ dependencies {
   testImplementation ("org.mockito:mockito-core:$mockitoVersion")
   testImplementation ("org.mockito:mockito-inline:$mockitoVersion")
 
-  testImplementation ("org.hamcrest:hamcrest-core:2.2")
+  testImplementation ("org.hamcrest:hamcrest-core:3.0")
   testImplementation ("org.jmock:jmock:$jmockVersion")
   testImplementation ("org.jmock:jmock-junit4:$jmockVersion")
   testImplementation ("org.jmock:jmock-legacy:$jmockVersion")
