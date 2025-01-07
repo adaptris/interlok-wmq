@@ -36,7 +36,7 @@ ext {
   mockitoVersion = "5.2.0"
   jmockVersion = "2.13.1"
   jsonOrgVersion = "20241224"
-  mqVersion = "9.4.1.0"
+  mqVersion = "9.4.1.1"
 }
 
 ext.buildUtil = [
