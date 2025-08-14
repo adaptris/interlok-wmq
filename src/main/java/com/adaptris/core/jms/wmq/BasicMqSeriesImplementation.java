@@ -1,9 +1,9 @@
 package com.adaptris.core.jms.wmq;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.JMSException;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -13,8 +13,8 @@ import com.adaptris.annotation.InputFieldDefault;
 import com.adaptris.core.jms.VendorImplementationBase;
 import com.adaptris.core.jms.VendorImplementationImp;
 import com.adaptris.core.metadata.MetadataFilter;
-import com.ibm.mq.jms.MQConnectionFactory;
-import com.ibm.msg.client.wmq.WMQConstants;
+import com.ibm.mq.jakarta.jms.MQConnectionFactory;
+import com.ibm.msg.client.jakarta.wmq.WMQConstants;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -79,7 +79,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <p>
  * More generally speaking, the more powerful form of specifying a destination using uniform resource identifiers (URIs) is
  * preferred. This form allows you to specify remote queues (queues on a queue manager other than the one to which you are
- * connected). It also allows you to set the other properties contained in a com.ibm.mq.jms.MQQueue object. The URI for a queue
+ * connected). It also allows you to set the other properties contained in a com.ibm.mq.jakarta.jms.MQQueue object. The URI for a queue
  * begins with the sequence queue://, followed by the name of the queue manager on which the queue resides. This is followed by a
  * further /, the name of the queue, and optionally, a list of name-value pairs that set the remaining Queue properties. For
  * example: <strong>queue://Some_Other_Queue_Manager/SampleQ1?key1=value1&amp;key2=value2</strong>. If you don't specify a queue manager

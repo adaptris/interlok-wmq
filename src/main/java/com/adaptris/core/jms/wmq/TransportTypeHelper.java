@@ -1,6 +1,6 @@
 package com.adaptris.core.jms.wmq;
 
-import com.ibm.msg.client.wmq.WMQConstants;
+import com.ibm.msg.client.jakarta.wmq.WMQConstants;
 
 public class TransportTypeHelper {
 

@@ -8,7 +8,7 @@
   <p>If this property is set, all exceptions resulting from a broken
     connection are sent to the exception listener, regardless of the
     context in which they occur. If this is not set, then broken
-    connections may not trigger the standard javax.jms.ExceptionListener
+    connections may not trigger the standard jakarta.jms.ExceptionListener
     interface which means the adapter is not notified of a broken
     connection to WebsphereMQ and subsequently cannot recover from a
     broken connection to WebsphereMQ.</p>
@@ -51,7 +51,7 @@
 		destination using uniform resource identifiers (URIs) is preferred.
 		This form allows you to specify remote queues (queues on a queue
 		manager other than the one to which you are connected). It also allows
-		you to set the other properties contained in a com.ibm.mq.jms.MQQueue
+		you to set the other properties contained in a com.ibm.mq.jakarta.jms.MQQueue
 		object. The URI for a queue begins with the sequence queue://,
 		followed by the name of the queue manager on which the queue resides.
 		This is followed by a further /, the name of the queue, and
