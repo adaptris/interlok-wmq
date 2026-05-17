@@ -36,7 +36,7 @@ ext {
   mockitoVersion = "5.2.0"
   jmockVersion = "2.13.1"
   jsonOrgVersion = "20250107"
-  mqVersion = "9.4.2.1"
+  mqVersion = "9.4.5.1"
 }
 
 ext.buildUtil = [
@@ -408,6 +408,11 @@ dependencyCheck  {
   }
   analyzers {
     assemblyEnabled=false
+    ossIndex {
+      username = System.getenv("OSS_INDEX_USERNAME")
+      password = System.getenv("OSS_INDEX_PASSWORD")
+      warnOnlyOnRemoteErrors = true
+    }
   }
 }
 
