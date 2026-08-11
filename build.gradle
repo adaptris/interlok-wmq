@@ -14,8 +14,8 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '5.0-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '5.0-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '5.1-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '5.1-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -160,7 +160,7 @@ configurations {
   all*.exclude group: 'org.eclipse.jetty.orbit', module: 'javax.mail.glassfish'
   // INTERLOK-3197 exclude old javax.mail
   all*.exclude group: 'com.sun.mail', module: 'javax.mail'
-  all*.exclude group: 'javax.validation', module: 'validation-api'
+  all*.exclude group: 'jakarta.validation', module: 'validation-api'
   all*.exclude group: 'javax.activation', module: 'activation'
   all*.exclude group: 'javax.activation', module: 'javax.activation-api'
 
@@ -178,12 +178,13 @@ dependencies {
 
   implementation ("org.slf4j:slf4j-api:$slf4jVersion")
   implementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  implementation ("com.ibm.mq:com.ibm.mq.allclient:$mqVersion") {
+  implementation ("com.ibm.mq:com.ibm.mq.jakarta.client:$mqVersion") {
     exclude group: "org.json", module: "json"
   }
   implementation ("org.json:json:$jsonOrgVersion")
-  implementation "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1", optional
-  implementation "org.apache.geronimo.specs:geronimo-j2ee-connector_1.6_spec:1.0", optional
+  api ("jakarta.jms:jakarta.jms-api:3.1.0")
+  //implementation "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1", optional
+//  implementation "org.apache.geronimo.specs:geronimo-j2ee-connector_1.6_spec:1.0", optional
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
   umlDoclet("nl.talsmasoftware:umldoclet:2.1.0")

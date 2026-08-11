@@ -24,7 +24,7 @@ public class AdvancedMqSeriesProducerTest extends JmsProducerExample {
       + "\n\nIf this property is set, all exceptions resulting from a broken connection"
       + "\nare sent to the exception listener, regardless of the context in which they"
       + "\noccur. If this is not set, then broken connections may not trigger the"
-      + "\nstandard javax.jms.ExceptionListener interface which means the adapter"
+      + "\nstandard jakarta.jms.ExceptionListener interface which means the adapter"
       + "\nis not notified of a broken connection to WebsphereMQ and subsequently"
       + "\ncannot recover from a broken connection to WebsphereMQ" + "\n-->\n";
 

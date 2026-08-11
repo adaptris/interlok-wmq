@@ -5,9 +5,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.validation.constraints.NotNull;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.JMSException;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -17,10 +17,10 @@ import com.adaptris.core.jms.VendorImplementationImp;
 import com.adaptris.core.metadata.MetadataFilter;
 import com.adaptris.util.KeyValuePair;
 import com.adaptris.util.KeyValuePairSet;
-import com.ibm.mq.jms.MQConnectionFactory;
-import com.ibm.mq.jms.MQQueueConnectionFactory;
-import com.ibm.mq.jms.MQSession;
-import com.ibm.msg.client.wmq.WMQConstants;
+import com.ibm.mq.jakarta.jms.MQConnectionFactory;
+import com.ibm.mq.jakarta.jms.MQQueueConnectionFactory;
+import com.ibm.mq.jakarta.jms.MQSession;
+import com.ibm.msg.client.jakarta.wmq.WMQConstants;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -51,7 +51,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * </code> would call {@link MQConnectionFactory#setSendExitInit(String)}.
  * </p>
  * <p>
- * This vendor implementation also overrides {@link VendorImplementationImp#applyVendorSessionProperties(javax.jms.Session)} so that
+ * This vendor implementation also overrides {@link VendorImplementationImp#applyVendorSessionProperties(jakarta.jms.Session)} so that
  * specific MQ session properties can be applied. The way of doing this is to supply a list of mq-session-properties, which includes the
  * property name, value and data-type of the value.  You will need to consult your WebsphereMQ documentation or support team for a list of
  * available properties.
@@ -95,7 +95,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <p>
  * More generally speaking, the more powerful form of specifying a destination using uniform resource identifiers (URIs) is
  * preferred. This form allows you to specify remote queues (queues on a queue manager other than the one to which you are
- * connected). It also allows you to set the other properties contained in a com.ibm.mq.jms.MQQueue object. The URI for a queue
+ * connected). It also allows you to set the other properties contained in a com.ibm.mq.jakarta.jms.MQQueue object. The URI for a queue
  * begins with the sequence queue://, followed by the name of the queue manager on which the queue resides. This is followed by a
  * further /, the name of the queue, and optionally, a list of name-value pairs that set the remaining Queue properties. For
  * example: <strong>queue://Some_Other_Queue_Manager/SampleQ1?key1=value1&amp;key2=value2</strong>. If you don't specify a queue manager
@@ -155,7 +155,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @config advanced-mq-series-implementation
  * @license BASIC
  *
- * @see com.ibm.mq.jms.MQConnectionFactory
+ * @see com.ibm.mq.jakarta.jms.MQConnectionFactory
  */
 @XStreamAlias("advanced-mq-series-implementation")
 public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
@@ -709,10 +709,10 @@ public class AdvancedMqSeriesImplementation extends VendorImplementationImp {
 
   /**
    *
-   * @see VendorImplementationImp#applyVendorSessionProperties(javax.jms.Session)
+   * @see VendorImplementationImp#applyVendorSessionProperties(jakarta.jms.Session)
    */
   @Override
-  public void applyVendorSessionProperties(javax.jms.Session s) throws JMSException {
+  public void applyVendorSessionProperties(jakarta.jms.Session s) throws JMSException {
     for(MqSessionProperty sessionProp : getSessionProperties()) {
       SessionPropertyDataType.valueOf(sessionProp.getDataType().toUpperCase()).applyProperty((MQSession) s, sessionProp.getPropertyName(), sessionProp.getPropertyName());
     }
