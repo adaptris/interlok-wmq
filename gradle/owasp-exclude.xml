@@ -60,4 +60,46 @@ Since the jar is optional; this is supplied by the user. so we don't physically 
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty(\.http2|\.websocket)?/.+@10\.0\.26$</packageUrl>
     <cve>CVE-2026-2332</cve>
-  </suppress></suppressions>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      com.ibm.mq.allclient 9.4.5.1 is the newest published 9.x CD client:
+      https://repo.maven.apache.org/maven2/com/ibm/mq/com.ibm.mq.allclient/maven-metadata.xml
+      CVE-2026-10751 affects Java messaging in 9.4.0.0 through 9.4.5.1 CD.
+      No non-downgrading 9.x minor/patch release is available; newer CD clients are 10.x,
+      outside the permitted major version. Authenticated client-side arbitrary code execution
+      remains an accepted risk, not a remediated vulnerability.
+      https://www.ibm.com/support/pages/node/7284898
+
+      The remaining product-wide CPE matches affect components not contained in this Java client:
+      Server: CVE-2026-10027, CVE-2026-10575, CVE-2026-10853, CVE-2026-11375,
+      CVE-2026-11376, CVE-2026-11378 and CVE-2026-18142.
+      https://www.ibm.com/support/pages/node/7284893
+      https://www.ibm.com/support/pages/node/7287778
+      https://www.ibm.com/support/pages/node/7284905
+      https://www.ibm.com/support/pages/node/7284948
+      https://www.ibm.com/support/pages/node/7294498
+      https://www.ibm.com/support/pages/node/7284945
+      https://www.ibm.com/support/pages/node/7294663
+      .NET messaging: CVE-2026-10859, affected CD versions 9.4.0.0 through 9.4.5.1.
+      https://www.ibm.com/support/pages/node/7294664
+      Managed File Transfer: CVE-2026-11724, affected CD versions 9.4.0.0 through 9.4.5.1.
+      https://www.ibm.com/support/pages/node/7294503
+      Native standard client: CVE-2026-14511, affected versions 9.4.5.0 through 9.4.5.1.
+      https://www.ibm.com/support/pages/node/7290859
+      These exclusions apply only to this exact Java artifact, not to an MQ server/client deployment.
+    ]]></notes>
+    <packageUrl>pkg:maven/com.ibm.mq/com.ibm.mq.allclient@9.4.5.1</packageUrl>
+    <cve>CVE-2026-10027</cve>
+    <cve>CVE-2026-10575</cve>
+    <cve>CVE-2026-10853</cve>
+    <cve>CVE-2026-10859</cve>
+    <cve>CVE-2026-11375</cve>
+    <cve>CVE-2026-11376</cve>
+    <cve>CVE-2026-11378</cve>
+    <cve>CVE-2026-11724</cve>
+    <cve>CVE-2026-10751</cve>
+    <cve>CVE-2026-18142</cve>
+    <cve>CVE-2026-14511</cve>
+  </suppress>
+</suppressions>
