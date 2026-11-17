@@ -28,10 +28,6 @@ Since the jar is optional; this is supplied by the user. so we don't physically 
    <cve>CVE-2020-4267</cve>
    <cve>CVE-2020-4310</cve>
    <cve>CVE-2020-4320</cve>
-   <cve>CVE-2026-12356</cve>
-   <cve>CVE-2026-12538</cve>
-   <cve>CVE-2026-12550</cve>
-   <cve>CVE-2026-13271</cve>
 </suppress>
 <suppress>
     <notes><![CDATA[
@@ -65,7 +61,7 @@ Since the jar is optional; this is supplied by the user. so we don't physically 
     <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty(\.http2|\.websocket)?/.+@10\.0\.26$</packageUrl>
     <cve>CVE-2026-2332</cve>
   </suppress>
-  <suppress>
+    <suppress>
     <notes><![CDATA[
       com.ibm.mq.allclient 9.4.5.1 is the newest published 9.x CD client:
       https://repo.maven.apache.org/maven2/com/ibm/mq/com.ibm.mq.allclient/maven-metadata.xml
@@ -105,5 +101,9 @@ Since the jar is optional; this is supplied by the user. so we don't physically 
     <cve>CVE-2026-10751</cve>
     <cve>CVE-2026-18142</cve>
     <cve>CVE-2026-14511</cve>
-  </suppress>
+    <cve>CVE-2026-12356</cve>
+    <cve>CVE-2026-12538</cve>
+    <cve>CVE-2026-12550</cve>
+    <cve>CVE-2026-13271</cve>
+    </suppress>
 </suppressions>
