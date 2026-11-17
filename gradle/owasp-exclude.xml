@@ -28,6 +28,10 @@ Since the jar is optional; this is supplied by the user. so we don't physically 
    <cve>CVE-2020-4267</cve>
    <cve>CVE-2020-4310</cve>
    <cve>CVE-2020-4320</cve>
+   <cve>CVE-2026-12356</cve>
+   <cve>CVE-2026-12538</cve>
+   <cve>CVE-2026-12550</cve>
+   <cve>CVE-2026-13271</cve>
 </suppress>
 <suppress>
     <notes><![CDATA[
